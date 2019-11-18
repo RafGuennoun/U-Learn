@@ -14,7 +14,7 @@ public class ApprenantDao extends DAO<Apprenant,String>{
 		super(conn);
 		try
 		{
-			this.findStat = this.conn.prepareStatement("SELECT * FROM apprenant WHERE idApp = ?"
+			this.findStat = this.conn.prepareStatement("SELECT * FROM `u-learn`.`apprenant` WHERE idApp = ?"
 					,ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
 			this.insertStat = this.conn.prepareStatement("INSERT INTO `u-learn`.`apprenant` (`idApp`, `nomApp`, `prenomApp`, `email`, `dateN`, `niveau`, `nbfs`, `nbff`, `pdp`)"
 					+ " VALUES (?,?,?,?,?,?,?,?,?);");
