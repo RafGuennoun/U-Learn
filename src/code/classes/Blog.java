@@ -5,15 +5,23 @@ public class Blog {
 
 	private final int numBlog;
 	private String NomBlog;
+	private String textBlog;
 	private ArrayList<String> photos;
 	
 
 	
-	public Blog(int numBlog, String nomBlog)
+	public Blog(int numBlog, String nomBlog, String text)
 	{
 		this.numBlog = numBlog;
 		this.NomBlog = nomBlog;
+		this.textBlog = text;
 		this.photos = new ArrayList<String>();
+	}
+	public String getTextBlog() {
+		return textBlog;
+	}
+	public void setTextBlog(String text) {
+		this.textBlog = text;
 	}
 	public String getNomBlog() {
 		return NomBlog;
