@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Window.Type;
+import javax.swing.border.LineBorder;
 
 public class LoginStudent extends JFrame {
 
@@ -59,28 +60,29 @@ public class LoginStudent extends JFrame {
 		contentPane.add(layeredPane);
 		
 		JPanel panelStudent = new JPanel();
-		panelStudent.setBackground(new Color(0, 51, 102));
+		panelStudent.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
+		panelStudent.setBackground(Color.WHITE);
 		panelStudent.setBounds(0, 0, 464, 370);
 		layeredPane.add(panelStudent);
 		panelStudent.setLayout(null);
 		
 		JLabel lblHelloStudent = new JLabel("Hello Student ");
 		lblHelloStudent.setHorizontalAlignment(SwingConstants.CENTER);
-		lblHelloStudent.setForeground(Color.WHITE);
+		lblHelloStudent.setForeground(new Color(0, 51, 102));
 		lblHelloStudent.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 40));
-		lblHelloStudent.setBounds(10, 11, 423, 65);
+		lblHelloStudent.setBounds(10, 11, 444, 65);
 		panelStudent.add(lblHelloStudent);
 		
 		JLabel lblUsername = new JLabel("Username :");
 		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUsername.setForeground(Color.WHITE);
-		lblUsername.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 20));
+		lblUsername.setForeground(new Color(0, 51, 102));
+		lblUsername.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 20));
 		lblUsername.setBackground(new Color(0, 51, 102));
 		lblUsername.setBounds(10, 109, 144, 38);
 		panelStudent.add(lblUsername);
 		
 		textField = new JTextField();
-		textField.setFont(new Font("Sitka Text", Font.BOLD, 20));
+		textField.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 20));
 		textField.setForeground(new Color(0, 51, 102));
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
 		textField.setBounds(149, 109, 272, 38);
@@ -89,8 +91,8 @@ public class LoginStudent extends JFrame {
 		
 		JLabel lblPassword = new JLabel("Password :");
 		lblPassword.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPassword.setForeground(Color.WHITE);
-		lblPassword.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 20));
+		lblPassword.setForeground(new Color(0, 51, 102));
+		lblPassword.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 20));
 		lblPassword.setBackground(new Color(0, 51, 102));
 		lblPassword.setBounds(10, 158, 144, 38);
 		panelStudent.add(lblPassword);
@@ -99,7 +101,7 @@ public class LoginStudent extends JFrame {
 		passwordField.setEchoChar('*');
 		passwordField.setHorizontalAlignment(SwingConstants.CENTER);
 		passwordField.setForeground(new Color(0, 51, 102));
-		passwordField.setFont(new Font("Sitka Text", Font.BOLD, 20));
+		passwordField.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 20));
 		passwordField.setBounds(149, 158, 272, 38);
 		panelStudent.add(passwordField);
 		
@@ -133,11 +135,11 @@ public class LoginStudent extends JFrame {
 			}
 			@Override
 			public void mouseExited(MouseEvent arg0) {
-				lblForgotPasswrd.setForeground(Color.WHITE);
+				lblForgotPasswrd.setForeground(new Color(0, 51, 102));
 			}
 		});
 		lblForgotPasswrd.setHorizontalAlignment(SwingConstants.CENTER);
-		lblForgotPasswrd.setForeground(Color.WHITE);
+		lblForgotPasswrd.setForeground(new Color(0, 51, 102));
 		lblForgotPasswrd.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
 		lblForgotPasswrd.setBackground(new Color(0, 51, 102));
 		lblForgotPasswrd.setBounds(93, 259, 291, 16);
@@ -146,6 +148,9 @@ public class LoginStudent extends JFrame {
 		JButton btnSignIn = new JButton("Sign in");
 		btnSignIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				InscriptionStudentAng p = new InscriptionStudentAng();
+				p.setVisible(true);
+				setVisible(false);
 			}
 		});
 		btnSignIn.addMouseListener(new MouseAdapter() {
@@ -212,6 +217,7 @@ public class LoginStudent extends JFrame {
 		panel_1.add(lblMakeYour);
 		
 		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
 		panel_2.setLayout(null);
 		panel_2.setBackground(new Color(255, 255, 255));
 		panel_2.setBounds(10, 177, 330, 75);

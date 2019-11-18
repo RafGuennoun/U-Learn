@@ -4,6 +4,11 @@ public class Instructeur extends Utilisateur{
 
 	private String domaine;
 	
+	public Instructeur()
+	{
+		
+	}
+	
 	public Instructeur(String id,String n, String p, String e,Date d,Messagerie m,String domaine)
 	{
 		super(id,n,p,e,d,m);

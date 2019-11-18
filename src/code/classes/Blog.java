@@ -6,6 +6,9 @@ public class Blog {
 	private final int numBlog;
 	private String NomBlog;
 	private ArrayList<String> photos;
+	
+
+	
 	public Blog(int numBlog, String nomBlog)
 	{
 		this.numBlog = numBlog;

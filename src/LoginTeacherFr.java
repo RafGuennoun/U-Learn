@@ -18,6 +18,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.Window.Type;
+import javax.swing.border.LineBorder;
 
 public class LoginTeacherFr extends JFrame {
 
@@ -59,22 +60,23 @@ public class LoginTeacherFr extends JFrame {
 		contentPane.add(layeredPane);
 		
 		JPanel panelStudent = new JPanel();
-		panelStudent.setBackground(new Color(0, 51, 102));
+		panelStudent.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
+		panelStudent.setBackground(Color.WHITE);
 		panelStudent.setBounds(0, 0, 464, 370);
 		layeredPane.add(panelStudent);
 		panelStudent.setLayout(null);
 		
 		JLabel lblHelloStudent = new JLabel("Bonjour Mr/Mme");
 		lblHelloStudent.setHorizontalAlignment(SwingConstants.CENTER);
-		lblHelloStudent.setForeground(new Color(255, 255, 255));
+		lblHelloStudent.setForeground(new Color(0, 51, 102));
 		lblHelloStudent.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 40));
-		lblHelloStudent.setBounds(10, 11, 423, 65);
+		lblHelloStudent.setBounds(10, 11, 444, 65);
 		panelStudent.add(lblHelloStudent);
 		
 		JLabel lblUsername = new JLabel("Username :");
 		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUsername.setForeground(new Color(255, 255, 255));
-		lblUsername.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 20));
+		lblUsername.setForeground(new Color(0, 51, 102));
+		lblUsername.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 20));
 		lblUsername.setBackground(new Color(0, 51, 102));
 		lblUsername.setBounds(10, 109, 144, 38);
 		panelStudent.add(lblUsername);
@@ -83,8 +85,8 @@ public class LoginTeacherFr extends JFrame {
 		
 		JLabel lblPassword = new JLabel("Password :");
 		lblPassword.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPassword.setForeground(new Color(255, 255, 255));
-		lblPassword.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 20));
+		lblPassword.setForeground(new Color(0, 51, 102));
+		lblPassword.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 20));
 		lblPassword.setBackground(new Color(0, 51, 102));
 		lblPassword.setBounds(10, 158, 144, 38);
 		panelStudent.add(lblPassword);
@@ -115,17 +117,24 @@ public class LoginTeacherFr extends JFrame {
 			}
 			@Override
 			public void mouseExited(MouseEvent arg0) {
-				lblForgotPasswrd.setForeground(Color.WHITE);
+				lblForgotPasswrd.setForeground(new Color(0, 51, 102));
 			}
 		});
 		lblForgotPasswrd.setHorizontalAlignment(SwingConstants.CENTER);
-		lblForgotPasswrd.setForeground(new Color(255, 255, 255));
+		lblForgotPasswrd.setForeground(new Color(0, 51, 102));
 		lblForgotPasswrd.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 11));
 		lblForgotPasswrd.setBackground(new Color(0, 51, 102));
 		lblForgotPasswrd.setBounds(99, 257, 291, 16);
 		panelStudent.add(lblForgotPasswrd);
 		
 		JButton btnSignIn = new JButton("S'inscrire");
+		btnSignIn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				InsriptionTeacher p = new InsriptionTeacher();
+				p.setVisible(true);
+				setVisible(false);
+			}
+		});
 		btnSignIn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseExited(MouseEvent arg0) {
@@ -144,19 +153,13 @@ public class LoginTeacherFr extends JFrame {
 		
 		
 	
-		JLabel lblX = new JLabel("X");
-		lblX.setBackground(new Color(255, 255, 255));
-		lblX.setHorizontalAlignment(SwingConstants.CENTER);
-		lblX.setForeground(new Color(0, 51, 102));
-		lblX.setFont(new Font("Sitka Text", Font.BOLD, 20));
-		lblX.setBounds(387, 11, 46, 26);
-		panelStudent.add(lblX);
+	
 		
 		username = new JTextField();
 		username.setToolTipText("");
 		username.setHorizontalAlignment(SwingConstants.CENTER);
 		username.setForeground(new Color(0, 51, 102));
-		username.setFont(new Font("Monospaced", Font.BOLD, 20));
+		username.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 20));
 		username.setColumns(10);
 		username.setBounds(150, 109, 272, 38);
 		panelStudent.add(username);
@@ -164,7 +167,7 @@ public class LoginTeacherFr extends JFrame {
 		passwordField = new JPasswordField();
 		passwordField.setHorizontalAlignment(SwingConstants.CENTER);
 		passwordField.setForeground(new Color(0, 51, 102));
-		passwordField.setFont(new Font("Monospaced", Font.BOLD, 20));
+		passwordField.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 20));
 		passwordField.setEchoChar('*');
 		passwordField.setBounds(150, 158, 272, 38);
 		panelStudent.add(passwordField);
@@ -217,6 +220,7 @@ public class LoginTeacherFr extends JFrame {
 		panel_1.add(lblMakeYour);
 		
 		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
 		panel_2.setLayout(null);
 		panel_2.setBackground(Color.WHITE);
 		panel_2.setBounds(10, 177, 330, 75);

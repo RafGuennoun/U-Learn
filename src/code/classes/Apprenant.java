@@ -6,6 +6,12 @@ public class Apprenant extends Utilisateur{
 	private int nbrFormationsFinies;
 	private int nbrFormationsSivies;
 
+	
+	public Apprenant()
+	{
+		
+	}
+	
 	public Apprenant(String i,String n, String p, String e,Date d,Messagerie m,int nv,int nff,int nfs)
 	{
 		super(i,n,p,e,d,m);

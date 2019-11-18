@@ -9,6 +9,11 @@ public abstract class Utilisateur {
 	protected Date dateNaissance;
 	protected Messagerie messagerie;
 	
+	public Utilisateur() {
+	}
+
+	
+	
 	public Utilisateur(String id,String nom, String prenom, String email, Date d, Messagerie m)
 	{
 		this.id = id;

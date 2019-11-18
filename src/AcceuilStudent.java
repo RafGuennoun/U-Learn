@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -8,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import AppPackage.AnimationClass;
 import code.classes.Apprenant;
+import code.classes.Utilisateur;
 
 import javax.swing.border.BevelBorder;
 import java.awt.Window.Type;
@@ -37,6 +39,11 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
+import java.awt.Dimension;
 
 public class AcceuilStudent extends JFrame {
 
@@ -52,9 +59,14 @@ public class AcceuilStudent extends JFrame {
 	private JPasswordField passwordField_encien;
 	private JTable table;
 	private JTable table_amis;
-	private JTable table_1;
 	private JTextField message;
 	private JTextField textField_cause;
+	private JTextField titre_forum;
+	private JTextField textField_1;
+	private JTextField texte_forum;
+	private JTable table_forum;
+	private JTextField textField_RechercheAmis;
+	private JTable table_chat;
 
 	/**
 	 * Launch the application.
@@ -528,8 +540,195 @@ public class AcceuilStudent extends JFrame {
 		panel_profile.add(label_1);
 		
 		JPanel panel_cours = new JPanel();
-		panel_cours.setBackground(Color.RED);
+		panel_cours.setBackground(Color.WHITE);
 		layeredPane.add(panel_cours, "name_1369027173701500");
+		panel_cours.setLayout(null);
+		
+		JLayeredPane layeredPane_cours = new JLayeredPane();
+		layeredPane_cours.setBounds(10, 66, 828, 523);
+		panel_cours.add(layeredPane_cours);
+		layeredPane_cours.setLayout(new CardLayout(0, 0));
+		
+		JPanel panel_formation = new JPanel();
+		panel_formation.setBackground(Color.WHITE);
+		layeredPane_cours.add(panel_formation, "name_99652437663700");
+		
+		JPanel panel_forum = new JPanel();
+		panel_forum.setBorder(new LineBorder(new Color(0, 51, 102), 2));
+		panel_forum.setForeground(new Color(0, 51, 102));
+		panel_forum.setBackground(new Color(255, 255, 255));
+		layeredPane_cours.add(panel_forum, "name_99695588436500");
+		
+		JPanel panel_wiki = new JPanel();
+		layeredPane_cours.add(panel_wiki, "name_99708708456700");
+		
+		JPanel panel_blogs = new JPanel();
+		layeredPane_cours.add(panel_blogs, "name_99719566024600");
+		
+		JLabel lblFormation = new JLabel("Formation");
+		lblFormation.setHorizontalAlignment(SwingConstants.CENTER);
+		lblFormation.setBounds(92, 11, 117, 49);
+		panel_cours.add(lblFormation);
+		
+		JLabel lblForum = new JLabel("");
+		lblForum.setIcon(new ImageIcon("C:\\Users\\YACINE\\Desktop\\Icons\\help_60px.png"));
+		lblForum.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+			
+				panel_forum.setVisible(true);
+				panel_formation.setVisible(false);
+				panel_wiki.setVisible(false);
+				panel_blogs.setVisible(false);
+			}
+		});
+		lblForum.setHorizontalAlignment(SwingConstants.CENTER);
+		lblForum.setBounds(291, 0, 117, 69);
+		panel_cours.add(lblForum);
+		
+		JLabel lblWiki = new JLabel("wiki");
+		lblWiki.setHorizontalAlignment(SwingConstants.CENTER);
+		lblWiki.setBounds(506, 11, 117, 49);
+		panel_cours.add(lblWiki);
+		
+		JLabel lblBlogs = new JLabel("blogs");
+		lblBlogs.setHorizontalAlignment(SwingConstants.CENTER);
+		lblBlogs.setBounds(687, 11, 117, 49);
+		panel_cours.add(lblBlogs);
+		panel_forum.setLayout(null);
+		
+		
+	
+		JLabel lblCreerMonForum = new JLabel("Cr\u00E9ez votre forum en lui donnant un titre :");
+		lblCreerMonForum.setBounds(10, 21, 279, 41);
+		lblCreerMonForum.setBackground(new Color(0, 51, 102));
+		lblCreerMonForum.setHorizontalAlignment(SwingConstants.LEFT);
+		lblCreerMonForum.setForeground(new Color(0, 51, 102));
+		lblCreerMonForum.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		panel_forum.add(lblCreerMonForum);
+		
+		String[] titres = {"Titre" , "Probléme"};
+		Object[][] data = {
+				{"Titre" , "Probléme" },
+	
+		
+		};
+		
+		titre_forum = new JTextField();
+		titre_forum.setBounds(299, 23, 468, 38);
+		titre_forum.setHorizontalAlignment(SwingConstants.CENTER);
+		titre_forum.setForeground(new Color(0, 51, 102));
+		titre_forum.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		titre_forum.setColumns(10);
+		panel_forum.add(titre_forum);
+		
+		JLabel label_5 = new JLabel("");
+		label_5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+		/*		String[][] d = {
+						{titre_forum.getText() , texte_forum.getText()}
+				};
+			*/	
+			//	table_forum.add(d);
+				DefaultTableModel model = (DefaultTableModel) table_forum.getModel();
+				
+				model.addRow(new Object [] { titre_forum.getText() , texte_forum.getText() });
+				
+				titre_forum.setText("");
+				texte_forum.setText("");
+			
+				
+				
+			}
+		});
+		label_5.setBounds(777, 21, 41, 93);
+		label_5.setIcon(new ImageIcon("C:\\Users\\YACINE\\Desktop\\Icons\\plus_2_math_40px.png"));
+		label_5.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_forum.add(label_5);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(10, 474, 693, 38);
+		textField_1.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_1.setForeground(new Color(0, 51, 102));
+		textField_1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		textField_1.setColumns(10);
+		panel_forum.add(textField_1);
+		
+		
+		
+		JButton btnRpondre = new JButton("R\u00E9pondre");
+		btnRpondre.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+		
+				
+			}
+		});
+		btnRpondre.setBounds(713, 473, 105, 38);
+		btnRpondre.setForeground(new Color(255, 255, 255));
+		btnRpondre.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnRpondre.setBackground(new Color(51, 153, 204));
+		panel_forum.add(btnRpondre);
+		
+		JLabel lblCliquezSurUn = new JLabel("Cliquez sur un forum dans le tableau pour lui r\u00E9pondre :");
+		lblCliquezSurUn.setBounds(20, 422, 498, 41);
+		lblCliquezSurUn.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCliquezSurUn.setForeground(new Color(0, 51, 102));
+		lblCliquezSurUn.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 17));
+		lblCliquezSurUn.setBackground(new Color(0, 51, 102));
+		panel_forum.add(lblCliquezSurUn);
+		
+		JLabel lblForum_1 = new JLabel("Probl\u00E9me :");
+		lblForum_1.setHorizontalAlignment(SwingConstants.LEFT);
+		lblForum_1.setForeground(new Color(0, 51, 102));
+		lblForum_1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		lblForum_1.setBackground(new Color(0, 51, 102));
+		lblForum_1.setBounds(10, 73, 72, 41);
+		panel_forum.add(lblForum_1);
+		
+		texte_forum = new JTextField();
+		texte_forum.setHorizontalAlignment(SwingConstants.CENTER);
+		texte_forum.setForeground(new Color(0, 51, 102));
+		texte_forum.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		texte_forum.setColumns(10);
+		texte_forum.setBounds(92, 75, 675, 38);
+		panel_forum.add(texte_forum);
+		
+		JLabel label_8 = new JLabel("");
+		label_8.setHorizontalAlignment(SwingConstants.CENTER);
+		label_8.setBounds(777, 73, 41, 41);
+		panel_forum.add(label_8);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 128, 808, 296);
+		panel_forum.add(scrollPane_1);
+		
+		table_forum = new JTable();
+		table_forum.setGridColor(new Color(0, 51, 102));
+		table_forum.setForeground(new Color(0, 51, 102));
+		table_forum.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 11));
+		table_forum.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Titre", "Probleme"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		scrollPane_1.setViewportView(table_forum);
 		
 		JPanel panel_chat = new JPanel();
 		panel_chat.setBackground(new Color(255, 255, 255));
@@ -545,27 +744,17 @@ public class AcceuilStudent extends JFrame {
 		panel_chat.add(message);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(333, 83, 505, 421);
+		scrollPane.setBounds(333, 178, 505, 326);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		panel_chat.add(scrollPane);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setLineWrap(true);
-		textArea.setForeground(new Color(255, 255, 255));
-		textArea.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 15));
-		textArea.setBackground(new Color(51, 153, 255));
-		textArea.setEditable(false);
-		scrollPane.setViewportView(textArea);
-		
-	//	String msg = message.getText();
-
-		
-		table_1 = new JTable();
-		table_1.setForeground(new Color(255, 255, 255));
-		table_1.setBounds(10, 83, 313, 421);
-		table_1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
-		table_1.setBackground(new Color(51, 153, 255));
-		panel_chat.add(table_1);
+		JTextArea textArea_chat = new JTextArea();
+		textArea_chat.setLineWrap(true);
+		textArea_chat.setForeground(new Color(255, 255, 255));
+		textArea_chat.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		textArea_chat.setBackground(new Color(51, 153, 255));
+		textArea_chat.setEditable(false);
+		scrollPane.setViewportView(textArea_chat);
 		
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setBounds(780, 507, 58, 46);
@@ -573,9 +762,9 @@ public class AcceuilStudent extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				String msg = message.getText();
-				textArea.append(" - "+ msg+"\n");
+				textArea_chat.append(" - "+ msg+"\n");
 				
-				textArea.append("\n");
+				
 				message.setText("");
 				
 			
@@ -584,6 +773,97 @@ public class AcceuilStudent extends JFrame {
 		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\YACINE\\Desktop\\Icons\\paper_plane_38px.png"));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_chat.add(lblNewLabel_1);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(10, 178, 312, 326);
+		panel_chat.add(scrollPane_2);
+		
+		table_chat = new JTable();
+		table_chat.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				
+				int index = table_chat.getSelectedRow();
+				
+				TableModel model = table_chat.getModel();
+				
+				String ami = (String) model.getValueAt(index, 0);
+			//	System.out.println(ami);
+				
+			//	Utilisateur envoi = new Utilisateur() {};
+			//	Utilisateur dest = new Utilisateur() {};
+				
+				
+				
+				
+				
+			}
+		});
+		table_chat.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Amis"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table_chat.getColumnModel().getColumn(0).setResizable(false);
+		table_chat.setForeground(new Color(0, 51, 102));
+		table_chat.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
+		scrollPane_2.setViewportView(table_chat);
+		
+		textField_RechercheAmis = new JTextField();
+		textField_RechercheAmis.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_RechercheAmis.setForeground(new Color(0, 51, 102));
+		textField_RechercheAmis.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		textField_RechercheAmis.setColumns(10);
+		textField_RechercheAmis.setBounds(333, 114, 448, 32);
+		panel_chat.add(textField_RechercheAmis);
+		
+		JLabel lblRechercher = new JLabel("Rechercher et ajouter un amis :");
+		lblRechercher.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRechercher.setForeground(new Color(0, 51, 102));
+		lblRechercher.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		lblRechercher.setBackground(new Color(0, 51, 102));
+		lblRechercher.setBounds(10, 110, 312, 41);
+		panel_chat.add(lblRechercher);
+		
+		JLabel label_7 = new JLabel("");
+		label_7.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+			if(textField_RechercheAmis.getText().isEmpty()== false)
+			{
+				DefaultTableModel model = (DefaultTableModel) table_chat.getModel();
+				
+				model.addRow(new Object [] { textField_RechercheAmis.getText()});
+				
+				textField_RechercheAmis.setText("");
+			}
+				
+				
+				
+				
+			}
+		});
+		label_7.setHorizontalAlignment(SwingConstants.CENTER);
+		label_7.setIcon(new ImageIcon("C:\\Users\\YACINE\\Desktop\\Icons\\plus_2_math_30px.png"));
+		label_7.setBounds(791, 114, 36, 32);
+		panel_chat.add(label_7);
 		
 		
 		
