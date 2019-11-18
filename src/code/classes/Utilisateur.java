@@ -9,16 +9,7 @@ public abstract class Utilisateur {
 	protected Messagerie messagerie;
 	protected String photo;
 	
-<<<<<<< HEAD
 	public Utilisateur(String id,String nom, String prenom, String email, Date d, Messagerie m, String pdp)
-=======
-	public Utilisateur() {
-	}
-
-	
-	
-	public Utilisateur(String id,String nom, String prenom, String email, Date d, Messagerie m)
->>>>>>> fec61f5e116eff97b8e4b313cfdc10a03760dd01
 	{
 		this.id = id;
 		this.nom = nom;
