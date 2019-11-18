@@ -55,6 +55,7 @@ public class WelcomeHome extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		
 		JComboBox choixLangue = new JComboBox();
 		choixLangue.setBackground(Color.WHITE);
 		choixLangue.setToolTipText("");
@@ -67,7 +68,7 @@ public class WelcomeHome extends JFrame {
 		
 		JLabel ul = new JLabel("");
 		ul.setHorizontalAlignment(SwingConstants.CENTER);
-		ul.setIcon(new ImageIcon("C:\\Users\\YACINE\\Documents\\LRM_EXPORT_111813770704333_20191028_233746188.jpeg"));
+		ul.setIcon(new ImageIcon("C:\\Users\\YACINE\\eclipse-workspace\\U-Learn\\Icons\\LRM_EXPORT_111813770704333_20191028_233746188.jpeg"));
 		ul.setBounds(-300, 0, 804, 183);
 		contentPane.add(ul);
 		
@@ -201,7 +202,7 @@ public class WelcomeHome extends JFrame {
 				lblWelcomeToUlearn.setText("Bienvenue à U-Learn ");
 				lblAreYou.setText(" Vous etes ? ");
 				lblAStudent.setText("* Un etudiant *");
-				lblATeacher.setText("* Un enseignant *");
+				lblATeacher.setText("* Un instructeur *");
 				lblAnAdmin.setText("* Un admin *");
 				
 			}

@@ -5,6 +5,8 @@ public class Commentaire {
 	private final int numComm;
 	private String text;
 	
+
+	
 	public Commentaire(int num, String text)
 	{
 		this.numComm = num;
