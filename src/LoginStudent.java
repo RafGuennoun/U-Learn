@@ -4,6 +4,12 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import code.classes.Apprenant;
+import code.classes.Date;
+import code.dao.ApprenantDao;
+import code.dao.Connexion;
+
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -18,7 +24,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Window.Type;
-
+import java.sql.*;
 public class LoginStudent extends JFrame {
 
 	private JPanel contentPane;
@@ -105,7 +111,20 @@ public class LoginStudent extends JFrame {
 		
 		JButton btnNewButton = new JButton("Login");
 		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) {	
+				try
+				{
+					Apprenant a = new Apprenant("dfsfdsdfds", "fay", "guen", "qsfqsfqs", new Date(2015, 4, 5), null,"D:\\pics\\immage2.jpg", 1, 0, 0);
+					//new ApprenantDao(Connexion.getInstance()).insert(a);
+					//new ApprenantDao(Connexion.getInstance()).delete(a);
+					new ApprenantDao(Connexion.getInstance()).update(a);
+					
+				}
+				catch(Exception x)
+				{
+					x.printStackTrace();
+				}
+				
 			}
 		});
 		btnNewButton.addMouseListener(new MouseAdapter() {

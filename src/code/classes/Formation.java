@@ -7,7 +7,7 @@ public class Formation {
 	private String nomFormation;
 	//niveau min pour s'inscrire à la formation
 	private int niveauMin;
-	private Difficulte difficulte;
+	private EnumDifficulte difficulte;
 	private int dureeEstimee;
 	private int nbrCours;
 	
@@ -15,7 +15,7 @@ public class Formation {
 	private ArrayList<Quiz> listeQuiz;
 	
 
-	public Formation(int num,String nom,int niv,Difficulte dif,int duree,int nbrC)
+	public Formation(int num,String nom,int niv,EnumDifficulte dif,int duree,int nbrC)
 	{
 		this.numFormation = num;
 		this.nomFormation = nom;
@@ -49,11 +49,11 @@ public class Formation {
 		this.niveauMin = niveauMin;
 	}
 
-	public Difficulte getDifficulte() {
+	public EnumDifficulte getDifficulte() {
 		return difficulte;
 	}
 
-	public void setDifficulte(Difficulte difficulte) {
+	public void setDifficulte(EnumDifficulte difficulte) {
 		this.difficulte = difficulte;
 	}
 

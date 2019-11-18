@@ -1,5 +1,4 @@
 package code.classes;
-
 public class Message {
 
 	private final int numMsg;

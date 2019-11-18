@@ -1,14 +1,13 @@
 package code.classes;
-
 public class Apprenant extends Utilisateur{
 	
 	private int niveau;
 	private int nbrFormationsFinies;
 	private int nbrFormationsSivies;
 
-	public Apprenant(String i,String n, String p, String e,Date d,Messagerie m,int nv,int nff,int nfs)
+	public Apprenant(String i,String n, String p, String e,Date d,Messagerie m,String pdp,int nv,int nff,int nfs)
 	{
-		super(i,n,p,e,d,m);
+		super(i,n,p,e,d,m,pdp);
 		this.niveau = nv;
 		this.nbrFormationsSivies = nfs;
 		this.nbrFormationsFinies = nff;

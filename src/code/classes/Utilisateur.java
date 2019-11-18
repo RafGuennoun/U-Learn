@@ -1,5 +1,4 @@
 package code.classes;
-
 public abstract class Utilisateur {
 	
 	protected String id;
@@ -8,8 +7,9 @@ public abstract class Utilisateur {
 	protected String email;
 	protected Date dateNaissance;
 	protected Messagerie messagerie;
+	protected String photo;
 	
-	public Utilisateur(String id,String nom, String prenom, String email, Date d, Messagerie m)
+	public Utilisateur(String id,String nom, String prenom, String email, Date d, Messagerie m, String pdp)
 	{
 		this.id = id;
 		this.nom = nom;
@@ -17,6 +17,15 @@ public abstract class Utilisateur {
 		this.email = email;
 		this.dateNaissance = d;
 		this.messagerie = m;
+		this.photo = pdp;
+	}
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 
 	public void recevoirMessage(Message m)
