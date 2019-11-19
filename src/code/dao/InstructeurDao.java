@@ -7,7 +7,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 import code.classes.Date;
+import code.classes.ExisteException;
 import code.classes.Instructeur;
+import code.classes.MdpException;
 
 public class InstructeurDao extends DAO<Instructeur, String>{
 	
@@ -31,15 +33,60 @@ public class InstructeurDao extends DAO<Instructeur, String>{
 	}
 	
 	@Override
-	public Instructeur find(String id, String mdp)
+	public Instructeur find(String id, String mdp) throws MdpException
 	{
 		Instructeur i = null;
+		
+		int mdp0 = mdp.hashCode();
+		try
+		{
+			ResultSet res = findStat.executeQuery();
+			if(mdp0 == res.getInt("mdp"))
+			{
+				byte[] img = res.getBytes("pdp");
+				Date date = Date.sqlToDate(res.getDate("dateN"));
+				
+				i = new Instructeur(res.getString("idIns"),
+									res.getString("nomIns"),
+									res.getString("prenomIns"),
+									res.getString("eamil"),
+									date,
+									res.getString("domaineIns"),
+									img);
+									
+									
+			}
+			else
+			{
+				throw new MdpException();
+			}
+		}
+		catch(Exception x)
+		{
+			x.printStackTrace();
+		}
+		
 		return i;
 	}
 	
 	@Override
-	public boolean insert(Instructeur i, String mdp)
+	public boolean insert(Instructeur i, String mdp) throws ExisteException
 	{
+		
+		try
+		{
+			findStat.setString(1, i.getId());
+			ResultSet res = findStat.executeQuery();
+			if(res.first())
+			{
+				throw new MdpException();
+			}
+		}
+		catch(Exception x)
+		{
+			x.printStackTrace();
+		}
+		
 		Date d0 = i.getDateNaissance();
 		java.sql.Date date = d0.dateToSql();
 		int mdp0 = mdp.hashCode();

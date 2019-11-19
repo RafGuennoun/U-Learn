@@ -5,7 +5,10 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
-import code.classes.*;
+import code.classes.Apprenant;
+import code.classes.Date;
+import code.classes.ExisteException;
+import code.classes.MdpException;
 public class ApprenantDao extends DAO<Apprenant,String>{
 	
 	public ApprenantDao(Connection conn)
@@ -17,7 +20,7 @@ public class ApprenantDao extends DAO<Apprenant,String>{
 					,ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
 			this.insertStat = this.conn.prepareStatement("INSERT INTO `u-learn`.`apprenant` (`idApp`, `nomApp`, `prenomApp`, `email`, `dateN`, `niveau`, `pdp`, `mdp`)"
 					+ " VALUES (?,?,?,?,?,?,?,?);");
-			this.updateStat = this.conn.prepareStatement("UPDATE `u-learn`.`apprenant` set `nomApp`=?,`prenomApp`=?,`niveau`=?,`nbfs`=?,`nbff`=?,`pdp`=? WHERE `idApp`=?");
+			this.updateStat = this.conn.prepareStatement("UPDATE `u-learn`.`apprenant` set `nomApp`=?,`prenomApp`=?,`niveau`=?,`pdp`=? WHERE `idApp`=?");
 			this.deleteStat = this.conn.prepareStatement("DELETE from apprenant where idApp = ?");
 		}
 		catch(Exception x)
@@ -27,45 +30,58 @@ public class ApprenantDao extends DAO<Apprenant,String>{
 	}
 	
 	@Override
-	public Apprenant find(String idApp, String mdp) //throws MdpException
+	public Apprenant find(String idApp, String mdp) throws MdpException
 	{
 		ResultSet res;
 		Apprenant a = null;
-		/*try
+		try
 		{
 			findStat.setString(1, idApp);
 			res = findStat.executeQuery();
-			Int mdp0;
-			if(res.first())
-			{
-				a = new Apprenant(res.getString("idApp"),
-						res.getString("nomApp"),
-						res.getString("prenomApp"),
-						res.getString("email"),
-						res.getDate("dateN"),
-						res.getInt("niveau"),
-						res.getInt("nbfs"),
-						res.getInt("nbff"),
-						res.getBlob("pdp"));
-			}*/
+			int mdp0 = mdp.hashCode();
 			
-		//if(mdp0 = res.getInt("mdp"))
-			return a;
-		/*else
-			throw new MdpException();*/
-		/*}
+		if(mdp0 == res.getInt("mdp"))
+			{
+				byte[] img = res.getBytes("pdp");
+				Date date = Date.sqlToDate(res.getDate("dateN"));
+				
+				a = new Apprenant(res.getString("idApp"),
+								  res.getString("nomApp"),
+								  res.getString("prenomApp"),
+								  res.getString("email"),
+								  date,
+								  res.getInt("niveau"),
+								  img);
+				
+				return a;
+			}
+		else
+			throw new MdpException();
+		}
 		catch(Exception x)
 		{
 			x.printStackTrace();
-		}*/
+		}
+		return a;
 	}
 	
 	@Override
-	public boolean insert(Apprenant a, String mdp)
+	public boolean insert(Apprenant a, String mdp) throws ExisteException
 	{
 		Date d0 = a.getDateNaissance();
 		java.sql.Date date = d0.dateToSql();
 		
+		try
+		{
+			findStat.setString(1, a.getId());
+			ResultSet res = findStat.executeQuery();
+			if(res.first())
+				throw new ExisteException();
+		}
+		catch(Exception x)
+		{
+			x.printStackTrace();
+		}
 		int mdp0 = mdp.hashCode();
 		try
 		{

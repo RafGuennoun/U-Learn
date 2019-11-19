@@ -1,12 +1,12 @@
 package code.classes;
 
-public class MdpException extends Exception{
-
-	String erreur;
+public class ExisteException extends Exception{
 	
-	public MdpException()
+	public String erreur;
+	
+	public ExisteException()
 	{
-		this.erreur = "Incorrect Password";
+		this.erreur = "Username already existess";
 	}
 	
 	public String getErreur()
@@ -18,4 +18,5 @@ public class MdpException extends Exception{
 	{
 		System.out.println(this.erreur);
 	}
+
 }

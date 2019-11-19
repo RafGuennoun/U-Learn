@@ -1,6 +1,7 @@
 package code.dao;
 
 import java.sql.*;
+import code.classes.*;
 public abstract class DAO <T, S>{
 	
 	protected Connection conn = null;
@@ -15,9 +16,9 @@ public abstract class DAO <T, S>{
 		this.conn = conn;
 	}
 	
-	public abstract T find(S id, S mdp);
+	public abstract T find(S id, S mdp) throws MdpException;
 	
-	public abstract boolean insert(T obj, S mdp);
+	public abstract boolean insert(T obj, S mdp) throws ExisteException;
 	
 	public abstract boolean update(T obj);
 	
