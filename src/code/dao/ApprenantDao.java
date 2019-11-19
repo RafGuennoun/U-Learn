@@ -5,8 +5,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
-import code.classes.Apprenant;
-import code.classes.Date;
+import code.classes.*;
 public class ApprenantDao extends DAO<Apprenant,String>{
 	
 	public ApprenantDao(Connection conn)
@@ -16,8 +15,8 @@ public class ApprenantDao extends DAO<Apprenant,String>{
 		{
 			this.findStat = this.conn.prepareStatement("SELECT * FROM `u-learn`.`apprenant` WHERE idApp = ?"
 					,ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			this.insertStat = this.conn.prepareStatement("INSERT INTO `u-learn`.`apprenant` (`idApp`, `nomApp`, `prenomApp`, `email`, `dateN`, `niveau`, `nbfs`, `nbff`, `pdp`)"
-					+ " VALUES (?,?,?,?,?,?,?,?,?);");
+			this.insertStat = this.conn.prepareStatement("INSERT INTO `u-learn`.`apprenant` (`idApp`, `nomApp`, `prenomApp`, `email`, `dateN`, `niveau`, `pdp`, `mdp`)"
+					+ " VALUES (?,?,?,?,?,?,?,?);");
 			this.updateStat = this.conn.prepareStatement("UPDATE `u-learn`.`apprenant` set `nomApp`=?,`prenomApp`=?,`niveau`=?,`nbfs`=?,`nbff`=?,`pdp`=? WHERE `idApp`=?");
 			this.deleteStat = this.conn.prepareStatement("DELETE from apprenant where idApp = ?");
 		}
@@ -28,7 +27,7 @@ public class ApprenantDao extends DAO<Apprenant,String>{
 	}
 	
 	@Override
-	public Apprenant find(String idApp)
+	public Apprenant find(String idApp, String mdp) //throws MdpException
 	{
 		ResultSet res;
 		Apprenant a = null;
@@ -36,7 +35,7 @@ public class ApprenantDao extends DAO<Apprenant,String>{
 		{
 			findStat.setString(1, idApp);
 			res = findStat.executeQuery();
-			
+			Int mdp0;
 			if(res.first())
 			{
 				a = new Apprenant(res.getString("idApp"),
@@ -50,7 +49,10 @@ public class ApprenantDao extends DAO<Apprenant,String>{
 						res.getBlob("pdp"));
 			}*/
 			
+		//if(mdp0 = res.getInt("mdp"))
 			return a;
+		/*else
+			throw new MdpException();*/
 		/*}
 		catch(Exception x)
 		{
@@ -59,10 +61,12 @@ public class ApprenantDao extends DAO<Apprenant,String>{
 	}
 	
 	@Override
-	public boolean insert(Apprenant a)
+	public boolean insert(Apprenant a, String mdp)
 	{
 		Date d0 = a.getDateNaissance();
 		java.sql.Date date = d0.dateToSql();
+		
+		int mdp0 = mdp.hashCode();
 		try
 		{
 			InputStream img = new FileInputStream(new File(a.getPhoto()));
@@ -73,9 +77,8 @@ public class ApprenantDao extends DAO<Apprenant,String>{
 			insertStat.setString(4, a.getEmail());
 			insertStat.setDate(5, date);
 			insertStat.setInt(6, a.getNiveau());
-			insertStat.setInt(7, a.getNbrFormationsSivies());
-			insertStat.setInt(8, a.getNbrFormationsFinies());
-			insertStat.setBlob(9,img);
+			insertStat.setBlob(7,img);
+			insertStat.setInt(8, mdp0);
 			
 			return insertStat.execute();
 		}
@@ -97,10 +100,8 @@ public class ApprenantDao extends DAO<Apprenant,String>{
 			updateStat.setString(1, a.getNom());
 			updateStat.setString(2, a.getPrenom());
 			updateStat.setInt(3, a.getNiveau());
-			updateStat.setInt(4, a.getNbrFormationsSivies());
-			updateStat.setInt(5, a.getNbrFormationsFinies());
-			updateStat.setBlob(6, img);
-			updateStat.setString(7, a.getId());
+			updateStat.setBlob(4, img);
+			updateStat.setString(5, a.getId());
 			
 			return updateStat.execute();
 		}

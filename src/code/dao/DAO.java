@@ -15,9 +15,9 @@ public abstract class DAO <T, S>{
 		this.conn = conn;
 	}
 	
-	public abstract T find(S id);
+	public abstract T find(S id, S mdp);
 	
-	public abstract boolean insert(T obj);
+	public abstract boolean insert(T obj, S mdp);
 	
 	public abstract boolean update(T obj);
 	

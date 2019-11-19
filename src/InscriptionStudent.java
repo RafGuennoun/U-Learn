@@ -2,6 +2,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 
+import code.classes.*;
+import code.dao.*;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -27,6 +30,7 @@ public class InscriptionStudent extends JFrame {
 	private JTextField textField_confAdr;
 	private JPasswordField passwordField_mdp;
 	private JPasswordField passwordField_confMdp;
+	
 
 	/**
 	 * Launch the application.
@@ -47,7 +51,7 @@ public class InscriptionStudent extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public InscriptionStudent() {
+		public InscriptionStudent() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(250, 150, 830, 460);
@@ -128,18 +132,11 @@ public class InscriptionStudent extends JFrame {
 		lblAdresseEmail_1.setBounds(10, 11, 150, 30);
 		panel_2.add(lblAdresseEmail_1);
 		
-		JLabel lblMotDePasse = new JLabel("Confirmez adresse email :");
-		lblMotDePasse.setForeground(new Color(0, 51, 102));
-		lblMotDePasse.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
-		lblMotDePasse.setBackground(new Color(0, 51, 102));
-		lblMotDePasse.setBounds(10, 44, 241, 30);
-		panel_2.add(lblMotDePasse);
-		
 		JLabel lblConfirmezMotDe = new JLabel("Mot de passe :");
 		lblConfirmezMotDe.setForeground(new Color(0, 51, 102));
 		lblConfirmezMotDe.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
 		lblConfirmezMotDe.setBackground(new Color(0, 51, 102));
-		lblConfirmezMotDe.setBounds(10, 76, 140, 30);
+		lblConfirmezMotDe.setBounds(10, 44, 140, 30);
 		panel_2.add(lblConfirmezMotDe);
 		
 		JLabel lblConfirmezMotDe_1 = new JLabel("Confirmez mot de passe :");
@@ -157,20 +154,12 @@ public class InscriptionStudent extends JFrame {
 		textField_adr.setBounds(249, 13, 403, 28);
 		panel_2.add(textField_adr);
 		
-		textField_confAdr = new JTextField();
-		textField_confAdr.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_confAdr.setForeground(new Color(0, 51, 102));
-		textField_confAdr.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
-		textField_confAdr.setColumns(10);
-		textField_confAdr.setBounds(249, 46, 403, 28);
-		panel_2.add(textField_confAdr);
-		
 		passwordField_mdp = new JPasswordField();
 		passwordField_mdp.setHorizontalAlignment(SwingConstants.CENTER);
 		passwordField_mdp.setEchoChar('*');
 		passwordField_mdp.setForeground(new Color(0, 51, 102));
 		passwordField_mdp.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
-		passwordField_mdp.setBounds(249, 78, 403, 28);
+		passwordField_mdp.setBounds(249, 46, 403, 28);
 		panel_2.add(passwordField_mdp);
 		
 		passwordField_confMdp = new JPasswordField();
@@ -180,6 +169,21 @@ public class InscriptionStudent extends JFrame {
 		passwordField_confMdp.setEchoChar('*');
 		passwordField_confMdp.setBounds(249, 110, 403, 28);
 		panel_2.add(passwordField_confMdp);
+		
+		JLabel lblMotDePasse = new JLabel("Confirmez adresse email :");
+		lblMotDePasse.setBounds(10, 76, 241, 30);
+		panel_2.add(lblMotDePasse);
+		lblMotDePasse.setForeground(new Color(0, 51, 102));
+		lblMotDePasse.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		lblMotDePasse.setBackground(new Color(0, 51, 102));
+		
+		textField_confAdr = new JTextField();
+		textField_confAdr.setBounds(249, 78, 403, 28);
+		panel_2.add(textField_confAdr);
+		textField_confAdr.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_confAdr.setForeground(new Color(0, 51, 102));
+		textField_confAdr.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		textField_confAdr.setColumns(10);
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setLayout(null);
@@ -248,10 +252,24 @@ public class InscriptionStudent extends JFrame {
 		contentPane.add(panel_4);
 		
 		JButton btnSinscrire = new JButton("S'inscrire");
+		btnSinscrire.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				/*if(passwordField_mdp.getText()==passwordField_confMdp.getText())
+				{
+					Controleur.apprenantCo = new Apprenant(te, n, p, e, d, pdp, nv)
+				}
+				else
+				{
+					
+				}
+				*/
+			}
+		});
 		btnSinscrire.setForeground(Color.WHITE);
 		btnSinscrire.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 22));
 		btnSinscrire.setBackground(new Color(0, 51, 102));
-		btnSinscrire.setBounds(256, 383, 291, 38);
+		btnSinscrire.setBounds(74, 383, 291, 38);
 		contentPane.add(btnSinscrire);
 		
 		JButton btnX = new JButton("Retour");
@@ -266,7 +284,7 @@ public class InscriptionStudent extends JFrame {
 		btnX.setForeground(Color.WHITE);
 		btnX.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
 		btnX.setBackground(Color.RED);
-		btnX.setBounds(706, 383, 87, 38);
+		btnX.setBounds(488, 383, 87, 38);
 		contentPane.add(btnX);
 	}
 }

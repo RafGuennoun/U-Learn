@@ -31,17 +31,18 @@ public class InstructeurDao extends DAO<Instructeur, String>{
 	}
 	
 	@Override
-	public Instructeur find(String id)
+	public Instructeur find(String id, String mdp)
 	{
 		Instructeur i = null;
 		return i;
 	}
 	
 	@Override
-	public boolean insert(Instructeur i)
+	public boolean insert(Instructeur i, String mdp)
 	{
 		Date d0 = i.getDateNaissance();
 		java.sql.Date date = d0.dateToSql();
+		int mdp0 = mdp.hashCode();
 		
 		try
 		{
@@ -54,6 +55,7 @@ public class InstructeurDao extends DAO<Instructeur, String>{
 			insertStat.setDate(5, date);
 			insertStat.setString(6, i.getDomaine());
 			insertStat.setBlob(7, img);
+			insertStat.setInt(8, mdp0);
 			
 			return insertStat.execute();
 		}

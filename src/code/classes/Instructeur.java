@@ -3,9 +3,9 @@ public class Instructeur extends Utilisateur{
 
 	private String domaine;
 	
-	public Instructeur(String id,String n, String p, String e,Date d,Messagerie m,String pdp,String domaine)
+	public Instructeur(String id,String n, String p, String e,Date d,String pdp,String domaine)
 	{
-		super(id,n,p,e,d,m,pdp);
+		super(id,n,p,e,d,pdp);
 		this.domaine = domaine;
 	}
 

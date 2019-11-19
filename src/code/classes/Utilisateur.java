@@ -9,14 +9,13 @@ public abstract class Utilisateur {
 	protected Messagerie messagerie;
 	protected String photo;
 	
-	public Utilisateur(String id,String nom, String prenom, String email, Date d, Messagerie m, String pdp)
+	public Utilisateur(String id,String nom, String prenom, String email, Date d, String pdp)
 	{
 		this.id = id;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.email = email;
 		this.dateNaissance = d;
-		this.messagerie = m;
 		this.photo = pdp;
 	}
 
