@@ -9,27 +9,36 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
 
 public class InscriptionStudent extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField_nom;
 	private JTextField textField_prenom;
-	private JTextField textField_universite;
-	private JTextField textField_specialite;
 	private JTextField textField_adr;
 	private JTextField textField_confAdr;
 	private JPasswordField passwordField_mdp;
 	private JPasswordField passwordField_confMdp;
+	private JTextField textField_idf;
+	private JTextField textField_specilite;
 	
 
 	/**
@@ -185,71 +194,96 @@ public class InscriptionStudent extends JFrame {
 		textField_confAdr.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
 		textField_confAdr.setColumns(10);
 		
-		JPanel panel_3 = new JPanel();
-		panel_3.setLayout(null);
-		panel_3.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
-		panel_3.setBackground(Color.WHITE);
-		panel_3.setBounds(375, 90, 439, 117);
-		contentPane.add(panel_3);
-		
-		JLabel lblUniversit = new JLabel("Universit\u00E9 :");
-		lblUniversit.setForeground(new Color(0, 51, 102));
-		lblUniversit.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
-		lblUniversit.setBackground(new Color(0, 51, 102));
-		lblUniversit.setBounds(10, 11, 107, 30);
-		panel_3.add(lblUniversit);
-		
-		JLabel lblNiveau = new JLabel("Niveau :");
-		lblNiveau.setForeground(new Color(0, 51, 102));
-		lblNiveau.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
-		lblNiveau.setBackground(new Color(0, 51, 102));
-		lblNiveau.setBounds(10, 76, 91, 30);
-		panel_3.add(lblNiveau);
-		
-		JLabel lblSpecialit = new JLabel("Specialit\u00E9 :");
-		lblSpecialit.setForeground(new Color(0, 51, 102));
-		lblSpecialit.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
-		lblSpecialit.setBackground(new Color(0, 51, 102));
-		lblSpecialit.setBounds(10, 41, 107, 30);
-		panel_3.add(lblSpecialit);
-		
-		textField_universite = new JTextField();
-		textField_universite.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_universite.setForeground(new Color(0, 51, 102));
-		textField_universite.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
-		textField_universite.setColumns(10);
-		textField_universite.setBounds(127, 13, 302, 28);
-		panel_3.add(textField_universite);
-		
-		textField_specialite = new JTextField();
-		textField_specialite.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_specialite.setForeground(new Color(0, 51, 102));
-		textField_specialite.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
-		textField_specialite.setColumns(10);
-		textField_specialite.setBounds(127, 43, 302, 28);
-		panel_3.add(textField_specialite);
-		
-		JComboBox comboBox_niveau = new JComboBox();
-		comboBox_niveau.setBorder(null);
-		comboBox_niveau.setBackground(new Color(255, 255, 255));
-		comboBox_niveau.setForeground(new Color(0, 51, 102));
-		comboBox_niveau.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
-		comboBox_niveau.setBounds(127, 80, 302, 28);
-		panel_3.add(comboBox_niveau);
-		comboBox_niveau.addItem("Licnece 1");
-		comboBox_niveau.addItem("Licence 2");
-		comboBox_niveau.addItem("Licence 3");
-		comboBox_niveau.addItem("Master 1");
-		comboBox_niveau.addItem("Master 2");
-		comboBox_niveau.setSelectedItem(null);
-		
 		
 		JPanel panel_4 = new JPanel();
-		panel_4.setLayout(null);
 		panel_4.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
 		panel_4.setBackground(Color.WHITE);
-		panel_4.setBounds(682, 236, 132, 117);
+		panel_4.setBounds(682, 221, 132, 117);
 		contentPane.add(panel_4);
+		panel_4.setLayout(null);
+		
+		JLabel Parcourir = new JLabel("");
+		Parcourir.setHorizontalAlignment(SwingConstants.CENTER);
+		Parcourir.setIcon(new ImageIcon("C:\\Users\\YACINE\\eclipse-workspace\\U-Learn\\Icons\\user_40px.png"));
+		Parcourir.setBounds(0, 0, 132, 117);
+		panel_4.add(Parcourir);
+		
+		JButton button_parcourir = new JButton("+");
+		button_parcourir.setForeground(Color.WHITE);
+		button_parcourir.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 22));
+		button_parcourir.setBackground(new Color(0, 51, 102));
+		button_parcourir.setBounds(682, 349, 132, 25);
+		contentPane.add(button_parcourir);
+		
+	//	button_parcourir.setIcon(new ImageIcon(InscriptionStudent.class.getResource("/img/photo-camera.png")));
+		
+		button_parcourir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File("C:\\Users\\YACINE\\Desktop"));
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("IMAGE","png","jpg","gif");
+				fileChooser.addChoosableFileFilter(filter);
+				int result = fileChooser.showSaveDialog(null);
+				if(result == JFileChooser.APPROVE_OPTION)
+				{
+					File selectedfile = fileChooser.getSelectedFile();
+					String path = selectedfile.getAbsolutePath();
+					ImageIcon myImage = new ImageIcon(path);
+					java.awt.Image img = myImage.getImage();
+					java.awt.Image NewImage = img.getScaledInstance(Parcourir.getWidth(), Parcourir.getHeight(), java.awt.Image.SCALE_SMOOTH); /* if error check this */
+					ImageIcon finalImage = new ImageIcon(NewImage);
+					Parcourir.setIcon(finalImage);
+
+				//System.out.println(path);
+				}
+				else
+				{
+					if( result == JFileChooser.CANCEL_OPTION)
+					{
+						JOptionPane.showMessageDialog(null, "Vous avez rien choisi");
+					}
+				}
+			}
+		});
+	
+		
+		
+	//	button_parcourir.setIcon(new ImageIcon(Acceuil.class.getResource("/img/photo-camera.png")));
+		button_parcourir.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+		/*
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File("C:\\Users\\YACINE\\Desktop"));
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("IMAGE","png","jpg","gif");
+				fileChooser.addChoosableFileFilter(filter);
+				int result = fileChooser.showSaveDialog(null);
+				if(result == JFileChooser.APPROVE_OPTION)
+				{
+					File selectedfile = fileChooser.getSelectedFile();
+					String path = selectedfile.getAbsolutePath();
+					ImageIcon myImage = new ImageIcon(path);
+					java.awt.Image img = myImage.getImage();
+					java.awt.Image NewImage = img.getScaledInstance(Parcourir.getWidth(), Parcourir.getHeight(), java.awt.Image.SCALE_SMOOTH); 
+					ImageIcon finalImage = new ImageIcon(NewImage);
+					Parcourir.setIcon(finalImage);
+
+				//	s=path;
+				}
+				else
+				{
+					if( result == JFileChooser.CANCEL_OPTION)
+					{
+						JOptionPane.showMessageDialog(null, "Vous avez rien choisi");
+					}
+				}
+				*/
+			}
+		});
+	
 		
 		JButton btnSinscrire = new JButton("S'inscrire");
 		btnSinscrire.addActionListener(new ActionListener() {
@@ -269,7 +303,7 @@ public class InscriptionStudent extends JFrame {
 		btnSinscrire.setForeground(Color.WHITE);
 		btnSinscrire.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 22));
 		btnSinscrire.setBackground(new Color(0, 51, 102));
-		btnSinscrire.setBounds(74, 383, 291, 38);
+		btnSinscrire.setBounds(228, 383, 291, 38);
 		contentPane.add(btnSinscrire);
 		
 		JButton btnX = new JButton("Retour");
@@ -284,7 +318,75 @@ public class InscriptionStudent extends JFrame {
 		btnX.setForeground(Color.WHITE);
 		btnX.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
 		btnX.setBackground(Color.RED);
-		btnX.setBounds(488, 383, 87, 38);
+		btnX.setBounds(706, 383, 87, 38);
 		contentPane.add(btnX);
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setLayout(null);
+		panel_3.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
+		panel_3.setBackground(Color.WHITE);
+		panel_3.setBounds(375, 90, 439, 46);
+		contentPane.add(panel_3);
+		
+		JLabel label = new JLabel("Level :");
+		label.setForeground(new Color(0, 51, 102));
+		label.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		label.setBackground(new Color(0, 51, 102));
+		label.setBounds(10, 39, 91, 30);
+		panel_3.add(label);
+		
+		JLabel lblIdentifiant = new JLabel("Identifiant :");
+		lblIdentifiant.setForeground(new Color(0, 51, 102));
+		lblIdentifiant.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		lblIdentifiant.setBackground(new Color(0, 51, 102));
+		lblIdentifiant.setBounds(10, 9, 107, 30);
+		panel_3.add(lblIdentifiant);
+		
+		textField_idf = new JTextField();
+		textField_idf.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_idf.setForeground(new Color(0, 51, 102));
+		textField_idf.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		textField_idf.setColumns(10);
+		textField_idf.setBounds(127, 11, 302, 28);
+		panel_3.add(textField_idf);
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setLayout(null);
+		panel_5.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
+		panel_5.setBackground(Color.WHITE);
+		panel_5.setBounds(375, 140, 439, 68);
+		contentPane.add(panel_5);
+		
+		JLabel lblNiveau = new JLabel("Niveau :");
+		lblNiveau.setForeground(new Color(0, 51, 102));
+		lblNiveau.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		lblNiveau.setBackground(new Color(0, 51, 102));
+		lblNiveau.setBounds(10, 32, 91, 30);
+		panel_5.add(lblNiveau);
+		
+		JLabel lblSpecialit = new JLabel("Specialit\u00E9 :");
+		lblSpecialit.setForeground(new Color(0, 51, 102));
+		lblSpecialit.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		lblSpecialit.setBackground(new Color(0, 51, 102));
+		lblSpecialit.setBounds(10, 1, 107, 30);
+		panel_5.add(lblSpecialit);
+		
+		JComboBox comboBox_niveau = new JComboBox();
+		comboBox_niveau.setForeground(new Color(0, 51, 102));
+		comboBox_niveau.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		comboBox_niveau.setBorder(null);
+		comboBox_niveau.setBackground(Color.WHITE);
+		comboBox_niveau.setBounds(127, 35, 302, 28);
+		panel_5.add(comboBox_niveau);
+		
+		textField_specilite = new JTextField();
+		textField_specilite.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_specilite.setForeground(new Color(0, 51, 102));
+		textField_specilite.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		textField_specilite.setColumns(10);
+		textField_specilite.setBounds(127, 3, 302, 28);
+		panel_5.add(textField_specilite);
+		
+		
 	}
 }

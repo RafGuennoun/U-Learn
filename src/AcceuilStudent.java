@@ -701,7 +701,7 @@ public class AcceuilStudent extends JFrame {
 		panel_forum.add(label_8);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 128, 808, 296);
+		scrollPane_1.setBounds(10, 128, 483, 295);
 		panel_forum.add(scrollPane_1);
 		
 		table_forum = new JTable();

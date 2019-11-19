@@ -3,17 +3,23 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.awt.event.ActionEvent;
 
 public class InscriptionTeacherAng extends JFrame {
@@ -21,13 +27,13 @@ public class InscriptionTeacherAng extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField_firstName;
 	private JTextField textField_lastName;
-	private JTextField textField_universite;
-	private JTextField textField_domain;
-	private JTextField textField_grade;
 	private JTextField textField_email;
 	private JTextField textField_confEmail;
 	private JPasswordField passwordField_mdp;
 	private JPasswordField passwordField_confMdp;
+	private JTextField textField_doamin;
+	private JTextField textField_username;
+	private JTextField textField_grade;
 
 	/**
 	 * Launch the application.
@@ -184,68 +190,20 @@ public class InscriptionTeacherAng extends JFrame {
 		passwordField_confMdp.setBounds(273, 110, 379, 28);
 		panel_2.add(passwordField_confMdp);
 		
-	
-		
-		JPanel panel_3 = new JPanel();
-		panel_3.setLayout(null);
-		panel_3.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
-		panel_3.setBackground(Color.WHITE);
-		panel_3.setBounds(375, 90, 439, 117);
-		contentPane.add(panel_3);
-		
-		JLabel lblUniversit = new JLabel("University :");
-		lblUniversit.setForeground(new Color(0, 51, 102));
-		lblUniversit.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
-		lblUniversit.setBackground(new Color(0, 51, 102));
-		lblUniversit.setBounds(10, 11, 107, 30);
-		panel_3.add(lblUniversit);
-		
-		JLabel lblNiveau = new JLabel("Grade :");
-		lblNiveau.setForeground(new Color(0, 51, 102));
-		lblNiveau.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
-		lblNiveau.setBackground(new Color(0, 51, 102));
-		lblNiveau.setBounds(10, 76, 91, 30);
-		panel_3.add(lblNiveau);
-		
-		JLabel lblSpecialit = new JLabel("Domain :");
-		lblSpecialit.setForeground(new Color(0, 51, 102));
-		lblSpecialit.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
-		lblSpecialit.setBackground(new Color(0, 51, 102));
-		lblSpecialit.setBounds(10, 41, 107, 30);
-		panel_3.add(lblSpecialit);
-		
-		textField_universite = new JTextField();
-		textField_universite.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_universite.setForeground(new Color(0, 51, 102));
-		textField_universite.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
-		textField_universite.setColumns(10);
-		textField_universite.setBounds(127, 13, 302, 28);
-		panel_3.add(textField_universite);
-		
-		textField_domain = new JTextField();
-		textField_domain.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_domain.setForeground(new Color(0, 51, 102));
-		textField_domain.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
-		textField_domain.setColumns(10);
-		textField_domain.setBounds(127, 43, 302, 28);
-		panel_3.add(textField_domain);
-		
-		textField_grade = new JTextField();
-		textField_grade.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_grade.setForeground(new Color(0, 51, 102));
-		textField_grade.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
-		textField_grade.setColumns(10);
-		textField_grade.setBounds(127, 78, 302, 28);
-		panel_3.add(textField_grade);
-		
 		
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setLayout(null);
 		panel_4.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
 		panel_4.setBackground(Color.WHITE);
-		panel_4.setBounds(682, 236, 132, 117);
+		panel_4.setBounds(682, 221, 132, 117);
 		contentPane.add(panel_4);
+		
+		JLabel Parcourir = new JLabel("");
+		Parcourir.setHorizontalAlignment(SwingConstants.CENTER);
+		Parcourir.setIcon(new ImageIcon("C:\\Users\\YACINE\\eclipse-workspace\\U-Learn\\Icons\\user_40px.png"));
+		Parcourir.setBounds(0, 0, 132, 117);
+		panel_4.add(Parcourir);
 		
 		JButton btnSinscrire = new JButton("Sign in");
 		btnSinscrire.setForeground(Color.WHITE);
@@ -267,6 +225,107 @@ public class InscriptionTeacherAng extends JFrame {
 		btnX.setBackground(Color.RED);
 		btnX.setBounds(706, 383, 87, 38);
 		contentPane.add(btnX);
-	}
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setLayout(null);
+		panel_3.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
+		panel_3.setBackground(Color.WHITE);
+		panel_3.setBounds(375, 139, 439, 68);
+		contentPane.add(panel_3);
+		
+		JLabel lblGrade = new JLabel("Grade :");
+		lblGrade.setForeground(new Color(0, 51, 102));
+		lblGrade.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		lblGrade.setBackground(new Color(0, 51, 102));
+		lblGrade.setBounds(10, 32, 91, 30);
+		panel_3.add(lblGrade);
+		
+		JLabel Domain = new JLabel("Domain :");
+		Domain.setForeground(new Color(0, 51, 102));
+		Domain.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		Domain.setBackground(new Color(0, 51, 102));
+		Domain.setBounds(10, 1, 107, 30);
+		panel_3.add(Domain);
+		
+		textField_doamin = new JTextField();
+		textField_doamin.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_doamin.setForeground(new Color(0, 51, 102));
+		textField_doamin.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		textField_doamin.setColumns(10);
+		textField_doamin.setBounds(127, 3, 302, 28);
+		panel_3.add(textField_doamin);
+		
+		textField_grade = new JTextField();
+		textField_grade.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_grade.setForeground(new Color(0, 51, 102));
+		textField_grade.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		textField_grade.setColumns(10);
+		textField_grade.setBounds(127, 34, 302, 28);
+		panel_3.add(textField_grade);
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setLayout(null);
+		panel_5.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
+		panel_5.setBackground(Color.WHITE);
+		panel_5.setBounds(375, 90, 439, 46);
+		contentPane.add(panel_5);
+		
+		JLabel label_2 = new JLabel("Level :");
+		label_2.setForeground(new Color(0, 51, 102));
+		label_2.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		label_2.setBackground(new Color(0, 51, 102));
+		label_2.setBounds(10, 39, 91, 30);
+		panel_5.add(label_2);
+		
+		JLabel label_3 = new JLabel("Username :");
+		label_3.setForeground(new Color(0, 51, 102));
+		label_3.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		label_3.setBackground(new Color(0, 51, 102));
+		label_3.setBounds(10, 9, 107, 30);
+		panel_5.add(label_3);
+		
+		textField_username = new JTextField();
+		textField_username.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_username.setForeground(new Color(0, 51, 102));
+		textField_username.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		textField_username.setColumns(10);
+		textField_username.setBounds(127, 11, 302, 28);
+		panel_5.add(textField_username);
+		
+		JButton button = new JButton("+");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File("C:\\Users\\YACINE\\Desktop"));
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("IMAGE","png","jpg","gif");
+				fileChooser.addChoosableFileFilter(filter);
+				int result = fileChooser.showSaveDialog(null);
+				if(result == JFileChooser.APPROVE_OPTION)
+				{
+					File selectedfile = fileChooser.getSelectedFile();
+					String path = selectedfile.getAbsolutePath();
+					ImageIcon myImage = new ImageIcon(path);
+					java.awt.Image img = myImage.getImage();
+					java.awt.Image NewImage = img.getScaledInstance(Parcourir.getWidth(), Parcourir.getHeight(), java.awt.Image.SCALE_SMOOTH); /* if error check this */
+					ImageIcon finalImage = new ImageIcon(NewImage);
+					Parcourir.setIcon(finalImage);
 
+				//System.out.println(path);
+				}
+				else
+				{
+					if( result == JFileChooser.CANCEL_OPTION)
+					{
+						JOptionPane.showMessageDialog(null, "Vous avez rien choisi");
+					}
+				}
+			}
+		});
+		button.setForeground(Color.WHITE);
+		button.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 22));
+		button.setBackground(new Color(0, 51, 102));
+		button.setBounds(682, 347, 132, 25);
+		contentPane.add(button);
+	}
 }
