@@ -27,6 +27,7 @@ import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.sql.SQLException;
 
 public class InscriptionStudent extends JFrame {
 
@@ -39,6 +40,8 @@ public class InscriptionStudent extends JFrame {
 	private JPasswordField passwordField_confMdp;
 	private JTextField textField_idf;
 	private JTextField textField_specilite;
+	
+	private String chemin = "D:\\Mes Projets\\ULearn\\Source\\U-Learn\\Icons\\user_120px.png";
 	
 
 	/**
@@ -208,7 +211,7 @@ public class InscriptionStudent extends JFrame {
 		Parcourir.setBounds(0, 0, 132, 117);
 		panel_4.add(Parcourir);
 		
-		JButton button_parcourir = new JButton("+");
+		JButton button_parcourir = new JButton("ADD");
 		button_parcourir.setForeground(Color.WHITE);
 		button_parcourir.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 22));
 		button_parcourir.setBackground(new Color(0, 51, 102));
@@ -229,8 +232,8 @@ public class InscriptionStudent extends JFrame {
 				if(result == JFileChooser.APPROVE_OPTION)
 				{
 					File selectedfile = fileChooser.getSelectedFile();
-					String path = selectedfile.getAbsolutePath();
-					ImageIcon myImage = new ImageIcon(path);
+					chemin = selectedfile.getAbsolutePath();
+					ImageIcon myImage = new ImageIcon(chemin);
 					java.awt.Image img = myImage.getImage();
 					java.awt.Image NewImage = img.getScaledInstance(Parcourir.getWidth(), Parcourir.getHeight(), java.awt.Image.SCALE_SMOOTH); /* if error check this */
 					ImageIcon finalImage = new ImageIcon(NewImage);
@@ -285,26 +288,6 @@ public class InscriptionStudent extends JFrame {
 		});
 	
 		
-		JButton btnSinscrire = new JButton("S'inscrire");
-		btnSinscrire.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				/*if(passwordField_mdp.getText()==passwordField_confMdp.getText())
-				{
-					Controleur.apprenantCo = new Apprenant(te, n, p, e, d, pdp, nv)
-				}
-				else
-				{
-					
-				}
-				*/
-			}
-		});
-		btnSinscrire.setForeground(Color.WHITE);
-		btnSinscrire.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 22));
-		btnSinscrire.setBackground(new Color(0, 51, 102));
-		btnSinscrire.setBounds(228, 383, 291, 38);
-		contentPane.add(btnSinscrire);
 		
 		JButton btnX = new JButton("Retour");
 		btnX.addActionListener(new ActionListener() {
@@ -377,6 +360,11 @@ public class InscriptionStudent extends JFrame {
 		comboBox_niveau.setBorder(null);
 		comboBox_niveau.setBackground(Color.WHITE);
 		comboBox_niveau.setBounds(127, 35, 302, 28);
+		comboBox_niveau.addItem("L1");
+		comboBox_niveau.addItem("L2");
+		comboBox_niveau.addItem("L3");
+		comboBox_niveau.addItem("M1");
+		comboBox_niveau.addItem("M2");
 		panel_5.add(comboBox_niveau);
 		
 		textField_specilite = new JTextField();
@@ -387,6 +375,63 @@ public class InscriptionStudent extends JFrame {
 		textField_specilite.setBounds(127, 3, 302, 28);
 		panel_5.add(textField_specilite);
 		
+		JButton btnSinscrire = new JButton("S'inscrire");
+		btnSinscrire.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(textField_idf.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "champ Identifiant obligatoir");
+				}
+				else if(textField_adr.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "champ adresse mail obligatoir");
+				}
+				else if(passwordField_mdp.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "champ mot de passe obligatoir");
+				}
+				else if(textField_nom.getText().equals("") || textField_prenom.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "champs nom et prenom obligatoirs");
+				}
+				else if(!passwordField_mdp.getText().equals(passwordField_confMdp.getText()))
+				{
+					JOptionPane.showMessageDialog(null, "Erreur dans la confirmation mot de passe");
+				}
+				else if(!textField_adr.getText().equals(textField_confAdr.getText()))
+				{
+					JOptionPane.showMessageDialog(null, "Erreur dans la confirmation adresse mail");
+				}
+				else
+				{
+					Date date = new Date(2001, 10, 1);
+					Apprenant a = new Apprenant(textField_idf.getText(),
+												textField_nom.getText(),
+												textField_prenom.getText(),
+												textField_adr.getText(),
+												date,
+												comboBox_niveau.getSelectedIndex()+1,
+												chemin);
+					try
+					{
+						Factory.getApprenantDao().insert(a, passwordField_mdp.getText());
+						JOptionPane.showMessageDialog(null, "Inscrit avec succès !");
+					}
+					catch(ExisteException x)
+					{
+						JOptionPane.showMessageDialog(null, x.getMessage());
+					}
+					
+				}
+				
+			}
+		});
+		btnSinscrire.setForeground(Color.WHITE);
+		btnSinscrire.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 22));
+		btnSinscrire.setBackground(new Color(0, 51, 102));
+		btnSinscrire.setBounds(228, 383, 291, 38);
+		contentPane.add(btnSinscrire);
 		
 	}
 }

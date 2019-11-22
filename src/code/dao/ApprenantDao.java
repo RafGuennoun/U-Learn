@@ -1,9 +1,13 @@
 package code.dao;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.swing.JOptionPane;
 
 import code.classes.Apprenant;
 import code.classes.Date;
@@ -30,17 +34,23 @@ public class ApprenantDao extends DAO<Apprenant,String>{
 	}
 	
 	@Override
-	public Apprenant find(String idApp, String mdp) throws MdpException
+	public Apprenant find(String idApp, String mdp) throws MdpException,ExisteException
 	{
 		ResultSet res;
 		Apprenant a = null;
+		
 		try
 		{
 			findStat.setString(1, idApp);
 			res = findStat.executeQuery();
 			int mdp0 = mdp.hashCode();
+		
+			if(!res.first())
+			{
+				throw new ExisteException(2);
+			}
 			
-		if(mdp0 == res.getInt("mdp"))
+			if(mdp0 == res.getInt("mdp"))
 			{
 				byte[] img = res.getBytes("pdp");
 				Date date = Date.sqlToDate(res.getDate("dateN"));
@@ -60,7 +70,14 @@ public class ApprenantDao extends DAO<Apprenant,String>{
 		}
 		catch(Exception x)
 		{
-			x.printStackTrace();
+			if((x instanceof  ExisteException) || (x instanceof  MdpException))
+			{
+				JOptionPane.showConfirmDialog(null, x.getMessage());
+			}
+			else
+			{
+				x.printStackTrace();
+			}
 		}
 		return a;
 	}
@@ -76,11 +93,11 @@ public class ApprenantDao extends DAO<Apprenant,String>{
 			findStat.setString(1, a.getId());
 			ResultSet res = findStat.executeQuery();
 			if(res.first())
-				throw new ExisteException();
+				throw new ExisteException(1);
 		}
-		catch(Exception x)
+		catch(SQLException  x)
 		{
-			x.printStackTrace();
+				x.printStackTrace();
 		}
 		int mdp0 = mdp.hashCode();
 		try
@@ -98,7 +115,7 @@ public class ApprenantDao extends DAO<Apprenant,String>{
 			
 			return insertStat.execute();
 		}
-		catch(Exception x)
+		catch(SQLException | IOException x)
 		{
 			x.printStackTrace();
 		}

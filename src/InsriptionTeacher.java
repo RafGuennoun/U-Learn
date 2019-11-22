@@ -17,6 +17,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import code.classes.Apprenant;
+import code.classes.Date;
+import code.classes.ExisteException;
+import code.classes.Instructeur;
+import code.dao.Factory;
+
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.awt.event.ActionEvent;
@@ -37,6 +43,8 @@ public class InsriptionTeacher extends JFrame {
 	private JTextField textField_domaine;
 	private JTextField textField_grd;
 	private JTextField textField_idf;
+	
+	private String chemin = "D:\\\\Mes Projets\\\\ULearn\\\\Source\\\\U-Learn\\\\Icons\\\\user_120px.png";
 
 	/**
 	 * Launch the application.
@@ -124,22 +132,6 @@ public class InsriptionTeacher extends JFrame {
 		textField_prenom.setBounds(102, 43, 243, 28);
 		panel_1.add(textField_prenom);
 		
-		textField_nom = new JTextField();
-		textField_nom.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_nom.setForeground(new Color(0, 51, 102));
-		textField_nom.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
-		textField_nom.setColumns(10);
-		textField_nom.setBounds(102, 13, 243, 28);
-		panel_1.add(textField_nom);
-		
-		textField_prenom = new JTextField();
-		textField_prenom.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_prenom.setForeground(new Color(0, 51, 102));
-		textField_prenom.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
-		textField_prenom.setColumns(10);
-		textField_prenom.setBounds(102, 43, 243, 28);
-		panel_1.add(textField_prenom);
-		
 		JPanel panel_2 = new JPanel();
 		panel_2.setLayout(null);
 		panel_2.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
@@ -174,38 +166,6 @@ public class InsriptionTeacher extends JFrame {
 		lblConfirmezMotDe_1.setBackground(new Color(0, 51, 102));
 		lblConfirmezMotDe_1.setBounds(10, 108, 234, 30);
 		panel_2.add(lblConfirmezMotDe_1);
-		
-		textField_adr = new JTextField();
-		textField_adr.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_adr.setForeground(new Color(0, 51, 102));
-		textField_adr.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
-		textField_adr.setColumns(10);
-		textField_adr.setBounds(249, 13, 403, 28);
-		panel_2.add(textField_adr);
-		
-		textField_confAdr = new JTextField();
-		textField_confAdr.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_confAdr.setForeground(new Color(0, 51, 102));
-		textField_confAdr.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
-		textField_confAdr.setColumns(10);
-		textField_confAdr.setBounds(249, 46, 403, 28);
-		panel_2.add(textField_confAdr);
-		
-		passwordField_mdp = new JPasswordField();
-		passwordField_mdp.setHorizontalAlignment(SwingConstants.CENTER);
-		passwordField_mdp.setEchoChar('*');
-		passwordField_mdp.setForeground(new Color(0, 51, 102));
-		passwordField_mdp.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
-		passwordField_mdp.setBounds(249, 78, 403, 28);
-		panel_2.add(passwordField_mdp);
-		
-		passwordField_confMdp = new JPasswordField();
-		passwordField_confMdp.setHorizontalAlignment(SwingConstants.CENTER);
-		passwordField_confMdp.setForeground(new Color(0, 51, 102));
-		passwordField_confMdp.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
-		passwordField_confMdp.setEchoChar('*');
-		passwordField_confMdp.setBounds(249, 110, 403, 28);
-		panel_2.add(passwordField_confMdp);
 		
 		textField_adr = new JTextField();
 		textField_adr.setHorizontalAlignment(SwingConstants.CENTER);
@@ -263,12 +223,6 @@ public class InsriptionTeacher extends JFrame {
 		Parcourir.setBounds(0, 0, 132, 117);
 		panel_4.add(Parcourir);
 		
-		JButton btnSinscrire = new JButton("S'inscrire");
-		btnSinscrire.setForeground(Color.WHITE);
-		btnSinscrire.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 22));
-		btnSinscrire.setBackground(new Color(0, 51, 102));
-		btnSinscrire.setBounds(256, 383, 291, 38);
-		contentPane.add(btnSinscrire);
 		
 		JButton btnX = new JButton("Retour");
 		btnX.addActionListener(new ActionListener() {
@@ -343,12 +297,12 @@ public class InsriptionTeacher extends JFrame {
 		panel_5.add(lblIdentifiant);
 		
 		textField_idf = new JTextField();
+		textField_idf.setBounds(127, 11, 302, 28);
+		panel_5.add(textField_idf);
 		textField_idf.setHorizontalAlignment(SwingConstants.CENTER);
 		textField_idf.setForeground(new Color(0, 51, 102));
 		textField_idf.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
 		textField_idf.setColumns(10);
-		textField_idf.setBounds(127, 11, 302, 28);
-		panel_5.add(textField_idf);
 		
 		JButton btnPhoto = new JButton("Photo");
 		btnPhoto.addActionListener(new ActionListener() {
@@ -362,8 +316,8 @@ public class InsriptionTeacher extends JFrame {
 				if(result == JFileChooser.APPROVE_OPTION)
 				{
 					File selectedfile = fileChooser.getSelectedFile();
-					String path = selectedfile.getAbsolutePath();
-					ImageIcon myImage = new ImageIcon(path);
+					chemin = selectedfile.getAbsolutePath();
+					ImageIcon myImage = new ImageIcon(chemin);
 					java.awt.Image img = myImage.getImage();
 					java.awt.Image NewImage = img.getScaledInstance(Parcourir.getWidth(), Parcourir.getHeight(), java.awt.Image.SCALE_SMOOTH); /* if error check this */
 					ImageIcon finalImage = new ImageIcon(NewImage);
@@ -385,6 +339,69 @@ public class InsriptionTeacher extends JFrame {
 		btnPhoto.setBackground(new Color(0, 51, 102));
 		btnPhoto.setBounds(682, 349, 132, 25);
 		contentPane.add(btnPhoto);
+		
+		
+		JButton btnSinscrire = new JButton("S'inscrire");
+		btnSinscrire.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(textField_idf.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "champ Identifiant obligatoir");
+				}
+				else if(textField_adr.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "champ adresse mail obligatoir");
+				}
+				else if(passwordField_mdp.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "champ mot de passe obligatoir");
+				}
+				else if(textField_nom.getText().equals("") || textField_prenom.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "champs nom et prenom obligatoirs");
+				}
+				else if(textField_domaine.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Champs Domaine obligatoir");
+				}
+				else if(!passwordField_mdp.getText().equals(passwordField_confMdp.getText()))
+				{
+					JOptionPane.showMessageDialog(null, "Erreur dans la confirmation mot de passe");
+				}
+				else if(!textField_adr.getText().equals(textField_confAdr.getText()))
+				{
+					JOptionPane.showMessageDialog(null, "Erreur dans la confirmation adresse mail");
+				}
+				else
+				{
+					Date date = new Date(2001, 10, 1);
+					Instructeur i = new Instructeur(textField_idf.getText(),
+													textField_nom.getText(),
+													textField_prenom.getText(),
+													textField_adr.getText(),
+													date,
+													textField_domaine.getText(),
+													chemin);
+					try
+					{
+						Factory.getInstructeurDao().insert(i, passwordField_mdp.getText());
+						JOptionPane.showMessageDialog(null, "Inscrit avec succès !");
+					}
+					catch(ExisteException x)
+					{
+						JOptionPane.showMessageDialog(null, x.getMessage());
+					}
+					
+				}
+				
+			}
+		});
+		btnSinscrire.setForeground(Color.WHITE);
+		btnSinscrire.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 22));
+		btnSinscrire.setBackground(new Color(0, 51, 102));
+		btnSinscrire.setBounds(256, 383, 291, 38);
+		contentPane.add(btnSinscrire);
 	}
 
 }

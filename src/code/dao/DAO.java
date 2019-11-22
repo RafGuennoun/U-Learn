@@ -16,7 +16,7 @@ public abstract class DAO <T, S>{
 		this.conn = conn;
 	}
 	
-	public abstract T find(S id, S mdp) throws MdpException;
+	public abstract T find(S id, S mdp) throws MdpException, ExisteException;
 	
 	public abstract boolean insert(T obj, S mdp) throws ExisteException;
 	

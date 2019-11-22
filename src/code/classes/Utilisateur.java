@@ -11,6 +11,7 @@ public abstract class Utilisateur {
 	protected String photo;
 	protected byte[] photoAficher;
 	
+	
 	public Utilisateur(String id,String nom, String prenom, String email, Date d, String pdp)
 	{
 		this.id = id;
@@ -19,6 +20,7 @@ public abstract class Utilisateur {
 		this.email = email;
 		this.dateNaissance = d;
 		this.photo = pdp;
+		this.messagerie = new Messagerie();
 	}
 
 	public Utilisateur(String id,String nom, String prenom, String email, Date d,byte[] pdp)
@@ -29,6 +31,7 @@ public abstract class Utilisateur {
 		this.email = email;
 		this.dateNaissance = d;
 		this.photoAficher = pdp;
+		this.messagerie = new Messagerie();
 	}
 	
 	public byte[] getPhotoAficher() {

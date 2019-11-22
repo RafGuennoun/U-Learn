@@ -18,6 +18,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import code.classes.Date;
+import code.classes.ExisteException;
+import code.classes.Instructeur;
+import code.dao.Factory;
+
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.awt.event.ActionEvent;
@@ -25,15 +30,17 @@ import java.awt.event.ActionEvent;
 public class InscriptionTeacherAng extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField_firstName;
-	private JTextField textField_lastName;
+	private JTextField textField_Name;
+	private JTextField textField_faminyName;
 	private JTextField textField_email;
 	private JTextField textField_confEmail;
 	private JPasswordField passwordField_mdp;
 	private JPasswordField passwordField_confMdp;
-	private JTextField textField_doamin;
+	private JTextField textField_domain;
 	private JTextField textField_username;
 	private JTextField textField_grade;
+	
+	private String chemin = "D:\\\\Mes Projets\\\\ULearn\\\\Source\\\\U-Learn\\\\Icons\\\\user_120px.png";
 
 	/**
 	 * Launch the application.
@@ -105,21 +112,21 @@ public class InscriptionTeacherAng extends JFrame {
 		lblDateDeNaissance.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
 		lblDateDeNaissance.setBackground(new Color(0, 51, 102));
 		
-		textField_firstName = new JTextField();
-		textField_firstName.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_firstName.setForeground(new Color(0, 51, 102));
-		textField_firstName.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
-		textField_firstName.setColumns(10);
-		textField_firstName.setBounds(120, 13, 225, 28);
-		panel_1.add(textField_firstName);
+		textField_faminyName = new JTextField();
+		textField_faminyName.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_faminyName.setForeground(new Color(0, 51, 102));
+		textField_faminyName.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		textField_faminyName.setColumns(10);
+		textField_faminyName.setBounds(120, 43, 225, 28);
+		panel_1.add(textField_faminyName);
 		
-		textField_lastName = new JTextField();
-		textField_lastName.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_lastName.setForeground(new Color(0, 51, 102));
-		textField_lastName.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
-		textField_lastName.setColumns(10);
-		textField_lastName.setBounds(120, 43, 225, 28);
-		panel_1.add(textField_lastName);
+		textField_Name = new JTextField();
+		textField_Name.setBounds(120, 13, 225, 28);
+		panel_1.add(textField_Name);
+		textField_Name.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_Name.setForeground(new Color(0, 51, 102));
+		textField_Name.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		textField_Name.setColumns(10);
 		
 		
 	
@@ -205,12 +212,6 @@ public class InscriptionTeacherAng extends JFrame {
 		Parcourir.setBounds(0, 0, 132, 117);
 		panel_4.add(Parcourir);
 		
-		JButton btnSinscrire = new JButton("Sign in");
-		btnSinscrire.setForeground(Color.WHITE);
-		btnSinscrire.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 22));
-		btnSinscrire.setBackground(new Color(0, 51, 102));
-		btnSinscrire.setBounds(256, 383, 291, 38);
-		contentPane.add(btnSinscrire);
 		
 		JButton btnX = new JButton("Back");
 		btnX.addActionListener(new ActionListener() {
@@ -247,13 +248,13 @@ public class InscriptionTeacherAng extends JFrame {
 		Domain.setBounds(10, 1, 107, 30);
 		panel_3.add(Domain);
 		
-		textField_doamin = new JTextField();
-		textField_doamin.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_doamin.setForeground(new Color(0, 51, 102));
-		textField_doamin.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
-		textField_doamin.setColumns(10);
-		textField_doamin.setBounds(127, 3, 302, 28);
-		panel_3.add(textField_doamin);
+		textField_domain = new JTextField();
+		textField_domain.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_domain.setForeground(new Color(0, 51, 102));
+		textField_domain.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		textField_domain.setColumns(10);
+		textField_domain.setBounds(127, 3, 302, 28);
+		panel_3.add(textField_domain);
 		
 		textField_grade = new JTextField();
 		textField_grade.setHorizontalAlignment(SwingConstants.CENTER);
@@ -304,8 +305,8 @@ public class InscriptionTeacherAng extends JFrame {
 				if(result == JFileChooser.APPROVE_OPTION)
 				{
 					File selectedfile = fileChooser.getSelectedFile();
-					String path = selectedfile.getAbsolutePath();
-					ImageIcon myImage = new ImageIcon(path);
+					chemin = selectedfile.getAbsolutePath();
+					ImageIcon myImage = new ImageIcon(chemin);
 					java.awt.Image img = myImage.getImage();
 					java.awt.Image NewImage = img.getScaledInstance(Parcourir.getWidth(), Parcourir.getHeight(), java.awt.Image.SCALE_SMOOTH); /* if error check this */
 					ImageIcon finalImage = new ImageIcon(NewImage);
@@ -327,5 +328,67 @@ public class InscriptionTeacherAng extends JFrame {
 		button.setBackground(new Color(0, 51, 102));
 		button.setBounds(682, 347, 132, 25);
 		contentPane.add(button);
+		
+		JButton btnSinscrire = new JButton("Sign in");
+		btnSinscrire.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(textField_username.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Username required");
+				}
+				else if(textField_email.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Email required");
+				}
+				else if(passwordField_mdp.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Password required");
+				}
+				else if(textField_faminyName.getText().equals("") || textField_Name.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "First and last name required");
+				}
+				else if(textField_domain.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Domaine required");
+				}
+				else if(!passwordField_mdp.getText().equals(passwordField_confMdp.getText()))
+				{
+					JOptionPane.showMessageDialog(null, "Error in password confirmation");
+				}
+				else if(!textField_email.getText().equals(textField_confEmail.getText()))
+				{
+					JOptionPane.showMessageDialog(null, "Error in emain confirmation");
+				}
+				else
+				{
+					Date date = new Date(2001, 10, 1);
+					Instructeur i = new Instructeur(textField_username.getText(),
+													textField_faminyName.getText(),
+													textField_Name.getText(),
+													textField_email.getText(),
+													date,
+													textField_domain.getText(),
+													chemin);
+					try
+					{
+						Factory.getInstructeurDao().insert(i, passwordField_mdp.getText());
+						JOptionPane.showMessageDialog(null, "Signed in successfuly !");
+					}
+					catch(ExisteException x)
+					{
+						JOptionPane.showMessageDialog(null, x.getMessage());
+					}
+					
+				}
+				
+			}
+		});
+		btnSinscrire.setForeground(Color.WHITE);
+		btnSinscrire.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 22));
+		btnSinscrire.setBackground(new Color(0, 51, 102));
+		btnSinscrire.setBounds(256, 383, 291, 38);
+		contentPane.add(btnSinscrire);
 	}
 }

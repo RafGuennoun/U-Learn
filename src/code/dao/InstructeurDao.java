@@ -2,9 +2,11 @@ package code.dao;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import code.classes.Date;
 import code.classes.ExisteException;
@@ -19,8 +21,8 @@ public class InstructeurDao extends DAO<Instructeur, String>{
 		try
 		{
 			this.findStat = this.conn.prepareStatement("SELECT * from `u-learn`.`instructeur` WHERE idIns = ?",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			this.insertStat = this.conn.prepareStatement("INSERT INTO `u-lear`.`instructeur` (`idIns`, `nomIns`, `prenomIns`, `email`, `dateN`, `domaineIns`, `pdp`"
-					+ "VALUES(?,?,?,?,?,?,?");
+			this.insertStat = this.conn.prepareStatement("INSERT INTO `u-learn`.`instructeur` (`idIns`, `nomIns`, `prenomIns`, `email`, `dateN`, `domaineIns`, `pdp`, `mdp`)"
+					+ "VALUES(?,?,?,?,?,?,?,?);");
 			this.updateStat = this.conn.prepareStatement("UPDATE `u-learn`-`instructeur` SET"
 					+ "`nomIns`=?, `prenomIns`=?, `domainIns`=?, `pdp`=?"
 					+ "WHERE `idIns`=?");
@@ -33,14 +35,22 @@ public class InstructeurDao extends DAO<Instructeur, String>{
 	}
 	
 	@Override
-	public Instructeur find(String id, String mdp) throws MdpException
+	public Instructeur find(String id, String mdp) throws MdpException,ExisteException
 	{
 		Instructeur i = null;
 		
 		int mdp0 = mdp.hashCode();
 		try
 		{
+			findStat.setString(1, id);
 			ResultSet res = findStat.executeQuery();
+			
+			if(!res.first())
+			{
+				throw new ExisteException(2);
+			}
+			
+			res.first();
 			if(mdp0 == res.getInt("mdp"))
 			{
 				byte[] img = res.getBytes("pdp");
@@ -49,7 +59,7 @@ public class InstructeurDao extends DAO<Instructeur, String>{
 				i = new Instructeur(res.getString("idIns"),
 									res.getString("nomIns"),
 									res.getString("prenomIns"),
-									res.getString("eamil"),
+									res.getString("email"),
 									date,
 									res.getString("domaineIns"),
 									img);
@@ -61,7 +71,7 @@ public class InstructeurDao extends DAO<Instructeur, String>{
 				throw new MdpException();
 			}
 		}
-		catch(Exception x)
+		catch(SQLException x)
 		{
 			x.printStackTrace();
 		}
@@ -79,10 +89,10 @@ public class InstructeurDao extends DAO<Instructeur, String>{
 			ResultSet res = findStat.executeQuery();
 			if(res.first())
 			{
-				throw new MdpException();
+				throw new ExisteException(1);
 			}
 		}
-		catch(Exception x)
+		catch(SQLException x)
 		{
 			x.printStackTrace();
 		}
@@ -106,7 +116,7 @@ public class InstructeurDao extends DAO<Instructeur, String>{
 			
 			return insertStat.execute();
 		}
-		catch(Exception x)
+		catch(SQLException | IOException x)
 		{
 			x.printStackTrace();
 		}

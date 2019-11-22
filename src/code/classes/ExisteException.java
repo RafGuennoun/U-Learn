@@ -2,21 +2,28 @@ package code.classes;
 
 public class ExisteException extends Exception{
 	
-	public String erreur;
+	public String message;
 	
-	public ExisteException()
+	public ExisteException(int x)
 	{
-		this.erreur = "Username already existess";
+		if(x==1)
+		{			
+			this.message = "Username already existes";
+		}
+		else
+		{
+			this.message = "Username doesn't existe";
+		}
 	}
 	
-	public String getErreur()
+	public String getMessage()
 	{
-		return this.erreur;
+		return this.message;
 	}
 	
-	public void printErreur()
+	public void printMessage()
 	{
-		System.out.println(this.erreur);
+		System.out.println(this.message);
 	}
 
 }
