@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -19,6 +20,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.BevelBorder;
 import java.awt.Window.Type;
 import javax.swing.border.LineBorder;
+
+import code.classes.ExisteException;
+import code.classes.MdpException;
+import code.dao.Factory;
 
 public class LoginTeacher extends JFrame {
 
@@ -93,6 +98,30 @@ public class LoginTeacher extends JFrame {
 	
 		
 		JButton btnNewButton = new JButton("Login");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {	
+				
+				try
+				{
+					if(txtEnterYourUsername.getText().equals(""))
+					{
+						JOptionPane.showMessageDialog(null, "Username required");
+					}
+					else if(passwordField.getText().equals(""))
+					{
+						JOptionPane.showMessageDialog(null, "Password required");
+					}
+					else
+					{
+						Controleur.instructerCo = Factory.getInstructeurDao().find(txtEnterYourUsername.getText(), passwordField.getText());
+					}
+				}
+				catch(MdpException | ExisteException x)
+				{
+					JOptionPane.showMessageDialog(null, x.getMessage());
+				}
+			}
+		});
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseExited(MouseEvent arg0) {
@@ -203,7 +232,7 @@ public class LoginTeacher extends JFrame {
 		lblLearn.setForeground(Color.WHITE);
 		lblLearn.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 22));
 		
-		JLabel lblShareYour = new JLabel("- Share your oppinients  -");
+		JLabel lblShareYour = new JLabel("- Share your opinions  -");
 		lblShareYour.setHorizontalAlignment(SwingConstants.CENTER);
 		lblShareYour.setForeground(Color.WHITE);
 		lblShareYour.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 22));

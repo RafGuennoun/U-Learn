@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -19,6 +20,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Window.Type;
 
 import code.classes.*;
+import code.dao.Factory;
+
 import javax.swing.border.LineBorder;
 
 public class LoginStudentFr extends JFrame {
@@ -95,13 +98,27 @@ public class LoginStudentFr extends JFrame {
 		
 		JButton btnNewButton = new JButton("Se connecter");
 		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				AcceuilStudent p = new  AcceuilStudent();
-				//p.setVisible(true);
+			public void actionPerformed(ActionEvent arg0) {	
 				
-				
-				
-				
+				try
+				{
+					if(textField.getText().equals(""))
+					{
+						JOptionPane.showMessageDialog(null, "Identifiant obligatoir");
+					}
+					else if(passwordField.getText().equals(""))
+					{
+						JOptionPane.showMessageDialog(null, "Mot de passe obligatoir");
+					}
+					else
+					{
+						Controleur.apprenantCo = Factory.getApprenantDao().find(textField.getText(), passwordField.getText());
+					}
+				}
+				catch(MdpException | ExisteException x)
+				{
+					JOptionPane.showMessageDialog(null, x.getMessage());
+				}
 			}
 		});
 		btnNewButton.addMouseListener(new MouseAdapter() {
@@ -212,7 +229,7 @@ public class LoginStudentFr extends JFrame {
 		lblLearn.setForeground(Color.WHITE);
 		lblLearn.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 22));
 		
-		JLabel lblShareYour = new JLabel("- Partagez vos oppinionts  -");
+		JLabel lblShareYour = new JLabel("- Partagez vos opinions  -");
 		lblShareYour.setHorizontalAlignment(SwingConstants.CENTER);
 		lblShareYour.setForeground(Color.WHITE);
 		lblShareYour.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 22));
