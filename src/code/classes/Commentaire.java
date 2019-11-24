@@ -2,10 +2,13 @@ package code.classes;
 
 public class Commentaire {
 
-	private final int numComm;
+	private int numComm;
 	private String text;
 	
-
+	public Commentaire()
+	{
+		
+	}
 	
 	public Commentaire(int num, String text)
 	{

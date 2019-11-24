@@ -254,6 +254,8 @@ public class InsriptionTeacher extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
+				AffichagePhoto p = new  AffichagePhoto();
+		//	p.setContentPane(Parcourir);
 				
 				
 			}

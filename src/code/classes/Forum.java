@@ -5,15 +5,22 @@ public class Forum {
 	
 	private int numForum;
 	private String nomForum;
-	private String domaineForum;
+	private String problemeForum;
 	private boolean resolu;
 	private ArrayList<Commentaire> commentaires;
+	
+	public Forum()
+	{
+		this.resolu = false;
+		this.commentaires = new ArrayList<Commentaire>(); 
+	}
 	
 	public Forum(int num,String nom,String domaine)
 	{
 		this.numForum = num;
 		this.nomForum = nom;
-		this.domaineForum = domaine;
+		this.problemeForum = domaine;
+		this.resolu =false;
 		this.commentaires = new ArrayList<Commentaire>(); 
 	}
 
@@ -25,12 +32,12 @@ public class Forum {
 		this.nomForum = nomForum;
 	}
 
-	public String getDomaineForum() {
-		return domaineForum;
+	public String getProblemeForum() {
+		return problemeForum;
 	}
 
-	public void setDomaineForum(String domaineForum) {
-		this.domaineForum = domaineForum;
+	public void setProblemeForum(String domaineForum) {
+		this.problemeForum = domaineForum;
 	}
 
 	public int getNumForum() {
@@ -54,5 +61,7 @@ public class Forum {
 	{
 		this.commentaires.add(c);
 	}
+	
+	
 
 }
