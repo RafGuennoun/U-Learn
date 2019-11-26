@@ -14,10 +14,8 @@ public class Connexion {
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-			System.out.println("Driver OK");
 			
 			this.conn = DriverManager.getConnection(url,user,psswrd);
-			System.out.println("Connection OK");
 		}
 		catch(Exception x)
 		{

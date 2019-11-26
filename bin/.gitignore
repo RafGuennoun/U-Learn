@@ -134,6 +134,7 @@
 /tst$2.class
 /tst$3.class
 /tst.class
+<<<<<<< HEAD
 /AcceuilStudent$29.class
 /AcceuilStudent$30.class
 /AcceuilStudent$31.class
@@ -150,3 +151,17 @@
 /AcceuilStudent$37.class
 /AcceuilStudent$38.class
 /AcceuilStudent$39.class
+=======
+/InscriptionStudent$4.class
+/InscriptionStudent$5.class
+/InscriptionStudentAng$3.class
+/InscriptionTeacherAng$3.class
+/InsriptionTeacher$3.class
+/AffichagePhoto$1.class
+/AffichagePhoto.class
+/InsriptionTeacher$4.class
+/AffichagePhoto$2.class
+/InscriptionStudentAng$4.class
+/InsriptionTeacher$5.class
+/InscriptionTeacherAng$4.class
+>>>>>>> a2e1f63fadc38cd1cacb9e248e68fdda8f291a7a

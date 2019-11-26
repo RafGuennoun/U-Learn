@@ -1,4 +1,5 @@
 package code.classes;
+import java.awt.image.*;
 public abstract class Utilisateur {
 	
 	protected String id;
@@ -8,6 +9,8 @@ public abstract class Utilisateur {
 	protected Date dateNaissance;
 	protected Messagerie messagerie;
 	protected String photo;
+	protected byte[] photoAficher;
+	
 	
 	public Utilisateur(String id,String nom, String prenom, String email, Date d, String pdp)
 	{
@@ -17,6 +20,26 @@ public abstract class Utilisateur {
 		this.email = email;
 		this.dateNaissance = d;
 		this.photo = pdp;
+		this.messagerie = new Messagerie();
+	}
+
+	public Utilisateur(String id,String nom, String prenom, String email, Date d,byte[] pdp)
+	{
+		this.id = id;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.email = email;
+		this.dateNaissance = d;
+		this.photoAficher = pdp;
+		this.messagerie = new Messagerie();
+	}
+	
+	public byte[] getPhotoAficher() {
+		return photoAficher;
+	}
+
+	public void setPhotoAficher(byte[] photoAficher) {
+		this.photoAficher = photoAficher;
 	}
 
 	public String getPhoto() {

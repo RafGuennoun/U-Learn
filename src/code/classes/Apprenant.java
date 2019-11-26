@@ -3,7 +3,13 @@ public class Apprenant extends Utilisateur{
 	
 	private int niveau;
 
-	public Apprenant(String i,String n, String p, String e,Date d,String pdp,int nv)
+	public Apprenant(String i,String n, String p, String e,Date d,int nv,String pdp)
+	{
+		super(i,n,p,e,d,pdp);
+		this.niveau = nv;
+	}
+	
+	public Apprenant(String i,String n, String p, String e,Date d,int nv,byte[] pdp)
 	{
 		super(i,n,p,e,d,pdp);
 		this.niveau = nv;

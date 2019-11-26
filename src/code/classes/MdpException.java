@@ -2,20 +2,20 @@ package code.classes;
 
 public class MdpException extends Exception{
 
-	String erreur;
+	String message;
 	
 	public MdpException()
 	{
-		this.erreur = "Mot de passe incorrecte";
+		this.message = "Incorrect Password";
 	}
 	
-	public String getErreur()
+	public String getMessage()
 	{
-		return this.erreur;
+		return this.message;
 	}
 	
-	public void printErreur()
+	public void printMessage()
 	{
-		System.out.println(this.erreur);
+		System.out.println(this.message);
 	}
 }
