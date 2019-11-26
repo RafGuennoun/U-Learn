@@ -220,11 +220,11 @@ public class InscriptionStudentAng extends JFrame {
 		comboBox_niveau.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		comboBox_niveau.setBounds(127, 35, 302, 28);
 		panel_3.add(comboBox_niveau);
-		comboBox_niveau.addItem("Licnece 1");
-		comboBox_niveau.addItem("Licence 2");
-		comboBox_niveau.addItem("Licence 3");
-		comboBox_niveau.addItem("Master 1");
-		comboBox_niveau.addItem("Master 2");
+		comboBox_niveau.addItem("L1");
+		comboBox_niveau.addItem("L2");
+		comboBox_niveau.addItem("L3");
+		comboBox_niveau.addItem("M1");
+		comboBox_niveau.addItem("M2");
 		comboBox_niveau.setSelectedItem(null);
 		
 		textField_specialite = new JTextField();
@@ -302,6 +302,7 @@ public class InscriptionStudentAng extends JFrame {
 		JButton button = new JButton("+");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+			
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setCurrentDirectory(new File("C:\\Users\\YACINE\\Desktop"));
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("IMAGE","png","jpg","gif");

@@ -51,7 +51,7 @@ public class Quiz {
 		int s=0;
 		for(int i=0; i<this.questions.size(); i++)
 		{
-			if(questions.get(i).getReponse() == reponsesDonnees.get(i))
+			if(questions.get(i).getBonneRep() == reponsesDonnees.get(i))
 				s += 1;
 		}
 		

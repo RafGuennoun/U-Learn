@@ -2,7 +2,27 @@ package code.classes;
 
 public class Cour {
 
-	private final int numCour;
+	private  int numCour;
+	private String nomCour;
+	private String description;
+	private String chemin;
+	private boolean finis;
+	
+	public Cour()
+	{
+		this.setFinis(false);
+	}
+	
+	public Cour(int num, String nom,String description, String chemin,boolean finis)
+	{
+		this.numCour = num;
+		this.description=description;
+		this.nomCour = nom;
+		this.chemin = chemin;
+		this.setFinis(finis);
+	}
+	
+	
 	public String getNomCour() {
 		return nomCour;
 	}
@@ -23,15 +43,30 @@ public class Cour {
 		return numCour;
 	}
 
-	private String nomCour;
-	private String chemin;
-	
-	public Cour(int num, String nom, String chemin)
-	{
-		this.numCour = num;
-		this.nomCour = nom;
-		this.chemin = chemin;
+	public String getDescription() {
+		return description;
 	}
+
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	
+	public boolean isFinis() {
+		return finis;
+	}
+
+	
+	public void setFinis(boolean finis) {
+		this.finis = finis;
+	}
+	
+	
+	
+
+
+	
 	
 	
 }
