@@ -4,6 +4,9 @@ import code.dao.*;
 
 public class Controleur {
 	
-	public static Apprenant apprenantCo;
-	public static Instructeur instructerCo;
+	public static Apprenant apprenantCo = null;
+	public static Instructeur instructerCo = null;
+	public static Forum forumSelec = null;
+	
+	
 }

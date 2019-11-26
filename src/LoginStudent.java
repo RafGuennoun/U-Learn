@@ -129,6 +129,10 @@ public class LoginStudent extends JFrame {
 					else
 					{
 						Controleur.apprenantCo = Factory.getApprenantDao().find(textField.getText(), passwordField.getText());
+						
+						AcceuilStudent p = new AcceuilStudent();
+						p.setVisible(true);
+						setVisible(false);
 					}
 				}
 				catch(MdpException | ExisteException x)

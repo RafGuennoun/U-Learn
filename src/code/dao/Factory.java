@@ -14,5 +14,15 @@ public class Factory {
 	{
 		return new InstructeurDao(conn);
 	}
+	
+	public static ForumDao getForumDao()
+	{
+		return new ForumDao(conn);
+	}
+	
+	public static CommentaireDao getCommentaireDao()
+	{
+		return new CommentaireDao(conn);
+	}
 
 }
