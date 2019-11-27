@@ -27,11 +27,9 @@ import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-<<<<<<< HEAD
+
 import java.util.Calendar;
-=======
 import java.sql.SQLException;
->>>>>>> a2e1f63fadc38cd1cacb9e248e68fdda8f291a7a
 
 public class InscriptionStudent extends JFrame {
 
