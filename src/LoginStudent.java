@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -20,8 +21,11 @@ import javax.swing.border.LineBorder;
 import code.classes.Apprenant;
 import code.classes.Blog;
 import code.classes.Date;
+import code.classes.ExisteException;
+import code.classes.MdpException;
 import code.dao.BlogDao;
 import code.dao.Connexion;
+import code.dao.Factory;
 
 public class LoginStudent extends JFrame {
 
@@ -111,6 +115,30 @@ public class LoginStudent extends JFrame {
 		JButton btnNewButton = new JButton("Login");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
+				
+				try
+				{
+					if(textField.getText().equals(""))
+					{
+						JOptionPane.showMessageDialog(null, "Username required");
+					}
+					else if(passwordField.getText().equals(""))
+					{
+						JOptionPane.showMessageDialog(null, "Password required");
+					}
+					else
+					{
+						Controleur.apprenantCo = Factory.getApprenantDao().find(textField.getText(), passwordField.getText());
+						
+						AcceuilStudent p = new AcceuilStudent();
+						p.setVisible(true);
+						setVisible(false);
+					}
+				}
+				catch(MdpException | ExisteException x)
+				{
+					JOptionPane.showMessageDialog(null, x.getMessage());
+				}
 			}
 		});
 		btnNewButton.addMouseListener(new MouseAdapter() {
@@ -139,6 +167,11 @@ public class LoginStudent extends JFrame {
 			@Override
 			public void mouseExited(MouseEvent arg0) {
 				lblForgotPasswrd.setForeground(new Color(0, 51, 102));
+			}
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				JOptionPane.showMessageDialog(null, "A bah fallait pas l'oublier");
 			}
 		});
 		lblForgotPasswrd.setHorizontalAlignment(SwingConstants.CENTER);
@@ -205,7 +238,7 @@ public class LoginStudent extends JFrame {
 		lblLearn.setForeground(Color.WHITE);
 		lblLearn.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 22));
 		
-		JLabel lblShareYour = new JLabel("- Share your oppinients  -");
+		JLabel lblShareYour = new JLabel("- Share your opinions  -");
 		lblShareYour.setHorizontalAlignment(SwingConstants.CENTER);
 		lblShareYour.setForeground(Color.WHITE);
 		lblShareYour.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 22));

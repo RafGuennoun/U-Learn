@@ -147,6 +147,7 @@
 /InscriptionStudent$3.class
 /InscriptionStudent$4.class
 /InscriptionStudent$5.class
+<<<<<<< HEAD
 /AcceuilStudent$40.class
 /AcceuilStudent$41.class
 /AcceuilStudent$42.class
@@ -154,3 +155,23 @@
 /AcceuilStudent$44.class
 /AcceuilStudent$45.class
 /AcceuilStudent$46.class
+=======
+/InscriptionStudentAng$3.class
+/InscriptionTeacherAng$3.class
+/InsriptionTeacher$3.class
+/AffichagePhoto$1.class
+/AffichagePhoto.class
+/InsriptionTeacher$4.class
+/AffichagePhoto$2.class
+/InscriptionStudentAng$4.class
+/InsriptionTeacher$5.class
+/InscriptionTeacherAng$4.class
+/LoginTeacher$8.class
+/LoginTeacherFr$8.class
+/AcceuilStudent$21.class
+/AcceuilStudent$22.class
+/AcceuilStudent$23.class
+/AcceuilStudent$24.class
+/AcceuilStudent$25.class
+/AcceuilStudent$26.class
+>>>>>>> d374887cdd351cf64db5968d9abec6adc5272825

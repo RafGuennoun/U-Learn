@@ -422,6 +422,9 @@ public class InscriptionStudent extends JFrame {
 					{
 						Factory.getApprenantDao().insert(a, passwordField_mdp.getText());
 						JOptionPane.showMessageDialog(null, "Inscrit avec succès !");
+						LoginStudentFr p = new LoginStudentFr();
+						p.setVisible(true);
+						setVisible(false);
 					}
 					catch(ExisteException x)
 					{

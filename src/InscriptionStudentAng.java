@@ -382,6 +382,10 @@ public class InscriptionStudentAng extends JFrame {
 						{
 							Factory.getApprenantDao().insert(a, passwordField_mdp.getText());
 							JOptionPane.showMessageDialog(null, "Signed in successfuly !");
+							LoginStudent p = new LoginStudent();
+							p.setVisible(true);
+							setVisible(false);
+
 						}
 						catch(ExisteException x)
 						{

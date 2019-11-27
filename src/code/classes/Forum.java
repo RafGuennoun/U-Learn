@@ -7,11 +7,13 @@ public class Forum {
 	private String nomForum;
 	private String problemeForum;
 	private boolean resolu;
+	private String createur; 
 	private ArrayList<Commentaire> commentaires;
 	
 	public Forum()
 	{
 		this.resolu = false;
+<<<<<<< HEAD
 		this.commentaires = new ArrayList<Commentaire>(); 
 	}
 	
@@ -21,23 +23,45 @@ public class Forum {
 		this.nomForum = nom;
 		this.problemeForum = domaine;
 		this.resolu =false;
+=======
+		this.commentaires = new ArrayList<Commentaire>();
+	}
+	
+	public Forum(int num,String nom,String p,String c)
+	{
+		this.numForum = num;
+		this.nomForum = nom;
+		this.problemeForum = p;
+		this.createur = c;
+		this.resolu = false;
+>>>>>>> d374887cdd351cf64db5968d9abec6adc5272825
 		this.commentaires = new ArrayList<Commentaire>(); 
 	}
 
-	public String getNomForum() {
-		return nomForum;
+	
+	public String getCreateur() {
+		return createur;
 	}
 
-	public void setNomForum(String nomForum) {
-		this.nomForum = nomForum;
+	public void setCreateur(String createur) {
+		this.createur = createur;
 	}
 
+<<<<<<< HEAD
 	public String getProblemeForum() {
 		return problemeForum;
 	}
 
 	public void setProblemeForum(String domaineForum) {
 		this.problemeForum = domaineForum;
+=======
+	public String getNomForum() {
+		return nomForum;
+	}
+
+	public void setNomForum(String nomForum) {
+		this.nomForum = nomForum;
+>>>>>>> d374887cdd351cf64db5968d9abec6adc5272825
 	}
 
 	public int getNumForum() {
@@ -62,6 +86,16 @@ public class Forum {
 		this.commentaires.add(c);
 	}
 	
+<<<<<<< HEAD
 	
+=======
+	public String getProblemeForum() {
+		return problemeForum;
+	}
+	
+	public void setProblemeForum(String problemeForum) {
+		this.problemeForum = problemeForum;
+	}
+>>>>>>> d374887cdd351cf64db5968d9abec6adc5272825
 
 }

@@ -12,6 +12,7 @@ import code.classes.Apprenant;
 import code.classes.Commentaire;
 import code.classes.Forum;
 import code.classes.Utilisateur;
+import code.dao.Factory;
 
 import javax.swing.border.BevelBorder;
 import java.awt.Window.Type;
@@ -36,6 +37,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
+<<<<<<< HEAD
+=======
+import java.util.ResourceBundle.Control;
+>>>>>>> d374887cdd351cf64db5968d9abec6adc5272825
 
 import javax.swing.JTextField;
 import javax.swing.DropMode;
@@ -75,6 +80,7 @@ public class AcceuilStudent extends JFrame {
 	private JTextField textField_RechercheAmis;
 	private JTable table_chat;
 	private JTable table_forum;
+<<<<<<< HEAD
 	private JTextField email;
 	private JTable table_toutesForm;
 	private JTextField textField_titreForm;
@@ -92,6 +98,8 @@ public class AcceuilStudent extends JFrame {
 	private JTextField textField_titreWiki;
 	private JTextField textField_titWiki;
 	private JTable table_allWikis;
+=======
+>>>>>>> d374887cdd351cf64db5968d9abec6adc5272825
 
 	/**
 	 * Launch the application.
@@ -607,6 +615,103 @@ public class AcceuilStudent extends JFrame {
 		lblFormationsF.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
 		lblFormationsF.setBackground(new Color(0, 51, 102));
 		lblFormationsF.setBounds(361, 227, 198, 30);
+		panel_prfl.add(lblFormationsF);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
+		panel.setBackground(Color.WHITE);
+		panel.setBounds(10, 11, 341, 312);
+		panel_prfl.add(panel);
+		panel.setLayout(null);
+		
+		JLabel Parcourir = new JLabel("");
+		Parcourir.setHorizontalAlignment(SwingConstants.CENTER);
+		Parcourir.setIcon(new ImageIcon("C:\\Users\\YACINE\\eclipse-workspace\\U-Learn\\Icons\\user_120px.png"));
+		Parcourir.setBounds(10, 11, 321, 290);
+		panel.add(Parcourir);
+		
+		JButton btnModifierPhotoDe = new JButton("Modifier photo de profil");
+		btnModifierPhotoDe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File("C:\\Users\\YACINE\\Desktop"));
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("IMAGE","png","jpg","gif");
+				fileChooser.addChoosableFileFilter(filter);
+				int result = fileChooser.showSaveDialog(null);
+				if(result == JFileChooser.APPROVE_OPTION)
+				{
+					File selectedfile = fileChooser.getSelectedFile();
+					String path = selectedfile.getAbsolutePath();
+					ImageIcon myImage = new ImageIcon(path);
+					java.awt.Image img = myImage.getImage();
+					java.awt.Image NewImage = img.getScaledInstance(Parcourir.getWidth(), Parcourir.getHeight(), java.awt.Image.SCALE_SMOOTH); /* if error check this */
+					ImageIcon finalImage = new ImageIcon(NewImage);
+					Parcourir.setIcon(finalImage);
+
+				//System.out.println(path);
+				}
+				else
+				{
+					if( result == JFileChooser.CANCEL_OPTION)
+					{
+						JOptionPane.showMessageDialog(null, "Vous avez rien choisi");
+					}
+				}
+			}
+		});
+		btnModifierPhotoDe.setForeground(Color.WHITE);
+		btnModifierPhotoDe.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		btnModifierPhotoDe.setBackground(new Color(0, 51, 102));
+		btnModifierPhotoDe.setBounds(455, 280, 256, 30);
+		panel_prfl.add(btnModifierPhotoDe);
+		
+		
+		
+		
+		
+	
+		
+		JLabel label_9 = new JLabel("Nom :");
+		label_9.setForeground(new Color(0, 51, 102));
+		label_9.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		label_9.setBackground(new Color(0, 51, 102));
+		label_9.setBounds(361, 22, 413, 30);
+		panel_prfl.add(label_9);
+		
+		JLabel lblPrenom = new JLabel("Prenom :");
+		lblPrenom.setForeground(new Color(0, 51, 102));
+		lblPrenom.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		lblPrenom.setBackground(new Color(0, 51, 102));
+		lblPrenom.setBounds(361, 63, 413, 30);
+		panel_prfl.add(lblPrenom);
+		
+		JLabel lblEmail = new JLabel("Email : ");
+		lblEmail.setForeground(new Color(0, 51, 102));
+		lblEmail.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		lblEmail.setBackground(new Color(0, 51, 102));
+		lblEmail.setBounds(361, 104, 413, 30);
+		panel_prfl.add(lblEmail);
+		
+		JLabel lblNiveau = new JLabel("Niveau :");
+		lblNiveau.setForeground(new Color(0, 51, 102));
+		lblNiveau.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		lblNiveau.setBackground(new Color(0, 51, 102));
+		lblNiveau.setBounds(361, 145, 413, 30);
+		panel_prfl.add(lblNiveau);
+		
+		JLabel lblFormation_1 = new JLabel("Formations suivis :  ");
+		lblFormation_1.setForeground(new Color(0, 51, 102));
+		lblFormation_1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		lblFormation_1.setBackground(new Color(0, 51, 102));
+		lblFormation_1.setBounds(361, 186, 413, 30);
+		panel_prfl.add(lblFormation_1);
+		
+		JLabel lblFormationsF = new JLabel("Formations finis : ");
+		lblFormationsF.setForeground(new Color(0, 51, 102));
+		lblFormationsF.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		lblFormationsF.setBackground(new Color(0, 51, 102));
+		lblFormationsF.setBounds(361, 227, 413, 30);
 		panel_prfl.add(lblFormationsF);
 		
 		JPanel panel = new JPanel();
@@ -1526,6 +1631,12 @@ public class AcceuilStudent extends JFrame {
 		lblForum.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				DefaultTableModel model = (DefaultTableModel) table_forum.getModel();
+				
+				for(Forum f : Factory.getForumDao().getAll())
+				{
+					model.addRow(new Object [] { f.getNumForum(), f.getNomForum(), f.isResolu() });
+				}
 			
 				panel_forum.setVisible(true);
 				panel_formation.setVisible(false);
@@ -1587,14 +1698,21 @@ public class AcceuilStudent extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-		/*		String[][] d = {
-						{titre_forum.getText() , texte_forum.getText()}
-				};
-			*/	
-			//	table_forum.add(d);
+				Forum f = new Forum(Factory.getForumDao().getMaxNum(),
+									titre_forum.getText(),
+									texte_forum.getText(),
+									Controleur.apprenantCo.getId());
+				
+				
+				Factory.getForumDao().insert(f, Controleur.apprenantCo.getId());
+				
 				DefaultTableModel model = (DefaultTableModel) table_forum.getModel();
 				
+<<<<<<< HEAD
 				model.addRow(new Object [] { titre_forum.getText() , texte_forum.getText() , false });
+=======
+				model.addRow(new Object [] { f.getNumForum(), f.getNomForum(), f.isResolu() });
+>>>>>>> d374887cdd351cf64db5968d9abec6adc5272825
 
 				
 				
@@ -1634,6 +1752,7 @@ public class AcceuilStudent extends JFrame {
 		btnRpondre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+<<<<<<< HEAD
 				
 				int index = table_forum.getSelectedRow();
 				int ind = index;
@@ -1657,6 +1776,35 @@ public class AcceuilStudent extends JFrame {
 				f.commenter(comm);
 				
 				 textField_rep.setText("");
+=======
+				int index = table_forum.getSelectedRow();
+				TableModel model = table_forum.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner un forum)");
+				}
+				else if(textField_rep.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez introduire un commentaire");
+				}
+				else
+				{
+					//le forum selectionné dans la table
+					int numF = (Integer)model.getValueAt(index, 0);
+					
+					Commentaire c = new Commentaire(Factory.getCommentaireDao().getMaxNum(numF)+1,
+													textField_rep.getText(),
+													Controleur.apprenantCo.getId());
+					//ajouter a la base de données 
+					Factory.getCommentaireDao().insert(c, numF);
+					
+					//ajouter le commentaire dans la zone des comms
+					textArea_Commentaires.append("  "+Controleur.apprenantCo.getId()+": \n");
+					textArea_Commentaires.append("  - "+c.getText() +"\n\n");
+					textField_rep.setText("");
+				}
+>>>>>>> d374887cdd351cf64db5968d9abec6adc5272825
 				
 			}
 		});
@@ -1711,17 +1859,29 @@ public class AcceuilStudent extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
+<<<<<<< HEAD
 				"Titre", "Probl\u00E9me", "R\u00E9solu"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
 				String.class, String.class, Boolean.class
+=======
+				"N\u00B0", "Titre", "Resolu"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Integer.class, String.class, Boolean.class
+>>>>>>> d374887cdd351cf64db5968d9abec6adc5272825
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
+<<<<<<< HEAD
 				false, false, false
+=======
+				true, true, false
+>>>>>>> d374887cdd351cf64db5968d9abec6adc5272825
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -1740,6 +1900,10 @@ public class AcceuilStudent extends JFrame {
 		textArea_Titreforum.setForeground(new Color(0, 51, 102));
 		textArea_Titreforum.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 15));
 		scrollPane_3.setViewportView(textArea_Titreforum);
+<<<<<<< HEAD
+=======
+		textArea_Titreforum.setText("Titre du Forum");
+>>>>>>> d374887cdd351cf64db5968d9abec6adc5272825
 		
 		JScrollPane scrollPane_4 = new JScrollPane();
 		scrollPane_4.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -1752,11 +1916,16 @@ public class AcceuilStudent extends JFrame {
 		textArea_ProblemeForum.setForeground(new Color(0, 51, 102));
 		textArea_ProblemeForum.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		scrollPane_4.setViewportView(textArea_ProblemeForum);
+<<<<<<< HEAD
+=======
+		textArea_ProblemeForum.setText("Problème du Forum");
+>>>>>>> d374887cdd351cf64db5968d9abec6adc5272825
 		
 		JButton btnAfficher = new JButton("Afficher");
 		btnAfficher.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 	
+<<<<<<< HEAD
 				textArea_Commentaires.setText("");
 				
 				Controleur cont = new Controleur();
@@ -1811,6 +1980,36 @@ public class AcceuilStudent extends JFrame {
 			
 				
 			
+=======
+				int index = table_forum.getSelectedRow();
+				TableModel model = table_forum.getModel();
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner un Forum");
+				}
+				else
+				{
+					textArea_ProblemeForum.setText("");
+					textArea_Commentaires.setText("");
+					textArea_ProblemeForum.setText("");
+					
+					int numF = (Integer)model.getValueAt(index, 0);
+					Forum f = Factory.getForumDao().find(numF);
+					
+					textArea_Titreforum.setText(f.getNomForum());
+					textArea_ProblemeForum.setText(f.getProblemeForum());
+					
+					//affichage des commentaires du forum
+					for(Commentaire c : f.getCommentaires())
+					{
+						//ajouter le commentaire dans la zone des comms
+						textArea_Commentaires.append("  "+c.getCreateur()+": \n");
+						textArea_Commentaires.append("  - "+c.getText() +"\n\n");
+						textField_rep.setText("");
+						
+					}
+				}
+>>>>>>> d374887cdd351cf64db5968d9abec6adc5272825
 			}
 		});
 		btnAfficher.setForeground(Color.WHITE);
@@ -1826,6 +2025,7 @@ public class AcceuilStudent extends JFrame {
 				/* set resolu to true 
 				 * verifie si le forum appartient a l'utilisateur
 				 */
+<<<<<<< HEAD
 				
 				if (table_forum.getSelectedRow()==-1)
 				{
@@ -1842,6 +2042,29 @@ public class AcceuilStudent extends JFrame {
 			
 					model.setValueAt(true, index, 2);
 		
+=======
+				int index = table_forum.getSelectedRow();
+				TableModel model = table_forum.getModel();
+				
+				if (index==-1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner un Forum");
+				}
+				else
+				{
+					int numF = (Integer)model.getValueAt(index, 0);
+					Forum f = Factory.getForumDao().find(numF);
+					if(!f.getCreateur().equals(Controleur.apprenantCo.getId()))
+					{
+						JOptionPane.showMessageDialog(null, "Ce forum ne vous appartient pas");
+					}
+					else
+					{
+						f.resoudre();
+						Factory.getForumDao().update(f);
+						model.setValueAt(f.isResolu(), index, 2);
+					}
+>>>>>>> d374887cdd351cf64db5968d9abec6adc5272825
 				}
 		
 			}
@@ -1860,6 +2083,7 @@ public class AcceuilStudent extends JFrame {
 		lblCommentaires.setBounds(508, 259, 310, 24);
 		panel_forum.add(lblCommentaires);
 		
+<<<<<<< HEAD
 		JPanel panel_library = new JPanel();
 		panel_library.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
 		panel_library.setBackground(Color.WHITE);
@@ -1906,6 +2130,8 @@ public class AcceuilStudent extends JFrame {
 		lblSondage.setBounds(164, 6, 117, 49);
 		panel_cours.add(lblSondage);
 		
+=======
+>>>>>>> d374887cdd351cf64db5968d9abec6adc5272825
 		
 		
 		
@@ -2083,7 +2309,11 @@ public class AcceuilStudent extends JFrame {
 			}
 		});
 		lblSs.setHorizontalAlignment(SwingConstants.CENTER);
+<<<<<<< HEAD
 		lblSs.setIcon(new ImageIcon("Icons/sorting_options_80px.png"));
+=======
+		lblSs.setIcon(new ImageIcon("D:\\Mes Projets\\ULearn\\Source\\U-Learn\\Icons\\sorting_options_80px.png"));
+>>>>>>> d374887cdd351cf64db5968d9abec6adc5272825
 		
 		JLabel btn_profile = new JLabel("");
 		btn_profile.setBounds(10, 115, 186, 75);

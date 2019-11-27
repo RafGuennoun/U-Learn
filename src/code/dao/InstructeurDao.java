@@ -24,7 +24,7 @@ public class InstructeurDao extends DAO<Instructeur, String>{
 			this.insertStat = this.conn.prepareStatement("INSERT INTO `u-learn`.`instructeur` (`idIns`, `nomIns`, `prenomIns`, `email`, `dateN`, `domaineIns`, `pdp`, `mdp`)"
 					+ "VALUES(?,?,?,?,?,?,?,?);");
 			this.updateStat = this.conn.prepareStatement("UPDATE `u-learn`-`instructeur` SET"
-					+ "`nomIns`=?, `prenomIns`=?, `domainIns`=?, `pdp`=?"
+					+ "`nomIns`=?, `prenomIns`=?, `domainIns`=?, `pdp`=?, `email`=?"
 					+ "WHERE `idIns`=?");
 			this.deleteStat = this.conn.prepareStatement("DELETE FROM `u-learn`-`instructeur` WHERE `idIns`=?");
 		}
@@ -135,7 +135,8 @@ public class InstructeurDao extends DAO<Instructeur, String>{
 			updateStat.setString(2, i.getPrenom());
 			updateStat.setString(3, i.getDomaine());
 			updateStat.setBlob(4, img);
-			updateStat.setString(5, i.getId());
+			updateStat.setString(5, i.getEmail());
+			updateStat.setString(6, i.getId());
 			
 			return updateStat.execute();
 		}

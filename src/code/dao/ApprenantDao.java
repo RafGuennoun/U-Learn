@@ -24,7 +24,7 @@ public class ApprenantDao extends DAO<Apprenant,String>{
 					,ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
 			this.insertStat = this.conn.prepareStatement("INSERT INTO `u-learn`.`apprenant` (`idApp`, `nomApp`, `prenomApp`, `email`, `dateN`, `niveau`, `pdp`, `mdp`)"
 					+ " VALUES (?,?,?,?,?,?,?,?);");
-			this.updateStat = this.conn.prepareStatement("UPDATE `u-learn`.`apprenant` set `nomApp`=?,`prenomApp`=?,`niveau`=?,`pdp`=? WHERE `idApp`=?");
+			this.updateStat = this.conn.prepareStatement("UPDATE `u-learn`.`apprenant` set `nomApp`=?,`prenomApp`=?,`niveau`=?,`pdp`=?, `email`=? WHERE `idApp`=?");
 			this.deleteStat = this.conn.prepareStatement("DELETE from apprenant where idApp = ?");
 		}
 		catch(Exception x)
@@ -68,16 +68,9 @@ public class ApprenantDao extends DAO<Apprenant,String>{
 		else
 			throw new MdpException();
 		}
-		catch(Exception x)
+		catch(SQLException x)
 		{
-			if((x instanceof  ExisteException) || (x instanceof  MdpException))
-			{
-				JOptionPane.showConfirmDialog(null, x.getMessage());
-			}
-			else
-			{
-				x.printStackTrace();
-			}
+			x.printStackTrace();
 		}
 		return a;
 	}
@@ -134,7 +127,8 @@ public class ApprenantDao extends DAO<Apprenant,String>{
 			updateStat.setString(2, a.getPrenom());
 			updateStat.setInt(3, a.getNiveau());
 			updateStat.setBlob(4, img);
-			updateStat.setString(5, a.getId());
+			updateStat.setString(5, a.getEmail());
+			updateStat.setString(6, a.getId());
 			
 			return updateStat.execute();
 		}
