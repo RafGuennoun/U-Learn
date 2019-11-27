@@ -1145,10 +1145,8 @@ public class AcceuilTeacher extends JFrame {
 				
 				textField_rep.setText("");
 				
-				Commentaire comm = new Commentaire(0, r);
 				
 				
-				f.commenter(comm);
 				
 				 textField_rep.setText("");
 				

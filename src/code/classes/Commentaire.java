@@ -6,10 +6,7 @@ public class Commentaire {
 	private String text;
 	private String createur;
 	
-<<<<<<< HEAD
-=======
 
->>>>>>> d374887cdd351cf64db5968d9abec6adc5272825
 	public Commentaire()
 	{
 		
