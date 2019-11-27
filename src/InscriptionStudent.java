@@ -27,6 +27,8 @@ import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+
+import java.util.Calendar;
 import java.sql.SQLException;
 
 public class InscriptionStudent extends JFrame {
@@ -73,6 +75,7 @@ public class InscriptionStudent extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBackground(new Color(0, 51, 102));
@@ -92,6 +95,8 @@ public class InscriptionStudent extends JFrame {
 		panel_1.setBounds(10, 91, 355, 117);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
+		
+	
 		
 		JLabel lblNom = new JLabel("Nom :");
 		lblNom.setBounds(10, 11, 63, 30);

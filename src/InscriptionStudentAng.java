@@ -304,6 +304,7 @@ public class InscriptionStudentAng extends JFrame {
 		JButton button = new JButton("+");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+			
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setCurrentDirectory(new File("C:\\Users\\YACINE\\Desktop"));
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("IMAGE","png","jpg","gif");
