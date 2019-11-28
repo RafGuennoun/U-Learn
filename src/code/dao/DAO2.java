@@ -24,3 +24,5 @@ public abstract class DAO2 <T, S, C>{
 	public abstract boolean delete(T obj);
 
 }
+
+

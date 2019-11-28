@@ -24,5 +24,10 @@ public class Factory {
 	{
 		return new CommentaireDao(conn);
 	}
+	
+	public static WikiDao getWikiDao()
+	{
+		return new WikiDao(conn);
+	}
 
 }

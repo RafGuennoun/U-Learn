@@ -1,4 +1,3 @@
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Desktop;
@@ -9,9 +8,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,20 +23,18 @@ import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import AppPackage.AnimationClass;
 import code.classes.Commentaire;
 import code.classes.Forum;
-
-import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.JComboBox;
+import code.classes.Wiki;
+import code.dao.Factory;
 
 public class AcceuilTeacher extends JFrame {
 
@@ -62,7 +61,12 @@ public class AcceuilTeacher extends JFrame {
 	private JTable table_deatilsFormation;
 	private JTable table_mesFormations;
 	private JTable table_coursForm;
+	private JTextField textField_titreWiki;
+	private JTextField textField_titrWiki2;
+	private JTable table_allWikis;
 
+	private String cheminImageWiki;
+	private int parcoureur = 0;
 	/**
 	 * Launch the application.
 	 */
@@ -957,7 +961,407 @@ public class AcceuilTeacher extends JFrame {
 		layeredPane_cours.add(panel_forum, "name_99695588436500");
 		
 		JPanel panel_wiki = new JPanel();
+		panel_wiki.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
+		panel_wiki.setBackground(Color.WHITE);
 		layeredPane_cours.add(panel_wiki, "name_99708708456700");
+		panel_wiki.setLayout(null);
+		
+		JLayeredPane layeredPane_4 = new JLayeredPane();
+		layeredPane_4.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
+		layeredPane_4.setBounds(0, 74, 828, 449);
+		panel_wiki.add(layeredPane_4);
+		layeredPane_4.setLayout(new CardLayout(0, 0));
+		
+		JPanel panel_ajouterWiki = new JPanel();
+		panel_ajouterWiki.setBackground(Color.WHITE);
+		layeredPane_4.add(panel_ajouterWiki, "name_415870858298000");
+		panel_ajouterWiki.setLayout(null);
+		
+		JLabel lblTitreWiki = new JLabel("Titre Wiki");
+		lblTitreWiki.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitreWiki.setForeground(new Color(0, 51, 102));
+		lblTitreWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		lblTitreWiki.setBackground(new Color(0, 51, 102));
+		lblTitreWiki.setBounds(10, 11, 327, 29);
+		panel_ajouterWiki.add(lblTitreWiki);
+		
+		textField_titreWiki = new JTextField();
+		textField_titreWiki.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_titreWiki.setForeground(new Color(0, 51, 102));
+		textField_titreWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		textField_titreWiki.setColumns(10);
+		textField_titreWiki.setBounds(10, 51, 327, 36);
+		panel_ajouterWiki.add(textField_titreWiki);
+		
+		JLabel lblTexteWiki = new JLabel("Texte Wiki");
+		lblTexteWiki.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTexteWiki.setForeground(new Color(0, 51, 102));
+		lblTexteWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		lblTexteWiki.setBackground(new Color(0, 51, 102));
+		lblTexteWiki.setBounds(10, 98, 327, 29);
+		panel_ajouterWiki.add(lblTexteWiki);
+		
+		JScrollPane scrollPane_wiki2 = new JScrollPane();
+		scrollPane_wiki2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_wiki2.setBounds(10, 138, 327, 232);
+		panel_ajouterWiki.add(scrollPane_wiki2);
+		
+		JTextArea textArea_textWiki = new JTextArea();
+		textArea_textWiki.setForeground(new Color(0, 51, 102));
+		textArea_textWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		scrollPane_wiki2.setViewportView(textArea_textWiki);
+		
+		JLabel photoWiki = new JLabel("Ajoutez des images !");
+		photoWiki.setIcon(new ImageIcon("C:\\Users\\YACINE\\eclipse-workspace\\U-Learn\\Icons\\user_120px.png"));
+		photoWiki.setBackground(Color.LIGHT_GRAY);
+		photoWiki.setHorizontalAlignment(SwingConstants.CENTER);
+		photoWiki.setForeground(new Color(0, 51, 102));
+		photoWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		photoWiki.setBounds(379, 11, 409, 313);
+		panel_ajouterWiki.add(photoWiki);
+		
+		JButton btnAjouterLeWiki = new JButton("Ajouter le Wiki");
+		btnAjouterLeWiki.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(textField_titreWiki.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez entrer un titre");
+				}
+				else if(textArea_textWiki.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez entrer un texte");
+				}
+				else
+				{
+					//accès au dernier numéro
+					int numW = Factory.getWikiDao().getMaxNum()+1;
+					//construire le pojo
+					Wiki w = new Wiki(numW,
+									  textField_titreWiki.getText(),
+									  "domaine",
+									  textArea_textWiki.getText(),
+									  Controleur.instructerCo.getId());
+					
+					//passer la liste des images
+					w.setImages(Controleur.listeImageWiki);
+					
+					//inserer dans la base de données
+					Factory.getWikiDao().insert(w, Controleur.instructerCo.getId());
+					
+					//vider la liste statique des images
+					Controleur.listeImageWiki = new ArrayList<String>();
+					
+					textArea_textWiki.setText("");
+					textField_titreWiki.setText("");
+					
+					JOptionPane.showMessageDialog(null, "Wiki ajouté avec succès");
+				}
+			}
+		});
+		btnAjouterLeWiki.setForeground(Color.WHITE);
+		btnAjouterLeWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnAjouterLeWiki.setBackground(new Color(51, 153, 204));
+		btnAjouterLeWiki.setBounds(20, 381, 306, 46);
+		panel_ajouterWiki.add(btnAjouterLeWiki);
+		
+		JButton btnSelectImageWiki = new JButton("Select Image");
+		btnSelectImageWiki.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File("C:\\Users\\YACINE\\Desktop"));
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("IMAGE","png","jpg","gif");
+				fileChooser.addChoosableFileFilter(filter);
+				int result = fileChooser.showSaveDialog(null);
+				if(result == JFileChooser.APPROVE_OPTION)
+				{
+					File selectedfile = fileChooser.getSelectedFile();
+					cheminImageWiki = selectedfile.getAbsolutePath();
+					ImageIcon myImage = new ImageIcon(cheminImageWiki);
+					java.awt.Image img = myImage.getImage();
+					java.awt.Image NewImage = img.getScaledInstance(photoWiki.getWidth(), photoWiki.getHeight(), java.awt.Image.SCALE_SMOOTH); /* if error check this */
+					ImageIcon finalImage = new ImageIcon(NewImage);
+					photoWiki.setIcon(finalImage);
+
+				//System.out.println(path);
+				}
+				else
+				{
+					if( result == JFileChooser.CANCEL_OPTION)
+					{
+						JOptionPane.showMessageDialog(null, "Vous avez rien choisi");
+					}
+				}
+				
+			}
+		});
+		btnSelectImageWiki.setForeground(Color.WHITE);
+		btnSelectImageWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnSelectImageWiki.setBackground(new Color(51, 153, 204));
+		btnSelectImageWiki.setBounds(506, 335, 152, 31);
+		panel_ajouterWiki.add(btnSelectImageWiki);
+		
+		JButton AjouterImageWiki = new JButton("Ajouter");
+		AjouterImageWiki.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(cheminImageWiki.equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez choisir d'abord une image");
+				}
+				else
+				{
+					Controleur.listeImageWiki.add(cheminImageWiki);
+				}
+			}
+		});
+		AjouterImageWiki.setBounds(530, 381, 89, 23);
+		panel_ajouterWiki.add(AjouterImageWiki);
+		
+		JPanel panel_AllWikis = new JPanel();
+		panel_AllWikis.setBackground(Color.WHITE);
+		layeredPane_4.add(panel_AllWikis, "name_415881871755500");
+		panel_AllWikis.setLayout(null);
+		
+		textField_titrWiki2 = new JTextField();
+		textField_titrWiki2.setEditable(false);
+		textField_titrWiki2.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_titrWiki2.setForeground(new Color(0, 51, 102));
+		textField_titrWiki2.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		textField_titrWiki2.setColumns(10);
+		textField_titrWiki2.setBounds(10, 9, 467, 36);
+		panel_AllWikis.add(textField_titrWiki2);
+		
+		JLabel label_14 = new JLabel("Texte Wiki");
+		label_14.setHorizontalAlignment(SwingConstants.CENTER);
+		label_14.setForeground(new Color(0, 51, 102));
+		label_14.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		label_14.setBackground(new Color(0, 51, 102));
+		label_14.setBounds(487, 16, 327, 29);
+		panel_AllWikis.add(label_14);
+		
+		JScrollPane scrollPane_wiki1 = new JScrollPane();
+		scrollPane_wiki1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_wiki1.setBounds(487, 56, 327, 142);
+		panel_AllWikis.add(scrollPane_wiki1);
+		
+		JTextArea textArea_WikiModif = new JTextArea();
+		textArea_WikiModif.setLineWrap(true);
+		textArea_WikiModif.setForeground(new Color(0, 51, 102));
+		textArea_WikiModif.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		scrollPane_wiki1.setViewportView(textArea_WikiModif);
+		
+		JButton btnModifierLeWiki = new JButton("Redistribuer");
+		btnModifierLeWiki.setForeground(Color.WHITE);
+		btnModifierLeWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnModifierLeWiki.setBackground(new Color(51, 153, 204));
+		btnModifierLeWiki.setBounds(497, 388, 306, 46);
+		panel_AllWikis.add(btnModifierLeWiki);
+		
+		JScrollPane scrollPane_11 = new JScrollPane();
+		scrollPane_11.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_11.setBounds(10, 56, 467, 331);
+		panel_AllWikis.add(scrollPane_11);
+		
+		table_allWikis = new JTable();
+		table_allWikis.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"N\u00B0", "Titre", "Domaine"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Integer.class, String.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table_allWikis.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		scrollPane_11.setViewportView(table_allWikis);
+		
+		JLabel photoW = new JLabel("Pas de photo !");
+		photoW.setForeground(new Color(0, 51, 102));
+		photoW.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		photoW.setHorizontalAlignment(SwingConstants.CENTER);
+		photoW.setBounds(487, 209, 327, 105);
+		panel_AllWikis.add(photoW);
+		
+		JButton button_2 = new JButton("<");
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(Controleur.listeImageAfficherWiki.size()==0)
+				{
+					JOptionPane.showMessageDialog(null, "Pas de photos à affiher");
+				}
+				else if(parcoureur==0)
+				{
+					JOptionPane.showMessageDialog(null, "Il n'y a plus de photos à afficher");
+				}
+				else
+				{
+					parcoureur--;
+					
+					ImageIcon image = new ImageIcon(Controleur.listeImageAfficherWiki.get(parcoureur));
+					java.awt.Image im = image.getImage();
+					java.awt.Image myImg = im.getScaledInstance(photoW.getWidth(), photoW.getHeight(), java.awt.Image.SCALE_SMOOTH);
+					ImageIcon img = new ImageIcon(myImg);
+					photoW.setIcon(img);
+				}
+			}
+		});
+		button_2.setForeground(Color.WHITE);
+		button_2.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 25));
+		button_2.setBackground(new Color(51, 153, 204));
+		button_2.setBounds(571, 335, 71, 31);
+		panel_AllWikis.add(button_2);
+		
+		JButton button_3 = new JButton(">");
+		button_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(Controleur.listeImageAfficherWiki.size()==0)
+				{
+					JOptionPane.showMessageDialog(null, "Pas de photos à affiher");
+				}
+				else if(parcoureur>=Controleur.listeImageAfficherWiki.size()-1)
+				{
+					JOptionPane.showMessageDialog(null, "Il n'y a plus de photos à afficher");
+				}
+				else
+				{
+					parcoureur++;
+					
+					ImageIcon image = new ImageIcon(Controleur.listeImageAfficherWiki.get(parcoureur));
+					java.awt.Image im = image.getImage();
+					java.awt.Image myImg = im.getScaledInstance(photoW.getWidth(), photoW.getHeight(), java.awt.Image.SCALE_SMOOTH);
+					ImageIcon img = new ImageIcon(myImg);
+					photoW.setIcon(img);
+				}
+				
+				
+			}
+		});
+		button_3.setForeground(Color.WHITE);
+		button_3.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 25));
+		button_3.setBackground(new Color(51, 153, 204));
+		button_3.setBounds(661, 335, 71, 31);
+		panel_AllWikis.add(button_3);
+		
+		JButton btnAfficher_2 = new JButton("Afficher");
+		btnAfficher_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_allWikis.getSelectedRow();
+				TableModel model = table_allWikis.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner un wiki");
+				}
+				else
+				{
+					int numW = (Integer)model.getValueAt(index, 0);
+					Wiki w = Factory.getWikiDao().find(numW);
+					textField_titrWiki2.setText(w.getNomWiki());
+					textArea_WikiModif.setText(w.getTextWiki());
+					
+					Controleur.listeImageAfficherWiki = w.getImageAfficher();
+					parcoureur = 0;
+					
+					ImageIcon image = new ImageIcon(Controleur.listeImageAfficherWiki.get(parcoureur));
+					java.awt.Image im = image.getImage();
+					java.awt.Image myImg = im.getScaledInstance(photoW.getWidth(), photoW.getHeight(), java.awt.Image.SCALE_SMOOTH);
+					ImageIcon img = new ImageIcon(myImg);
+					photoW.setIcon(img);
+				}
+			}
+		});
+		btnAfficher_2.setForeground(Color.WHITE);
+		btnAfficher_2.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnAfficher_2.setBackground(new Color(51, 153, 204));
+		btnAfficher_2.setBounds(52, 398, 152, 36);
+		panel_AllWikis.add(btnAfficher_2);
+		
+		JButton btnSupprimer_wiki = new JButton("Supprimer");
+		btnSupprimer_wiki.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_allWikis.getSelectedRow();
+				TableModel model = table_allWikis.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner un forum");
+				}
+				else
+				{
+					int numW = (Integer)model.getValueAt(index, 0);
+					Wiki w = Factory.getWikiDao().find(numW);
+					
+					if(!w.getCreateur().equals(Controleur.instructerCo.getId()))
+					{
+						JOptionPane.showMessageDialog(null, "Vous n'avez pas de droits sur ce Wiki");
+					}
+					else
+					{
+						Factory.getWikiDao().delete(w);
+						JOptionPane.showMessageDialog(null, "Le wiki a été supprimé de la BD");
+						((DefaultTableModel)table_allWikis.getModel()).removeRow(index);
+					}
+				}
+				
+				
+			}
+		});
+		btnSupprimer_wiki.setBounds(290, 402, 89, 23);
+		panel_AllWikis.add(btnSupprimer_wiki);
+		
+		JButton btnAjouterWiki = new JButton("Ajouter Wiki");
+		btnAjouterWiki.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				panel_ajouterWiki.setVisible(true);
+				panel_AllWikis.setVisible(false);
+				
+			}
+		});
+		btnAjouterWiki.setBounds(162, 21, 176, 31);
+		btnAjouterWiki.setForeground(Color.WHITE);
+		btnAjouterWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnAjouterWiki.setBackground(new Color(51, 153, 204));
+		panel_wiki.add(btnAjouterWiki);
+		
+		JButton btnTousLesWikis = new JButton("Tous les Wikis");
+		btnTousLesWikis.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				DefaultTableModel model = (DefaultTableModel)table_allWikis.getModel();
+				model.setRowCount(0);
+				
+				for(Wiki w : Factory.getWikiDao().getAll())
+				{
+					model.addRow(new Object[] {w.getNumWiki(), w.getNomWiki(), w.getDomaineWiki()});
+				}
+				
+				panel_ajouterWiki.setVisible(false);
+				panel_AllWikis.setVisible(true);
+			}
+		});
+		btnTousLesWikis.setBounds(468, 21, 176, 31);
+		btnTousLesWikis.setForeground(Color.WHITE);
+		btnTousLesWikis.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnTousLesWikis.setBackground(new Color(51, 153, 204));
+		panel_wiki.add(btnTousLesWikis);
+
 		
 		JPanel panel_blogs = new JPanel();
 		layeredPane_cours.add(panel_blogs, "name_99719566024600");
@@ -992,6 +1396,16 @@ public class AcceuilTeacher extends JFrame {
 		panel_cours.add(lblForum);
 		
 		JLabel lblWiki = new JLabel("wiki");
+		lblWiki.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				panel_wiki.setVisible(true);
+				panel_forum.setVisible(false);
+				panel_formation.setVisible(false);
+				panel_blogs.setVisible(false);
+			}
+		});
 		lblWiki.setHorizontalAlignment(SwingConstants.CENTER);
 		lblWiki.setBounds(536, 6, 117, 49);
 		panel_cours.add(lblWiki);
@@ -1020,6 +1434,7 @@ public class AcceuilTeacher extends JFrame {
 		};
 		
 		titre_forum = new JTextField();
+		titre_forum.setText("yyyyyyyy");
 		titre_forum.setBounds(299, 23, 468, 38);
 		titre_forum.setHorizontalAlignment(SwingConstants.CENTER);
 		titre_forum.setForeground(new Color(0, 51, 102));
@@ -1132,7 +1547,6 @@ public class AcceuilTeacher extends JFrame {
 				int index = table_forum.getSelectedRow();
 				int ind = index;
 				
-				Forum f = new Forum(1, titre_forum.getText(),texte_forum.getText());
 				
 				
 				TableModel model = table_forum.getModel();

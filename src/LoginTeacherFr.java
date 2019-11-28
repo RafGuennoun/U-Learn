@@ -114,6 +114,9 @@ public class LoginTeacherFr extends JFrame {
 					else
 					{
 						Controleur.instructerCo = Factory.getInstructeurDao().find(username.getText(), passwordField.getText());
+						AcceuilTeacher p = new AcceuilTeacher();
+						p.setVisible(true);
+						setVisible(false);
 					}
 				}
 				catch(MdpException | ExisteException x)

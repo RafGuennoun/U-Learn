@@ -12,26 +12,17 @@ public class Forum {
 	
 	public Forum()
 	{
-		this.resolu = false;
 		this.commentaires = new ArrayList<Commentaire>(); 
 	}
 	
-	public Forum(int num,String nom,String domaine)
-	{
-		this.numForum = num;
-		this.nomForum = nom;
-		this.problemeForum = domaine;
-		this.resolu =false;
-		this.commentaires = new ArrayList<Commentaire>();
-	}
 	
-	public Forum(int num,String nom,String p,String c)
+	public Forum(int num,String nom,String p,boolean resolu,String c)
 	{
 		this.numForum = num;
 		this.nomForum = nom;
 		this.problemeForum = p;
 		this.createur = c;
-		this.resolu = false;
+		this.resolu=resolu;
 		this.commentaires = new ArrayList<Commentaire>(); 
 	}
 
@@ -67,7 +58,7 @@ public class Forum {
 	
 	public void resoudre()
 	{
-		resolu = true;
+		this.resolu = true;
 	}
 	
 	public void commenter(Commentaire c)

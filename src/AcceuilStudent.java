@@ -12,6 +12,7 @@ import code.classes.Apprenant;
 import code.classes.Commentaire;
 import code.classes.Forum;
 import code.classes.Utilisateur;
+import code.classes.Wiki;
 import code.dao.Factory;
 
 import javax.swing.border.BevelBorder;
@@ -94,6 +95,11 @@ public class AcceuilStudent extends JFrame {
 	private JTextField textField_titreWiki;
 	private JTextField textField_titWiki;
 	private JTable table_allWikis;
+	private JTable table_1;
+	private JTable table_2;
+	
+	private String cheminImageWiki = "";
+	
 
 	/**
 	 * Launch the application.
@@ -659,107 +665,6 @@ public class AcceuilStudent extends JFrame {
 		btnModifierPhotoDe.setBackground(new Color(0, 51, 102));
 		btnModifierPhotoDe.setBounds(455, 280, 256, 30);
 		panel_prfl.add(btnModifierPhotoDe);
-		
-		
-		
-		
-		
-	
-		
-		JLabel label_9 = new JLabel("Nom :");
-		label_9.setForeground(new Color(0, 51, 102));
-		label_9.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
-		label_9.setBackground(new Color(0, 51, 102));
-		label_9.setBounds(361, 22, 413, 30);
-		panel_prfl.add(label_9);
-		
-		JLabel lblPrenom = new JLabel("Prenom :");
-		lblPrenom.setForeground(new Color(0, 51, 102));
-		lblPrenom.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
-		lblPrenom.setBackground(new Color(0, 51, 102));
-		lblPrenom.setBounds(361, 63, 413, 30);
-		panel_prfl.add(lblPrenom);
-		
-		JLabel lblEmail = new JLabel("Email : ");
-		lblEmail.setForeground(new Color(0, 51, 102));
-		lblEmail.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
-		lblEmail.setBackground(new Color(0, 51, 102));
-		lblEmail.setBounds(361, 104, 413, 30);
-		panel_prfl.add(lblEmail);
-		
-		JLabel lblNiveau = new JLabel("Niveau :");
-		lblNiveau.setForeground(new Color(0, 51, 102));
-		lblNiveau.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
-		lblNiveau.setBackground(new Color(0, 51, 102));
-		lblNiveau.setBounds(361, 145, 413, 30);
-		panel_prfl.add(lblNiveau);
-		
-		JLabel lblFormation_1 = new JLabel("Formations suivis :  ");
-		lblFormation_1.setForeground(new Color(0, 51, 102));
-		lblFormation_1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
-		lblFormation_1.setBackground(new Color(0, 51, 102));
-		lblFormation_1.setBounds(361, 186, 413, 30);
-		panel_prfl.add(lblFormation_1);
-		
-		JLabel lblFormationsF = new JLabel("Formations finis : ");
-		lblFormationsF.setForeground(new Color(0, 51, 102));
-		lblFormationsF.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
-		lblFormationsF.setBackground(new Color(0, 51, 102));
-		lblFormationsF.setBounds(361, 227, 413, 30);
-		panel_prfl.add(lblFormationsF);
-		
-		JPanel panel = new JPanel();
-		panel.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
-		panel.setBackground(Color.WHITE);
-		panel.setBounds(10, 11, 341, 312);
-		panel_prfl.add(panel);
-		panel.setLayout(null);
-		
-		JLabel Parcourir = new JLabel("");
-		Parcourir.setHorizontalAlignment(SwingConstants.CENTER);
-		Parcourir.setIcon(new ImageIcon("C:\\Users\\YACINE\\eclipse-workspace\\U-Learn\\Icons\\user_120px.png"));
-		Parcourir.setBounds(10, 11, 321, 290);
-		panel.add(Parcourir);
-		
-		JButton btnModifierPhotoDe = new JButton("Modifier photo de profil");
-		btnModifierPhotoDe.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File("C:\\Users\\YACINE\\Desktop"));
-				FileNameExtensionFilter filter = new FileNameExtensionFilter("IMAGE","png","jpg","gif");
-				fileChooser.addChoosableFileFilter(filter);
-				int result = fileChooser.showSaveDialog(null);
-				if(result == JFileChooser.APPROVE_OPTION)
-				{
-					File selectedfile = fileChooser.getSelectedFile();
-					String path = selectedfile.getAbsolutePath();
-					ImageIcon myImage = new ImageIcon(path);
-					java.awt.Image img = myImage.getImage();
-					java.awt.Image NewImage = img.getScaledInstance(Parcourir.getWidth(), Parcourir.getHeight(), java.awt.Image.SCALE_SMOOTH); /* if error check this */
-					ImageIcon finalImage = new ImageIcon(NewImage);
-					Parcourir.setIcon(finalImage);
-
-				//System.out.println(path);
-				}
-				else
-				{
-					if( result == JFileChooser.CANCEL_OPTION)
-					{
-						JOptionPane.showMessageDialog(null, "Vous avez rien choisi");
-					}
-				}
-			}
-		});
-		btnModifierPhotoDe.setForeground(Color.WHITE);
-		btnModifierPhotoDe.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
-		btnModifierPhotoDe.setBackground(new Color(0, 51, 102));
-		btnModifierPhotoDe.setBounds(455, 280, 256, 30);
-		panel_prfl.add(btnModifierPhotoDe);
-		
-		
-		
-		
 		
 		
 		
@@ -1388,10 +1293,10 @@ public class AcceuilStudent extends JFrame {
 		scrollPane_9.setBounds(10, 138, 327, 232);
 		panel_ajouterWiki.add(scrollPane_9);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setForeground(new Color(0, 51, 102));
-		textArea.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
-		scrollPane_9.setViewportView(textArea);
+		JTextArea textArea_textWiki = new JTextArea();
+		textArea_textWiki.setForeground(new Color(0, 51, 102));
+		textArea_textWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		scrollPane_9.setViewportView(textArea_textWiki);
 		
 		JLabel photoWiki = new JLabel("Ajoutez des images !");
 		photoWiki.setIcon(new ImageIcon("C:\\Users\\YACINE\\eclipse-workspace\\U-Learn\\Icons\\user_120px.png"));
@@ -1409,8 +1314,8 @@ public class AcceuilStudent extends JFrame {
 		btnAjouterLeWiki.setBounds(20, 381, 306, 46);
 		panel_ajouterWiki.add(btnAjouterLeWiki);
 		
-		JButton btnAjouterImage = new JButton("Ajouter image");
-		btnAjouterImage.addActionListener(new ActionListener() {
+		JButton btnSelectImageWiki = new JButton("Select Image");
+		btnSelectImageWiki.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				JFileChooser fileChooser = new JFileChooser();
@@ -1421,8 +1326,8 @@ public class AcceuilStudent extends JFrame {
 				if(result == JFileChooser.APPROVE_OPTION)
 				{
 					File selectedfile = fileChooser.getSelectedFile();
-					String chemin = selectedfile.getAbsolutePath();
-					ImageIcon myImage = new ImageIcon(chemin);
+					cheminImageWiki = selectedfile.getAbsolutePath();
+					ImageIcon myImage = new ImageIcon(cheminImageWiki);
 					java.awt.Image img = myImage.getImage();
 					java.awt.Image NewImage = img.getScaledInstance(photoWiki.getWidth(), photoWiki.getHeight(), java.awt.Image.SCALE_SMOOTH); /* if error check this */
 					ImageIcon finalImage = new ImageIcon(NewImage);
@@ -1440,29 +1345,15 @@ public class AcceuilStudent extends JFrame {
 				
 			}
 		});
-		btnAjouterImage.setForeground(Color.WHITE);
-		btnAjouterImage.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
-		btnAjouterImage.setBackground(new Color(51, 153, 204));
-		btnAjouterImage.setBounds(507, 377, 152, 31);
-		panel_ajouterWiki.add(btnAjouterImage);
+		btnSelectImageWiki.setForeground(Color.WHITE);
+		btnSelectImageWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnSelectImageWiki.setBackground(new Color(51, 153, 204));
+		btnSelectImageWiki.setBounds(506, 335, 152, 31);
+		panel_ajouterWiki.add(btnSelectImageWiki);
 		
-		JButton button = new JButton("<");
-		button.setForeground(Color.WHITE);
-		button.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 25));
-		button.setBackground(new Color(51, 153, 204));
-		button.setBounds(507, 335, 71, 31);
-		panel_ajouterWiki.add(button);
-		
-		JButton button_1 = new JButton(">");
-		button_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		button_1.setForeground(Color.WHITE);
-		button_1.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 25));
-		button_1.setBackground(new Color(51, 153, 204));
-		button_1.setBounds(588, 335, 71, 31);
-		panel_ajouterWiki.add(button_1);
+		JButton AjouterImageWiki = new JButton("Ajouter");
+		AjouterImageWiki.setBounds(530, 381, 89, 23);
+		panel_ajouterWiki.add(AjouterImageWiki);
 		
 		JPanel panel_AllWikis = new JPanel();
 		panel_AllWikis.setBackground(Color.WHITE);
@@ -1559,11 +1450,39 @@ public class AcceuilStudent extends JFrame {
 		panel_AllWikis.add(button_3);
 		
 		JButton btnAfficher_2 = new JButton("Afficher");
+		btnAfficher_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_allWikis.getSelectedRow();
+				TableModel model = table_allWikis.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner un wiki");
+				}
+				else
+				{
+					int numW = (Integer)model.getValueAt(index, 0);
+					Wiki w = Factory.getWikiDao().find(numW);
+					textField_titWiki.setText(w.getNomWiki());
+					textArea_WikiModif.setText(w.getTextWiki());
+				}
+			}
+		});
 		btnAfficher_2.setForeground(Color.WHITE);
 		btnAfficher_2.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		btnAfficher_2.setBackground(new Color(51, 153, 204));
-		btnAfficher_2.setBounds(79, 398, 306, 36);
+		btnAfficher_2.setBounds(39, 398, 154, 36);
 		panel_AllWikis.add(btnAfficher_2);
+		
+		JButton btnSupprimer_wiki = new JButton("Supprimer");
+		btnSupprimer_wiki.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
+		btnSupprimer_wiki.setBounds(282, 402, 89, 23);
+		panel_AllWikis.add(btnSupprimer_wiki);
 		
 		JButton btnAjouterWiki = new JButton("Ajouter Wiki");
 		btnAjouterWiki.addActionListener(new ActionListener() {
@@ -1626,6 +1545,7 @@ public class AcceuilStudent extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				DefaultTableModel model = (DefaultTableModel) table_forum.getModel();
+				model.setColumnCount(0);
 				
 				for(Forum f : Factory.getForumDao().getAll())
 				{
@@ -1695,6 +1615,7 @@ public class AcceuilStudent extends JFrame {
 				Forum f = new Forum(Factory.getForumDao().getMaxNum(),
 									titre_forum.getText(),
 									texte_forum.getText(),
+									false,
 									Controleur.apprenantCo.getId());
 				
 				
@@ -1702,7 +1623,6 @@ public class AcceuilStudent extends JFrame {
 				
 				DefaultTableModel model = (DefaultTableModel) table_forum.getModel();
 				
-				model.addRow(new Object [] { titre_forum.getText() , texte_forum.getText() , false });
 				model.addRow(new Object [] { f.getNumForum(), f.getNomForum(), f.isResolu() });
 
 				
@@ -1745,6 +1665,7 @@ public class AcceuilStudent extends JFrame {
 				
 				
 				int index = table_forum.getSelectedRow();
+				TableModel model = table_forum.getModel();
 				
 				if(index == -1)
 				{
@@ -1824,27 +1745,25 @@ public class AcceuilStudent extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Titre", "Probl\u00E9me", "R\u00E9solu"
-			}
-		) 
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, Boolean.class
-				"N\u00B0", "Titre", "Resolu"
+				"Num", "Titre", "Resolu"
 			}
 		) {
+			Class[] columnTypes = new Class[] {
+				Integer.class, String.class, Boolean.class
+			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
 				false, false, false
-				true, true, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
 		});
-		table_forum.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		scrollPane_1.setViewportView(table_forum);
+		
+		
 		
 		JScrollPane scrollPane_3 = new JScrollPane();
 		scrollPane_3.setBounds(488, 124, 330, 38);
@@ -1921,25 +1840,6 @@ public class AcceuilStudent extends JFrame {
 		btnRsolu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				/* set resolu to true 
-				 * verifie si le forum appartient a l'utilisateur
-				 */
-				
-				if (table_forum.getSelectedRow()==-1)
-				{
-					System.out.println("non selectionné");
-				}
-				else
-				{
-					
-					
-					int index = (int) table_forum.getSelectedRow();
-					
-					TableModel model = table_forum.getModel();
-					
-			
-					model.setValueAt(true, index, 2);
-		
 				int index = table_forum.getSelectedRow();
 				TableModel model = table_forum.getModel();
 				

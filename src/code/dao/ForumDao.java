@@ -43,7 +43,9 @@ public class ForumDao extends DAO2 <Forum,Integer,String>{
 				f = new Forum(res.getInt("NumF"),
 							  res.getString("nomF"),
 							  res.getString("desc"),
+							  res.getBoolean("resolu"),
 							  res.getString("createur"));
+				
 			}
 			
 			PreparedStatement s = conn.prepareStatement("SELECT * FROM `u-learn`.`commentaire` WHERE `numF`=?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
