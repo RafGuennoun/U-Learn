@@ -18,7 +18,7 @@ public class ForumDao extends DAO2 <Forum,Integer,String>{
 		try
 		{
 			this.findStat = this.conn.prepareStatement("SELECT * FROM `u-learn`.`forum` WHERE `NumF`=?",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			this.insertStat = this.conn.prepareStatement("INSERT INTO `u-learn`.`forum`(`nomF`, `desc`, `resolu`, `createur`) VALUES(?,?,?,?);");
+			this.insertStat = this.conn.prepareStatement("INSERT INTO `u-learn`.`forum`(`NumF`, `nomF`, `desc`, `resolu`, `createur`) VALUES(?,?,?,?,?);");
 			this.updateStat = this.conn.prepareStatement("UPDATE `u-learn`.`forum` SET `nomF`=?, `desc`=?, `resolu`=? WHERE `NumF`=?");
 			this.deleteStat = this.conn.prepareStatement("DELETE FROM `u-learn`.`forum` WHERE `NumF`=?");
 		}
@@ -75,10 +75,11 @@ public class ForumDao extends DAO2 <Forum,Integer,String>{
 	{
 		try
 		{
-			insertStat.setString(1, f.getNomForum());
-			insertStat.setString(2, f.getProblemeForum());
-			insertStat.setBoolean(3, f.isResolu());
-			insertStat.setString(4, createur);
+			insertStat.setInt(1, f.getNumForum());
+			insertStat.setString(2, f.getNomForum());
+			insertStat.setString(3, f.getProblemeForum());
+			insertStat.setBoolean(4, f.isResolu());
+			insertStat.setString(5, createur);
 			
 			return insertStat.execute();
 		}
@@ -115,6 +116,11 @@ public class ForumDao extends DAO2 <Forum,Integer,String>{
 	{
 		try
 		{
+			PreparedStatement deleteComsStat = this.conn.prepareStatement("DELETE FROM `u-learn`.`commentaire` WHERE `numF`=?");
+			deleteComsStat.setInt(1, f.getNumForum());
+			//suppression des commentaire d'abord
+			deleteComsStat.execute();
+			
 			deleteStat.setInt(1, f.getNumForum());
 			return deleteStat.execute();
 		}

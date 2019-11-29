@@ -1385,6 +1385,14 @@ public class AcceuilTeacher extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 			
+				DefaultTableModel model = (DefaultTableModel) table_forum.getModel();
+				model.setRowCount(0);
+				
+				for(Forum f : Factory.getForumDao().getAll())
+				{
+					model.addRow(new Object [] { f.getNumForum(), f.getNomForum(), f.isResolu() });
+				}
+			
 				panel_forum.setVisible(true);
 				panel_formation.setVisible(false);
 				panel_wiki.setVisible(false);
@@ -1434,7 +1442,6 @@ public class AcceuilTeacher extends JFrame {
 		};
 		
 		titre_forum = new JTextField();
-		titre_forum.setText("yyyyyyyy");
 		titre_forum.setBounds(299, 23, 468, 38);
 		titre_forum.setHorizontalAlignment(SwingConstants.CENTER);
 		titre_forum.setForeground(new Color(0, 51, 102));
@@ -1470,11 +1477,11 @@ public class AcceuilTeacher extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Titre", "Probl\u00E9me", "R\u00E9solu"
+				"Num", "Titre", "Resolu"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, Boolean.class
+				Integer.class, String.class, Boolean.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -1494,24 +1501,35 @@ public class AcceuilTeacher extends JFrame {
 		add.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
-		/*		String[][] d = {
-						{titre_forum.getText() , texte_forum.getText()}
-				};
-			*/	
-				
-				DefaultTableModel model = (DefaultTableModel) table_forum.getModel();
-				
-				model.addRow(new Object [] { titre_forum.getText() , texte_forum.getText() , false });
-				
-				
-
 			
-				titre_forum.setText("");
-				texte_forum.setText("");
+				if(titre_forum.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Titre Obligatoire");
+				}
+				else if(texte_forum.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez entrer le texte du problème");
+				}
+				else
+				{
+					Forum f = new Forum(Factory.getForumDao().getMaxNum()+1,
+							titre_forum.getText(),
+							texte_forum.getText(),
+							false,
+							Controleur.instructerCo.getId());
+					
+					Factory.getForumDao().insert(f, Controleur.instructerCo.getId());
+					
+					JOptionPane.showMessageDialog(null, "Forum ajouté avec succès");
+					
+					DefaultTableModel model = (DefaultTableModel) table_forum.getModel();
+					
+					model.addRow(new Object [] { f.getNumForum(), f.getNomForum(), f.isResolu() });
+					
+					titre_forum.setText("");
+					texte_forum.setText("");
+				}
 			
-				
-				
 			}
 		});
 		add.setBounds(777, 21, 41, 93);
@@ -1545,24 +1563,32 @@ public class AcceuilTeacher extends JFrame {
 				
 				
 				int index = table_forum.getSelectedRow();
-				int ind = index;
-				
-				
-				
 				TableModel model = table_forum.getModel();
 				
-				String r = textField_rep.getText();
-				
-				
-				textArea_Commentaires.append("  nom utilisateur connecté \n");
-				textArea_Commentaires.append("  "+r +"\n\n");
-				
-				textField_rep.setText("");
-				
-				
-				
-				
-				 textField_rep.setText("");
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner un forum)");
+				}
+				else if(textField_rep.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez introduire un commentaire");
+				}
+				else
+				{
+					//le forum selectionné dans la table
+					int numF = (Integer)model.getValueAt(index, 0);
+					
+					Commentaire c = new Commentaire(Factory.getCommentaireDao().getMaxNum(numF)+1,
+													textField_rep.getText(),
+													Controleur.instructerCo.getId());
+					//ajouter a la base de données 
+					Factory.getCommentaireDao().insert(c, numF);
+					
+					//ajouter le commentaire dans la zone des comms
+					textArea_Commentaires.append("  "+Controleur.instructerCo.getId()+": \n");
+					textArea_Commentaires.append("  - "+c.getText() +"\n\n");
+					textField_rep.setText("");
+				}
 				
 			}
 		});
@@ -1603,80 +1629,61 @@ public class AcceuilTeacher extends JFrame {
 		scrollPane_3.setBounds(488, 124, 330, 38);
 		panel_forum.add(scrollPane_3);
 		
-		JTextArea textArea_Titreforum = new JTextArea();
-		textArea_Titreforum.setLineWrap(true);
-		textArea_Titreforum.setEditable(false);
-		textArea_Titreforum.setForeground(new Color(0, 51, 102));
-		textArea_Titreforum.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 15));
-		scrollPane_3.setViewportView(textArea_Titreforum);
+		JTextArea txtrTitreDuForum = new JTextArea();
+		txtrTitreDuForum.setText("Titre du Forum");
+		txtrTitreDuForum.setLineWrap(true);
+		txtrTitreDuForum.setEditable(false);
+		txtrTitreDuForum.setForeground(new Color(0, 51, 102));
+		txtrTitreDuForum.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 15));
+		scrollPane_3.setViewportView(txtrTitreDuForum);
 		
 		JScrollPane scrollPane_4 = new JScrollPane();
 		scrollPane_4.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane_4.setBounds(488, 167, 330, 93);
 		panel_forum.add(scrollPane_4);
 		
-		JTextArea textArea_ProblemeForum = new JTextArea();
-		textArea_ProblemeForum.setLineWrap(true);
-		textArea_ProblemeForum.setEditable(false);
-		textArea_ProblemeForum.setForeground(new Color(0, 51, 102));
-		textArea_ProblemeForum.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
-		scrollPane_4.setViewportView(textArea_ProblemeForum);
+		JTextArea txtrProblmeDuForum = new JTextArea();
+		txtrProblmeDuForum.setText("Probl\u00E8me du Forum");
+		txtrProblmeDuForum.setLineWrap(true);
+		txtrProblmeDuForum.setEditable(false);
+		txtrProblmeDuForum.setForeground(new Color(0, 51, 102));
+		txtrProblmeDuForum.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		scrollPane_4.setViewportView(txtrProblmeDuForum);
 		
 		JButton btnAfficher = new JButton("Afficher");
 		btnAfficher.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 	
-				textArea_Commentaires.setText("");
-				
-				Controleur cont = new Controleur();
-				
-				
 				int index = table_forum.getSelectedRow();
-				
 				TableModel model = table_forum.getModel();
 				
 		
-				String titre;
-				String pb;
-				boolean resolu = false;
-				
-				textArea_Titreforum.setText("");
-				textArea_ProblemeForum.setText("");
-				
-				titre = (String ) table_forum.getModel().getValueAt(index, 0);
-				textArea_Titreforum.append("   "+titre);
-				
-				pb = (String ) table_forum.getModel().getValueAt(index, 1);
-				textArea_ProblemeForum.append("\n");
-				textArea_ProblemeForum.append("   "+pb);
-				
-				resolu = (boolean) table_forum.getModel().getValueAt(index, 2);
-				
-				
-				Forum f = new Forum();
-				f.setNomForum(titre);
-				f.setProblemeForum(pb);
-				
-				
-				Commentaire c = new Commentaire();
-			//	c.modifierComm("commentaire par defaut ");
-				
-				f.commenter(c);
-				
-				cont.liste_forums.add(f);
-				
-				for(int i=0 ; i<cont.liste_forums.size() ; i++)
+				if(index == -1)
 				{
-					//textArea_Commentaires.append("  utilisateur co \n");
-					//textArea_Commentaires.append("  yacine \n");
-					for ( int j=0 ; j<cont.liste_forums.get(i).getCommentaires().size() ; j++)
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner un Forum");
+				}
+				else
+				{
+					txtrProblmeDuForum.setText("");
+					textArea_Commentaires.setText("");
+					txtrTitreDuForum.setText("");
+					
+					int numF = (Integer)model.getValueAt(index, 0);
+					Forum f = Factory.getForumDao().find(numF);
+					
+					txtrTitreDuForum.setText(f.getNomForum());
+					txtrProblmeDuForum.setText(f.getProblemeForum());
+					
+					//affichage des commentaires du forum
+					for(Commentaire c : f.getCommentaires())
 					{
-						textArea_Commentaires.append("-> "+cont.liste_forums.get(i).getCommentaires().get(j).getText()+"\n");
+						//ajouter le commentaire dans la zone des comms
+						textArea_Commentaires.append("  "+c.getCreateur()+": \n");
+						textArea_Commentaires.append("  - "+c.getText() +"\n\n");
+						textField_rep.setText("");
+						
 					}
 				}
-				
-				
-				
 			
 				
 			
@@ -1685,32 +1692,34 @@ public class AcceuilTeacher extends JFrame {
 		btnAfficher.setForeground(Color.WHITE);
 		btnAfficher.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		btnAfficher.setBackground(new Color(51, 153, 204));
-		btnAfficher.setBounds(287, 393, 105, 32);
+		btnAfficher.setBounds(199, 393, 105, 32);
 		panel_forum.add(btnAfficher);
 		
 		JButton btnRsolu = new JButton("R\u00E9solu");
 		btnRsolu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				/* set resolu to true 
-				 * verifie si le forum appartient a l'utilisateur
-				 */
+				int index = table_forum.getSelectedRow();
+				TableModel model = table_forum.getModel();
 				
-				if (table_forum.getSelectedRow()==-1)
+				if (index==-1)
 				{
-					System.out.println("non selectionné");
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner un Forum");
 				}
 				else
 				{
-					
-					
-					int index = (int) table_forum.getSelectedRow();
-					
-					TableModel model = table_forum.getModel();
-					
-			
-					model.setValueAt(true, index, 2);
-		
+					int numF = (Integer)model.getValueAt(index, 0);
+					Forum f = Factory.getForumDao().find(numF);
+					if(!f.getCreateur().equals(Controleur.instructerCo.getId()))
+					{
+						JOptionPane.showMessageDialog(null, "Ce forum ne vous appartient pas");
+					}
+					else
+					{
+						f.resoudre();
+						Factory.getForumDao().update(f);
+						model.setValueAt(f.isResolu(), index, 2);
+					}
 				}
 		
 			}
@@ -1718,7 +1727,7 @@ public class AcceuilTeacher extends JFrame {
 		btnRsolu.setForeground(Color.WHITE);
 		btnRsolu.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		btnRsolu.setBackground(new Color(51, 153, 204));
-		btnRsolu.setBounds(102, 393, 105, 32);
+		btnRsolu.setBounds(45, 393, 105, 32);
 		panel_forum.add(btnRsolu);
 		
 		JLabel lblCommentaires = new JLabel("Commentaires :");
@@ -1728,6 +1737,40 @@ public class AcceuilTeacher extends JFrame {
 		lblCommentaires.setBackground(new Color(0, 51, 102));
 		lblCommentaires.setBounds(508, 259, 310, 24);
 		panel_forum.add(lblCommentaires);
+		
+		JButton btnSupprimer = new JButton("Supprimer");
+		btnSupprimer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_forum.getSelectedRow();
+				TableModel model = table_forum.getModel();
+				
+				if (index==-1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner un Forum");
+				}
+				else
+				{
+					int numF = (Integer)model.getValueAt(index, 0);
+					Forum f = Factory.getForumDao().find(numF);
+					if(!f.getCreateur().equals(Controleur.instructerCo.getId()))
+					{
+						JOptionPane.showMessageDialog(null, "Ce forum ne vous appartient pas");
+					}
+					else
+					{
+						Factory.getForumDao().delete(f);
+						((DefaultTableModel)table_forum.getModel()).removeRow(index);
+						
+						txtrTitreDuForum.setText("");
+						txtrProblmeDuForum.setText("");
+						textArea_Commentaires.setText("");
+					}
+				}
+			}
+		});
+		btnSupprimer.setBounds(347, 402, 89, 23);
+		panel_forum.add(btnSupprimer);
 		
 		JLabel lblSondage = new JLabel("Sondage");
 		lblSondage.setHorizontalAlignment(SwingConstants.CENTER);
