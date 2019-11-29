@@ -11,18 +11,16 @@ public class Formation {
 	private int dureeEstimee;
 	private int nbrCours;
 	private String description;
-	private boolean fini;
-	
-	private ArrayList<Cour> listeCours;
-	private ArrayList<Quiz> listeQuiz;
+	private String createur;
 	
 
-	public Formation()
-	{
-		this.fini=false;
-	}
+
+	private ArrayList<Cour> listeCours;
+	private Quiz quiz;
 	
-	public Formation(int num,String nom,String description,int niv,EnumDifficulte dif,int duree,int nbrC, boolean fini)
+
+	
+	public Formation(int num,String nom,String description,int niv,EnumDifficulte dif,int duree,int nbrC)
 	{
 		this.numFormation = num;
 		this.nomFormation = nom;
@@ -31,15 +29,34 @@ public class Formation {
 		this.difficulte = dif;
 		this.dureeEstimee = duree;
 		this.nbrCours = nbrC;
-		this.fini=fini;
 	}
 	
+
+	public String getCreateur() {
+		return createur;
+	}
+	
+	public void setCreateur(String createur) {
+		this.createur = createur;
+	}
 	public ArrayList<Cour> getListeCours() {
 		return listeCours;
 	}
-	
-	public ArrayList<Quiz> getListeQuiz() {
-		return listeQuiz;
+
+	public void setListeCours(ArrayList<Cour> listeCours) {
+		this.listeCours = listeCours;
+	}
+
+	public Quiz getQuiz() {
+		return quiz;
+	}
+
+	public void setQuiz(Quiz quiz) {
+		this.quiz = quiz;
+	}
+
+	public void setNumFormation(int numFormation) {
+		this.numFormation = numFormation;
 	}
 
 	public String getNomFormation() {
@@ -97,16 +114,5 @@ public class Formation {
 	}
 
 
-	public boolean isFini() {
-		return fini;
-	}
-
-	
-	public void setFini(boolean fini) {
-		this.fini = fini;
-	}
-	
-	
-	
 
 }

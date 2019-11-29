@@ -6,20 +6,14 @@ public class Cour {
 	private String nomCour;
 	private String description;
 	private String chemin;
-	private boolean finis;
 	
-	public Cour()
-	{
-		this.setFinis(false);
-	}
 	
-	public Cour(int num, String nom,String description, String chemin,boolean finis)
+	public Cour(int num, String nom,String description, String chemin)
 	{
 		this.numCour = num;
 		this.description=description;
 		this.nomCour = nom;
 		this.chemin = chemin;
-		this.setFinis(finis);
 	}
 	
 	
@@ -51,20 +45,6 @@ public class Cour {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	
-	public boolean isFinis() {
-		return finis;
-	}
-
-	
-	public void setFinis(boolean finis) {
-		this.finis = finis;
-	}
-	
-	
-	
-
 
 	
 	
