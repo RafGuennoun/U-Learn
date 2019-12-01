@@ -1,61 +1,41 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import AppPackage.AnimationClass;
-import code.classes.Apprenant;
-import code.classes.Commentaire;
-import code.classes.Forum;
-import code.classes.Utilisateur;
-import code.classes.Wiki;
-import code.dao.Factory;
-
-import javax.swing.border.BevelBorder;
-import java.awt.Window.Type;
-import javax.swing.JInternalFrame;
-import javax.swing.JDesktopPane;
-import javax.swing.JFileChooser;
-import javax.swing.JSplitPane;
-import javax.swing.JLayeredPane;
-import javax.swing.BoxLayout;
 import java.awt.CardLayout;
-import java.awt.FlowLayout;
-import javax.swing.JMenu;
-import javax.swing.JOptionPane;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.ResourceBundle.Control;
 
-import javax.swing.JTextField;
-import javax.swing.DropMode;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
-import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.UIManager;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import java.awt.Dimension;
-import javax.swing.JComboBox;
+import AppPackage.AnimationClass;
+import code.classes.Commentaire;
+import code.classes.Formation;
+import code.classes.Forum;
+import code.classes.Wiki;
+import code.dao.Factory;
 
 public class AcceuilStudent extends JFrame {
 
@@ -1147,17 +1127,17 @@ public class AcceuilStudent extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Titre", "Niveau", "Dur\u00E9e", "Difficult\u00E9"
+				"Num", "Titre", "Niveau", "Difficult\u00E9", "Dur\u00E9e"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, Integer.class, Integer.class, String.class
+				Integer.class, String.class, String.class, String.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, false
+				true, true, false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -1169,11 +1149,34 @@ public class AcceuilStudent extends JFrame {
 		JButton btnAfficher_1 = new JButton("Plus d'informations");
 		btnAfficher_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				panel_toutesFormations.setVisible(false);
-				panel_AffFormation.setVisible(true);
-				panel_quiz.setVisible(false);
-				panel_form.setVisible(false);
-				panel_formationsSuivis.setVisible(false);
+				
+				int index = table_toutesForm.getSelectedRow();
+				TableModel model = table_toutesForm.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner une formation");
+				}
+				else
+				{
+					Formation f = Factory.getFormationDao().find((Integer)model.getValueAt(index, 0));
+					Controleur.formationSelec = f;
+					
+					textField_titreForm.setText(f.getNomFormation());
+					textField_duree.setText(f.getDureeHeure());
+					textField_desc.setText(f.getDescription());
+					textField_cours.setText(f.getListeCours().size()+"");
+					textField_diff.setText(f.getDifficulte().getDesc());
+					textField_niv.setText(f.getNivString());
+					
+					
+					panel_toutesFormations.setVisible(false);
+					panel_AffFormation.setVisible(true);
+					panel_quiz.setVisible(false);
+					panel_form.setVisible(false);
+					panel_formationsSuivis.setVisible(false);
+				}
+				
 				
 				
 			}
@@ -1207,9 +1210,18 @@ public class AcceuilStudent extends JFrame {
 		
 		
 		
-		JButton btnNouvelleFormation = new JButton("Nouvelle Formation");
+		JButton btnNouvelleFormation = new JButton("Les Formation");
 		btnNouvelleFormation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				DefaultTableModel model = (DefaultTableModel)table_toutesForm.getModel();
+				ArrayList<Formation> listeFormations = Factory.getFormationDao().getAll();
+				
+				for(Formation f : listeFormations)
+				{
+					model.addRow(new Object [] { f.getNumFormation(), f.getNomFormation(), f.getNivString(), f.getDifficulte().getDesc(), f.getDureeHeure() });
+				}
+				
 				panel_toutesFormations.setVisible(true);
 				panel_form.setVisible(false);
 				panel_formationsSuivis.setVisible(false);

@@ -17,6 +17,7 @@ public class CourDao extends DAO2<Cour,Integer,Integer>{
 			this.findStat = this.conn.prepareStatement("SELECT * FROM `u-learn`.`cours` WHERE `numC`=?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			this.insertStat = this.conn.prepareStatement("INSERT INTO `u-learn`.`cours`(`numC`, `nomC`, `descC`, `numFrm`, `chemin`)"
 					+ "VALUES(?,?,?,?,?);");
+			this.deleteStat = this.conn.prepareStatement("DELETE FROM `u-learn`.`cours` WHERE `numC`=? AND `numFrm`=?");
 		}
 		catch(Exception x)
 		{
@@ -39,7 +40,8 @@ public class CourDao extends DAO2<Cour,Integer,Integer>{
 				c = new Cour(res.getInt("numC"),
 							 res.getString("nomC"),
 							 res.getString("descC"),
-							 res.getString("chemin"));
+							 res.getString("chemin"),
+							 res.getInt("numFrm"));
 			}
 			
 			return c;
@@ -82,6 +84,18 @@ public class CourDao extends DAO2<Cour,Integer,Integer>{
 	@Override
 	public boolean delete(Cour c)
 	{
+		try
+		{
+			deleteStat.setInt(1, c.getNumCour());
+			deleteStat.setInt(2, c.getNumFrm());
+			
+			return deleteStat.execute();
+		}
+		catch(SQLException x)
+		{
+			x.printStackTrace();
+		}
+		
 		return false;
 	}
 

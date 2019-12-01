@@ -9,7 +9,6 @@ public class Formation {
 	private int niveauMin;
 	private EnumDifficulte difficulte;
 	private int dureeEstimee;
-	private int nbrCours;
 	private String description;
 	private String createur;
 	
@@ -20,7 +19,7 @@ public class Formation {
 	
 
 	
-	public Formation(int num,String nom,String description,int niv,EnumDifficulte dif,int duree,int nbrC)
+	public Formation(int num,String nom,String description,int niv,EnumDifficulte dif,int duree,String createur)
 	{
 		this.numFormation = num;
 		this.nomFormation = nom;
@@ -28,7 +27,9 @@ public class Formation {
 		this.niveauMin = niv;
 		this.difficulte = dif;
 		this.dureeEstimee = duree;
-		this.nbrCours = nbrC;
+		this.createur = createur;
+		
+		listeCours = new ArrayList<Cour>();
 	}
 	
 
@@ -91,13 +92,6 @@ public class Formation {
 		this.dureeEstimee = dureeEstimee;
 	}
 
-	public int getNbrCours() {
-		return nbrCours;
-	}
-
-	public void setNbrCours(int nbrCours) {
-		this.nbrCours = nbrCours;
-	}
 
 	public int getNumFormation() {
 		return numFormation;
@@ -111,6 +105,40 @@ public class Formation {
 	
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public void ajouterCour(Cour c)
+	{
+		this.listeCours.add(c);
+	}
+	
+	public String getDureeHeure()
+	{
+		return this.dureeEstimee+" Heures";
+	}
+	
+	public String getNivString()
+	{
+		if(this.niveauMin==1)
+		{
+			return "L1";
+		}
+		else if(this.niveauMin==2)
+		{
+			return "L2";
+		}
+		else if(this.niveauMin==3)
+		{
+			return "L3";
+		}
+		else if(this.niveauMin==4)
+		{
+			return "M1";
+		}
+		else
+		{
+			return "M2";
+		}
 	}
 
 

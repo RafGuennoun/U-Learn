@@ -18,6 +18,7 @@ public class QuestionDao extends DAO2<Question, Integer, Integer>{
 			this.findStat = this.conn.prepareStatement("SELECT * FROM `u-learn`.`question` WHERE `numQ`=?",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
 			this.insertStat = this.conn.prepareStatement("INSERT INTO `u-learn`.`question`(`numQ`, `question`, `reponse1`, `reponse2`, `bonneRep`, `numQz`"
 					+ "VALUES(?,?,?,?,?,?);");
+			this.deleteStat = this.conn.prepareStatement("DELETE FROM `u-learn`.`question` WHERE `numQ`=? AND `numQz`=?");
 		}
 		catch(SQLException x)
 		{
@@ -41,7 +42,8 @@ public class QuestionDao extends DAO2<Question, Integer, Integer>{
 								 res.getString("question"),
 								 res.getString("reponse1"),
 								 res.getString("reponse2"),
-								 res.getString("bonneRep"));
+								 res.getString("bonneRep"),
+								 res.getInt("numQz"));
 			}
 			
 			return q;
@@ -86,6 +88,18 @@ public class QuestionDao extends DAO2<Question, Integer, Integer>{
 	@Override
 	public boolean delete(Question q)
 	{
+		try
+		{
+			deleteStat.setInt(1, q.getNumQuestion());
+			deleteStat.setInt(2, q.getNumQz());
+			
+			return deleteStat.execute();
+		}
+		catch(SQLException x)
+		{
+			x.printStackTrace();
+		}
+		
 		return false;
 	}
 

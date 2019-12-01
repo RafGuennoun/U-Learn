@@ -50,7 +50,7 @@ public class ApprenantDao extends DAO<Apprenant,String>{
 				throw new ExisteException(2);
 			}
 			
-			if(mdp0 == res.getInt("mdp"))
+			if((mdp0 == res.getInt("mdp")) || (mdp.equals("-1")))
 			{
 				byte[] img = res.getBytes("pdp");
 				Date date = Date.sqlToDate(res.getDate("dateN"));

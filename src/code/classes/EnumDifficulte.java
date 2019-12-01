@@ -2,9 +2,9 @@ package code.classes;
 
 public enum EnumDifficulte {
 	
-	FACILE("facile"),
-	MOYEN("moyen"),
-	DIFFICILE("difficile");
+	FACILE("Facile"),
+	MOYEN("Moyen"),
+	DIFFICILE("Difficile");
 	
 	String desc;
 	

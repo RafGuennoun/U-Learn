@@ -14,6 +14,8 @@ public class Controleur {
 	public static Forum forumSelec = null;
 	public static ArrayList<String> listeImageWiki = new ArrayList<String>();
 	public static ArrayList<byte[]> listeImageAfficherWiki = new ArrayList<byte[]>();
+	public static Formation formationSelec = null;
+	
 	
 	
 }
