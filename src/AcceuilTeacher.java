@@ -52,21 +52,33 @@ public class AcceuilTeacher extends JFrame {
 	private JTextField titre_formation;
 	private JTextField desc_formation;
 	private JTextField duree_formation;
-	private JTextField diff_formation;
-	private JTable table_coursDeFormation;
 	private JTextField titre_cours;
 	private JTextField desc_cours;
-	private JTextField prof_cours;
 	private JTable table_formations;
-	private JTable table_deatilsFormation;
 	private JTable table_mesFormations;
 	private JTable table_coursForm;
-	private JTextField textField_titreWiki;
+	private JTextField txtTitreWiki;
 	private JTextField textField_titrWiki2;
 	private JTable table_allWikis;
 
+	private JTable table;
+	private JTable table_demandes;
+	private JTable table_app;
+	private JTable table_frm;
+	private JTextField txtDomaineWiki;
+	private JTextField txtTitreBlog;
+	private JTextField txtTitreBlog_1;
+	private JTable table_blogs;
+	private JTable table_qst;
+	private JTextField textField_qst;
+	private JTextField textField_rep1;
+	private JTextField textField_rep2;
+	private JTextField textField_bnRep;
+	
+	
 	private String cheminImageWiki;
 	private int parcoureur = 0;
+	private int wikiSelec;
 	/**
 	 * Launch the application.
 	 */
@@ -74,8 +86,7 @@ public class AcceuilTeacher extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AcceuilTeacher frame = new AcceuilTeacher();
-					frame.setVisible(true);
+					new AcceuilTeacher().setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -527,6 +538,7 @@ public class AcceuilTeacher extends JFrame {
 		panel_cours.setLayout(null);
 		
 		JLayeredPane layeredPane_cours = new JLayeredPane();
+		layeredPane_cours.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
 		layeredPane_cours.setBounds(10, 66, 828, 523);
 		panel_cours.add(layeredPane_cours);
 		layeredPane_cours.setLayout(new CardLayout(0, 0));
@@ -595,14 +607,6 @@ public class AcceuilTeacher extends JFrame {
 		duree_formation.setBounds(779, 58, 39, 28);
 		panel_ajoutFormation.add(duree_formation);
 		
-		diff_formation = new JTextField();
-		diff_formation.setHorizontalAlignment(SwingConstants.CENTER);
-		diff_formation.setForeground(new Color(0, 51, 102));
-		diff_formation.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		diff_formation.setColumns(10);
-		diff_formation.setBounds(695, 92, 123, 28);
-		panel_ajoutFormation.add(diff_formation);
-		
 		JLabel lblDifficult = new JLabel("Difficult\u00E9 :");
 		lblDifficult.setHorizontalAlignment(SwingConstants.LEFT);
 		lblDifficult.setForeground(new Color(0, 51, 102));
@@ -615,30 +619,29 @@ public class AcceuilTeacher extends JFrame {
 		scrollPane.setBounds(357, 144, 461, 228);
 		panel_ajoutFormation.add(scrollPane);
 		
-		table_coursDeFormation = new JTable();
-		table_coursDeFormation.setBackground(Color.WHITE);
-		table_coursDeFormation.setModel(new DefaultTableModel(
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
-				"Titre", "Description", "Professeur"
+				"Titre", "Description"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class
+				String.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, false, false
+				false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
 		});
-		table_coursDeFormation.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		scrollPane.setViewportView(table_coursDeFormation);
+		table.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		scrollPane.setViewportView(table);
 		
 		JLabel lblTitreDuCours = new JLabel("Titre du cours : ");
 		lblTitreDuCours.setHorizontalAlignment(SwingConstants.LEFT);
@@ -669,24 +672,8 @@ public class AcceuilTeacher extends JFrame {
 		desc_cours.setForeground(new Color(0, 51, 102));
 		desc_cours.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
 		desc_cours.setColumns(10);
-		desc_cours.setBounds(127, 186, 220, 62);
+		desc_cours.setBounds(127, 186, 220, 105);
 		panel_ajoutFormation.add(desc_cours);
-		
-		JLabel lblProfesseurMr = new JLabel("Professeur : ");
-		lblProfesseurMr.setHorizontalAlignment(SwingConstants.LEFT);
-		lblProfesseurMr.setForeground(new Color(0, 51, 102));
-		lblProfesseurMr.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
-		lblProfesseurMr.setBackground(new Color(0, 51, 102));
-		lblProfesseurMr.setBounds(10, 259, 97, 31);
-		panel_ajoutFormation.add(lblProfesseurMr);
-		
-		prof_cours = new JTextField();
-		prof_cours.setHorizontalAlignment(SwingConstants.CENTER);
-		prof_cours.setForeground(new Color(0, 51, 102));
-		prof_cours.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		prof_cours.setColumns(10);
-		prof_cours.setBounds(127, 259, 220, 31);
-		panel_ajoutFormation.add(prof_cours);
 		
 		JButton btnAjouterLeCours = new JButton("Ajouter le cours");
 		btnAjouterLeCours.setForeground(Color.WHITE);
@@ -748,6 +735,11 @@ public class AcceuilTeacher extends JFrame {
 		JButton btnAjouterLaFormation = new JButton("Ajouter nouvelle formation");
 		btnAjouterLaFormation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				/*  */
+				JOptionPane.showMessageDialog(null, "Votre nouvelle formation a été créée avec succès , n'oubliez pas de lui ajouter un quiz !");			
+			
+				
 			}
 		});
 		btnAjouterLaFormation.setForeground(Color.WHITE);
@@ -798,6 +790,21 @@ public class AcceuilTeacher extends JFrame {
 		txtrRemarqueDfqfdfsd.setForeground(Color.WHITE);
 		txtrRemarqueDfqfdfsd.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
 		scrollPane_7.setViewportView(txtrRemarqueDfqfdfsd);
+		
+		JComboBox comboBox_diff = new JComboBox();
+		comboBox_diff.setForeground(new Color(0, 51, 102));
+		comboBox_diff.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		comboBox_diff.setBorder(null);
+		comboBox_diff.setBackground(Color.WHITE);
+		comboBox_diff.setBounds(702, 93, 116, 27);
+		panel_ajoutFormation.add(comboBox_diff);
+		
+		comboBox_diff.addItem("1");
+		comboBox_diff.addItem("2");
+		comboBox_diff.addItem("3");
+		comboBox_diff.addItem("4");
+		comboBox_diff.addItem("5");
+		comboBox_diff.setSelectedItem(null);
 		
 		
 		
@@ -890,38 +897,302 @@ public class AcceuilTeacher extends JFrame {
 		scrollPane_10.setViewportView(txtrRemarquePour);
 		
 		JPanel panel_quiz_tests = new JPanel();
+		panel_quiz_tests.setBackground(Color.WHITE);
 		panel_quiz_tests.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
 		layeredPane_2.add(panel_quiz_tests, "name_223824716719900");
 		panel_quiz_tests.setLayout(null);
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(10, 11, 223, 299);
+		scrollPane_2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_2.setBounds(10, 11, 375, 192);
 		panel_quiz_tests.add(scrollPane_2);
 		
 		table_formations = new JTable();
+		table_formations.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"N\u00B0", "Titre formation"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Integer.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table_formations.getColumnModel().getColumn(0).setResizable(false);
+		table_formations.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		scrollPane_2.setViewportView(table_formations);
 		
 		JScrollPane scrollPane_6 = new JScrollPane();
-		scrollPane_6.setBounds(243, 11, 575, 299);
+		scrollPane_6.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_6.setBounds(395, 11, 423, 192);
 		panel_quiz_tests.add(scrollPane_6);
 		
-		table_deatilsFormation = new JTable();
-		scrollPane_6.setViewportView(table_deatilsFormation);
+		table_qst = new JTable();
+		table_qst.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"N\u00B0 Question", "Question"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Integer.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table_qst.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		scrollPane_6.setViewportView(table_qst);
+		
+		JButton btnValiderLeTest = new JButton("Valider le test");
+		btnValiderLeTest.setForeground(Color.WHITE);
+		btnValiderLeTest.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		btnValiderLeTest.setBackground(new Color(51, 153, 204));
+		btnValiderLeTest.setBounds(286, 410, 289, 43);
+		panel_quiz_tests.add(btnValiderLeTest);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
+		panel_1.setBackground(Color.WHITE);
+		panel_1.setBounds(10, 214, 808, 185);
+		panel_quiz_tests.add(panel_1);
+		panel_1.setLayout(null);
+		
+		textField_qst = new JTextField();
+		textField_qst.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_qst.setForeground(new Color(0, 51, 102));
+		textField_qst.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		textField_qst.setColumns(10);
+		textField_qst.setBounds(182, 12, 379, 31);
+		panel_1.add(textField_qst);
+		
+		JLabel label_5 = new JLabel("Question ");
+		label_5.setHorizontalAlignment(SwingConstants.CENTER);
+		label_5.setForeground(new Color(0, 51, 102));
+		label_5.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		label_5.setBackground(new Color(0, 51, 102));
+		label_5.setBounds(21, 11, 151, 31);
+		panel_1.add(label_5);
+		
+		JLabel label_15 = new JLabel("1\u00E9re r\u00E9ponse ");
+		label_15.setHorizontalAlignment(SwingConstants.CENTER);
+		label_15.setForeground(new Color(0, 51, 102));
+		label_15.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		label_15.setBackground(new Color(0, 51, 102));
+		label_15.setBounds(21, 53, 151, 31);
+		panel_1.add(label_15);
+		
+		JLabel label_16 = new JLabel("2\u00E9me r\u00E9ponse ");
+		label_16.setHorizontalAlignment(SwingConstants.CENTER);
+		label_16.setForeground(new Color(0, 51, 102));
+		label_16.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		label_16.setBackground(new Color(0, 51, 102));
+		label_16.setBounds(21, 95, 151, 31);
+		panel_1.add(label_16);
+		
+		JLabel label_17 = new JLabel("Bonne r\u00E9ponse ");
+		label_17.setHorizontalAlignment(SwingConstants.CENTER);
+		label_17.setForeground(new Color(0, 51, 102));
+		label_17.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		label_17.setBackground(new Color(0, 51, 102));
+		label_17.setBounds(21, 137, 151, 31);
+		panel_1.add(label_17);
+		
+		textField_rep1 = new JTextField();
+		textField_rep1.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_rep1.setForeground(new Color(0, 51, 102));
+		textField_rep1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		textField_rep1.setColumns(10);
+		textField_rep1.setBounds(182, 54, 379, 31);
+		panel_1.add(textField_rep1);
+		
+		textField_rep2 = new JTextField();
+		textField_rep2.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_rep2.setForeground(new Color(0, 51, 102));
+		textField_rep2.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		textField_rep2.setColumns(10);
+		textField_rep2.setBounds(182, 96, 379, 31);
+		panel_1.add(textField_rep2);
+		
+		textField_bnRep = new JTextField();
+		textField_bnRep.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_bnRep.setForeground(new Color(0, 51, 102));
+		textField_bnRep.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		textField_bnRep.setColumns(10);
+		textField_bnRep.setBounds(182, 138, 379, 31);
+		panel_1.add(textField_bnRep);
+		
+		JButton button_9 = new JButton("Ajouter ");
+		button_9.setForeground(Color.WHITE);
+		button_9.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		button_9.setBackground(new Color(51, 153, 204));
+		button_9.setBounds(626, 31, 161, 32);
+		panel_1.add(button_9);
+		
+		JButton button_10 = new JButton("Modifier");
+		button_10.setForeground(Color.WHITE);
+		button_10.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		button_10.setBackground(new Color(51, 153, 204));
+		button_10.setBounds(626, 75, 161, 32);
+		panel_1.add(button_10);
+		
+		JButton button_11 = new JButton("Supprimer");
+		button_11.setForeground(Color.WHITE);
+		button_11.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		button_11.setBackground(new Color(51, 153, 204));
+		button_11.setBounds(626, 118, 161, 32);
+		panel_1.add(button_11);
+		
+		JPanel panel_demandes = new JPanel();
+		panel_demandes.setBackground(Color.WHITE);
+		layeredPane_2.add(panel_demandes, "name_155316224099300");
+		panel_demandes.setLayout(null);
+		
+		JScrollPane scrollPane_12 = new JScrollPane();
+		scrollPane_12.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_12.setBounds(10, 11, 808, 387);
+		panel_demandes.add(scrollPane_12);
+		
+		table_demandes = new JTable();
+		table_demandes.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"N\u00B0 Demande", "Formation", "ID Apprenant", "Niveau", "Check"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Integer.class, String.class, String.class, Integer.class, Boolean.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table_demandes.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		scrollPane_12.setViewportView(table_demandes);
+		
+		JButton btnRefuser = new JButton("Refuser\r\n");
+		btnRefuser.setForeground(Color.WHITE);
+		btnRefuser.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		btnRefuser.setBackground(new Color(51, 153, 204));
+		btnRefuser.setBounds(465, 409, 200, 44);
+		panel_demandes.add(btnRefuser);
+		
+		JButton btnAccepter = new JButton("Accepter");
+		btnAccepter.setForeground(Color.WHITE);
+		btnAccepter.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		btnAccepter.setBackground(new Color(51, 153, 204));
+		btnAccepter.setBounds(155, 409, 200, 44);
+		panel_demandes.add(btnAccepter);
+		
+		JPanel panel_apprenants = new JPanel();
+		layeredPane_2.add(panel_apprenants, "name_155876957758000");
+		panel_apprenants.setLayout(null);
+		
+		JScrollPane scrollPane_13 = new JScrollPane();
+		scrollPane_13.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_13.setBounds(10, 11, 808, 166);
+		panel_apprenants.add(scrollPane_13);
+		
+		table_frm = new JTable();
+		table_frm.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"N\u00B0 formation", "Titre formation", "Niveau formation"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Integer.class, String.class, Integer.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table_frm.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		scrollPane_13.setViewportView(table_frm);
+		
+		JScrollPane scrollPane_14 = new JScrollPane();
+		scrollPane_14.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_14.setBounds(10, 188, 808, 222);
+		panel_apprenants.add(scrollPane_14);
+		
+		table_app = new JTable();
+		table_app.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"ID Apprenant", "Niveau", "Avencement"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class, Integer.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false, true
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table_app.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		scrollPane_14.setViewportView(table_app);
+		
+		JButton btnSupprimer_1 = new JButton("Supprimer");
+		btnSupprimer_1.setForeground(Color.WHITE);
+		btnSupprimer_1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		btnSupprimer_1.setBackground(new Color(51, 153, 204));
+		btnSupprimer_1.setBounds(328, 421, 185, 32);
+		panel_apprenants.add(btnSupprimer_1);
 		
 		
-		JButton btnAjouterFormation = new JButton("Ajouter formation ");
+		JButton btnAjouterFormation = new JButton("Ajouter");
 		btnAjouterFormation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				panel_ajoutFormation.setVisible(true);
 				panel_mesFormations.setVisible(false);
 				panel_quiz_tests.setVisible(false);
+				panel_demandes.setVisible(false);
+				panel_apprenants.setVisible(false);
 				
 			}
 		});
 		btnAjouterFormation.setForeground(Color.WHITE);
-		btnAjouterFormation.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnAjouterFormation.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
 		btnAjouterFormation.setBackground(new Color(51, 153, 204));
-		btnAjouterFormation.setBounds(10, 11, 226, 32);
+		btnAjouterFormation.setBounds(10, 12, 135, 32);
 		panel_formation.add(btnAjouterFormation);
 		
 		JButton btnMesFormation = new JButton("Mes formations ");
@@ -930,12 +1201,15 @@ public class AcceuilTeacher extends JFrame {
 				panel_ajoutFormation.setVisible(false);
 				panel_mesFormations.setVisible(true);
 				panel_quiz_tests.setVisible(false);
+				panel_demandes.setVisible(false);
+				panel_apprenants.setVisible(false);
+				panel_apprenants.setVisible(false);
 			}
 		});
 		btnMesFormation.setForeground(Color.WHITE);
-		btnMesFormation.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnMesFormation.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
 		btnMesFormation.setBackground(new Color(51, 153, 204));
-		btnMesFormation.setBounds(301, 11, 226, 32);
+		btnMesFormation.setBounds(181, 12, 135, 32);
 		panel_formation.add(btnMesFormation);
 		
 		JButton btnTestsQuiz = new JButton("Tests / Quiz ");
@@ -944,13 +1218,49 @@ public class AcceuilTeacher extends JFrame {
 				panel_ajoutFormation.setVisible(false);
 				panel_mesFormations.setVisible(false);
 				panel_quiz_tests.setVisible(true);
+				panel_demandes.setVisible(false);
+				panel_apprenants.setVisible(false);
 			}
 		});
 		btnTestsQuiz.setForeground(Color.WHITE);
-		btnTestsQuiz.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnTestsQuiz.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
 		btnTestsQuiz.setBackground(new Color(51, 153, 204));
-		btnTestsQuiz.setBounds(592, 11, 226, 32);
+		btnTestsQuiz.setBounds(347, 12, 135, 32);
 		panel_formation.add(btnTestsQuiz);
+		
+		JButton Demandes = new JButton("Demandes");
+		Demandes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			
+				panel_ajoutFormation.setVisible(false);
+				panel_mesFormations.setVisible(false);
+				panel_quiz_tests.setVisible(false);
+				panel_demandes.setVisible(true);
+				panel_apprenants.setVisible(false);
+			}
+		});
+		Demandes.setForeground(Color.WHITE);
+		Demandes.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
+		Demandes.setBackground(new Color(51, 153, 204));
+		Demandes.setBounds(515, 12, 135, 32);
+		panel_formation.add(Demandes);
+		
+		JButton btnApprenatns = new JButton("Apprenatns");
+		btnApprenatns.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				panel_ajoutFormation.setVisible(false);
+				panel_mesFormations.setVisible(false);
+				panel_quiz_tests.setVisible(false);
+				panel_demandes.setVisible(false);
+				panel_apprenants.setVisible(true);
+			}
+		});
+		btnApprenatns.setForeground(Color.WHITE);
+		btnApprenatns.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
+		btnApprenatns.setBackground(new Color(51, 153, 204));
+		btnApprenatns.setBounds(683, 12, 135, 32);
+		panel_formation.add(btnApprenatns);
 		
 	
 		
@@ -977,25 +1287,27 @@ public class AcceuilTeacher extends JFrame {
 		layeredPane_4.add(panel_ajouterWiki, "name_415870858298000");
 		panel_ajouterWiki.setLayout(null);
 		
-		JLabel lblTitreWiki = new JLabel("Titre Wiki");
-		lblTitreWiki.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitreWiki.setForeground(new Color(0, 51, 102));
-		lblTitreWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
-		lblTitreWiki.setBackground(new Color(0, 51, 102));
-		lblTitreWiki.setBounds(10, 11, 327, 29);
-		panel_ajouterWiki.add(lblTitreWiki);
-		
-		textField_titreWiki = new JTextField();
-		textField_titreWiki.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_titreWiki.setForeground(new Color(0, 51, 102));
-		textField_titreWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
-		textField_titreWiki.setColumns(10);
-		textField_titreWiki.setBounds(10, 51, 327, 36);
-		panel_ajouterWiki.add(textField_titreWiki);
+		txtTitreWiki = new JTextField();
+		txtTitreWiki.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				txtTitreWiki.setText("");
+				txtTitreWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+				txtTitreWiki.setForeground(new Color(0, 51, 102));
+			
+			}
+		});
+		txtTitreWiki.setText("Titre Wiki");
+		txtTitreWiki.setHorizontalAlignment(SwingConstants.CENTER);
+		txtTitreWiki.setForeground(new Color(0, 51, 102));
+		txtTitreWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		txtTitreWiki.setColumns(10);
+		txtTitreWiki.setBounds(10, 11, 327, 36);
+		panel_ajouterWiki.add(txtTitreWiki);
 		
 		JLabel lblTexteWiki = new JLabel("Texte Wiki");
 		lblTexteWiki.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTexteWiki.setForeground(new Color(0, 51, 102));
+		lblTexteWiki.setForeground(new Color(51,153,204));
 		lblTexteWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
 		lblTexteWiki.setBackground(new Color(0, 51, 102));
 		lblTexteWiki.setBounds(10, 98, 327, 29);
@@ -1024,7 +1336,7 @@ public class AcceuilTeacher extends JFrame {
 		btnAjouterLeWiki.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				if(textField_titreWiki.getText().equals(""))
+				if(txtTitreWiki.getText().equals(""))
 				{
 					JOptionPane.showMessageDialog(null, "Veuillez entrer un titre");
 				}
@@ -1038,7 +1350,7 @@ public class AcceuilTeacher extends JFrame {
 					int numW = Factory.getWikiDao().getMaxNum()+1;
 					//construire le pojo
 					Wiki w = new Wiki(numW,
-									  textField_titreWiki.getText(),
+									  txtTitreWiki.getText(),
 									  "domaine",
 									  textArea_textWiki.getText(),
 									  Controleur.instructerCo.getId());
@@ -1053,7 +1365,7 @@ public class AcceuilTeacher extends JFrame {
 					Controleur.listeImageWiki = new ArrayList<String>();
 					
 					textArea_textWiki.setText("");
-					textField_titreWiki.setText("");
+					txtTitreWiki.setText("");
 					
 					JOptionPane.showMessageDialog(null, "Wiki ajouté avec succès");
 				}
@@ -1103,6 +1415,9 @@ public class AcceuilTeacher extends JFrame {
 		panel_ajouterWiki.add(btnSelectImageWiki);
 		
 		JButton AjouterImageWiki = new JButton("Ajouter");
+		AjouterImageWiki.setBackground(new Color(51,153,204));
+		AjouterImageWiki.setForeground(Color.WHITE);
+		AjouterImageWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		AjouterImageWiki.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -1116,8 +1431,25 @@ public class AcceuilTeacher extends JFrame {
 				}
 			}
 		});
-		AjouterImageWiki.setBounds(530, 381, 89, 23);
+		AjouterImageWiki.setBounds(516, 377, 128, 29);
 		panel_ajouterWiki.add(AjouterImageWiki);
+		
+		txtDomaineWiki = new JTextField();
+		txtDomaineWiki.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				txtDomaineWiki.setText("");
+				txtDomaineWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+				txtDomaineWiki.setForeground(new Color(0, 51, 102));
+			}
+		});
+		txtDomaineWiki.setText("Domaine Wiki");
+		txtDomaineWiki.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDomaineWiki.setForeground(new Color(0, 51, 102));
+		txtDomaineWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		txtDomaineWiki.setColumns(10);
+		txtDomaineWiki.setBounds(10, 58, 327, 36);
+		panel_ajouterWiki.add(txtDomaineWiki);
 		
 		JPanel panel_AllWikis = new JPanel();
 		panel_AllWikis.setBackground(Color.WHITE);
@@ -1153,6 +1485,24 @@ public class AcceuilTeacher extends JFrame {
 		scrollPane_wiki1.setViewportView(textArea_WikiModif);
 		
 		JButton btnModifierLeWiki = new JButton("Redistribuer");
+		btnModifierLeWiki.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(wikiSelec == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez d'abord afficher le wiki que vous voulez redistribuer");
+				}
+				else
+				{
+					Wiki w = Factory.getWikiDao().find(wikiSelec);
+					w.setTextWiki(textArea_textWiki.getText());
+					Factory.getWikiDao().update(w);
+					Factory.getRedistributionDao().insert(wikiSelec, Controleur.instructerCo.getId());
+					
+					JOptionPane.showMessageDialog(null, "Wiki redistribué");
+				}
+			}
+		});
 		btnModifierLeWiki.setForeground(Color.WHITE);
 		btnModifierLeWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		btnModifierLeWiki.setBackground(new Color(51, 153, 204));
@@ -1192,7 +1542,7 @@ public class AcceuilTeacher extends JFrame {
 		photoW.setForeground(new Color(0, 51, 102));
 		photoW.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		photoW.setHorizontalAlignment(SwingConstants.CENTER);
-		photoW.setBounds(487, 209, 327, 105);
+		photoW.setBounds(507, 209, 283, 126);
 		panel_AllWikis.add(photoW);
 		
 		JButton button_2 = new JButton("<");
@@ -1222,7 +1572,7 @@ public class AcceuilTeacher extends JFrame {
 		button_2.setForeground(Color.WHITE);
 		button_2.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 25));
 		button_2.setBackground(new Color(51, 153, 204));
-		button_2.setBounds(571, 335, 71, 31);
+		button_2.setBounds(517, 346, 125, 31);
 		panel_AllWikis.add(button_2);
 		
 		JButton button_3 = new JButton(">");
@@ -1254,7 +1604,7 @@ public class AcceuilTeacher extends JFrame {
 		button_3.setForeground(Color.WHITE);
 		button_3.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 25));
 		button_3.setBackground(new Color(51, 153, 204));
-		button_3.setBounds(661, 335, 71, 31);
+		button_3.setBounds(662, 346, 129, 31);
 		panel_AllWikis.add(button_3);
 		
 		JButton btnAfficher_2 = new JButton("Afficher");
@@ -1271,6 +1621,7 @@ public class AcceuilTeacher extends JFrame {
 				else
 				{
 					int numW = (Integer)model.getValueAt(index, 0);
+					wikiSelec = numW;
 					Wiki w = Factory.getWikiDao().find(numW);
 					textField_titrWiki2.setText(w.getNomWiki());
 					textArea_WikiModif.setText(w.getTextWiki());
@@ -1289,7 +1640,7 @@ public class AcceuilTeacher extends JFrame {
 		btnAfficher_2.setForeground(Color.WHITE);
 		btnAfficher_2.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		btnAfficher_2.setBackground(new Color(51, 153, 204));
-		btnAfficher_2.setBounds(52, 398, 152, 36);
+		btnAfficher_2.setBounds(79, 398, 152, 36);
 		panel_AllWikis.add(btnAfficher_2);
 		
 		JButton btnSupprimer_wiki = new JButton("Supprimer");
@@ -1319,11 +1670,12 @@ public class AcceuilTeacher extends JFrame {
 						((DefaultTableModel)table_allWikis.getModel()).removeRow(index);
 					}
 				}
-				
-				
 			}
 		});
-		btnSupprimer_wiki.setBounds(290, 402, 89, 23);
+		btnSupprimer_wiki.setForeground(Color.WHITE);
+		btnSupprimer_wiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnSupprimer_wiki.setBackground(new Color(51, 153, 204));
+		btnSupprimer_wiki.setBounds(263, 398, 152, 36);
 		panel_AllWikis.add(btnSupprimer_wiki);
 		
 		JButton btnAjouterWiki = new JButton("Ajouter Wiki");
@@ -1364,7 +1716,219 @@ public class AcceuilTeacher extends JFrame {
 
 		
 		JPanel panel_blogs = new JPanel();
+		panel_blogs.setBackground(Color.WHITE);
 		layeredPane_cours.add(panel_blogs, "name_99719566024600");
+		panel_blogs.setLayout(null);
+		
+		JLayeredPane layeredPane_3 = new JLayeredPane();
+		layeredPane_3.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
+		layeredPane_3.setBounds(0, 53, 824, 466);
+		panel_blogs.add(layeredPane_3);
+		layeredPane_3.setLayout(new CardLayout(0, 0));
+		
+		JPanel panel_ajouterBlog = new JPanel();
+		panel_ajouterBlog.setBackground(Color.WHITE);
+		layeredPane_3.add(panel_ajouterBlog, "name_157640361671800");
+		panel_ajouterBlog.setLayout(null);
+		
+		txtTitreBlog = new JTextField();
+		txtTitreBlog.setText("Titre Blog");
+		txtTitreBlog.setHorizontalAlignment(SwingConstants.CENTER);
+		txtTitreBlog.setForeground(new Color(0, 51, 102));
+		txtTitreBlog.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		txtTitreBlog.setColumns(10);
+		txtTitreBlog.setBounds(10, 11, 327, 36);
+		panel_ajouterBlog.add(txtTitreBlog);
+		
+		JLabel lblTexteBlog = new JLabel("Texte Blog");
+		lblTexteBlog.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTexteBlog.setForeground(new Color(51, 153, 204));
+		lblTexteBlog.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		lblTexteBlog.setBackground(new Color(0, 51, 102));
+		lblTexteBlog.setBounds(10, 58, 327, 29);
+		panel_ajouterBlog.add(lblTexteBlog);
+		
+		JScrollPane scrollPane_15 = new JScrollPane();
+		scrollPane_15.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_15.setBounds(10, 98, 327, 353);
+		panel_ajouterBlog.add(scrollPane_15);
+		
+		JLabel label_7 = new JLabel("Ajoutez des images !");
+		label_7.setHorizontalAlignment(SwingConstants.CENTER);
+		label_7.setForeground(new Color(0, 51, 102));
+		label_7.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		label_7.setBackground(Color.LIGHT_GRAY);
+		label_7.setBounds(379, 11, 409, 313);
+		panel_ajouterBlog.add(label_7);
+		
+		JButton btnAjouterLeBlog = new JButton("Ajouter le Blog");
+		btnAjouterLeBlog.setForeground(Color.WHITE);
+		btnAjouterLeBlog.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnAjouterLeBlog.setBackground(new Color(51, 153, 204));
+		btnAjouterLeBlog.setBounds(401, 405, 387, 46);
+		panel_ajouterBlog.add(btnAjouterLeBlog);
+		
+		JButton button_1 = new JButton("Select Image");
+		button_1.setForeground(Color.WHITE);
+		button_1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		button_1.setBackground(new Color(51, 153, 204));
+		button_1.setBounds(494, 328, 196, 31);
+		panel_ajouterBlog.add(button_1);
+		
+		JButton button_4 = new JButton("Ajouter");
+		button_4.setForeground(Color.WHITE);
+		button_4.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		button_4.setBackground(new Color(51, 153, 204));
+		button_4.setBounds(530, 370, 128, 29);
+		panel_ajouterBlog.add(button_4);
+		
+		JPanel panel_allBlogs = new JPanel();
+		panel_allBlogs.setBackground(Color.WHITE);
+		layeredPane_3.add(panel_allBlogs, "name_157643503149700");
+		panel_allBlogs.setLayout(null);
+		
+		txtTitreBlog_1 = new JTextField();
+		txtTitreBlog_1.setText("Titre Blog");
+		txtTitreBlog_1.setHorizontalAlignment(SwingConstants.CENTER);
+		txtTitreBlog_1.setForeground(new Color(0, 51, 102));
+		txtTitreBlog_1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		txtTitreBlog_1.setEditable(false);
+		txtTitreBlog_1.setColumns(10);
+		txtTitreBlog_1.setBounds(10, 11, 467, 36);
+		panel_allBlogs.add(txtTitreBlog_1);
+		
+		JLabel lblTexteBlog_1 = new JLabel("Texte Blog");
+		lblTexteBlog_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTexteBlog_1.setForeground(new Color(0, 51, 102));
+		lblTexteBlog_1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
+		lblTexteBlog_1.setBackground(new Color(0, 51, 102));
+		lblTexteBlog_1.setBounds(487, 13, 327, 29);
+		panel_allBlogs.add(lblTexteBlog_1);
+		
+		JScrollPane scrollPane_16 = new JScrollPane();
+		scrollPane_16.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_16.setBounds(487, 58, 327, 142);
+		panel_allBlogs.add(scrollPane_16);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setForeground(new Color(0, 51, 102));
+		textArea.setEditable(false);
+		textArea.setLineWrap(true);
+		textArea.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		scrollPane_16.setViewportView(textArea);
+		
+		JButton button = new JButton("Redistribuer");
+		button.setForeground(Color.WHITE);
+		button.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		button.setBackground(new Color(51, 153, 204));
+		button.setBounds(497, 405, 306, 46);
+		panel_allBlogs.add(button);
+		
+		JScrollPane scrollPane_17 = new JScrollPane();
+		scrollPane_17.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_17.setBounds(10, 58, 467, 346);
+		panel_allBlogs.add(scrollPane_17);
+		
+		table_blogs = new JTable();
+		table_blogs.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"N\u00B0", "Titre"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Integer.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table_blogs.setForeground(new Color(0, 0, 0));
+		table_blogs.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		scrollPane_17.setViewportView(table_blogs);
+		
+		JLabel label_12 = new JLabel("Pas de photo !");
+		label_12.setHorizontalAlignment(SwingConstants.CENTER);
+		label_12.setForeground(new Color(0, 51, 102));
+		label_12.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		label_12.setBounds(507, 211, 283, 141);
+		panel_allBlogs.add(label_12);
+		
+		JButton button_5 = new JButton("<");
+		button_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		button_5.setForeground(Color.WHITE);
+		button_5.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 25));
+		button_5.setBackground(new Color(51, 153, 204));
+		button_5.setBounds(517, 363, 125, 31);
+		panel_allBlogs.add(button_5);
+		
+		JButton button_6 = new JButton(">");
+		button_6.setForeground(Color.WHITE);
+		button_6.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 25));
+		button_6.setBackground(new Color(51, 153, 204));
+		button_6.setBounds(662, 363, 129, 31);
+		panel_allBlogs.add(button_6);
+		
+		JButton button_7 = new JButton("Afficher");
+		button_7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		button_7.setForeground(Color.WHITE);
+		button_7.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		button_7.setBackground(new Color(51, 153, 204));
+		button_7.setBounds(79, 415, 152, 36);
+		panel_allBlogs.add(button_7);
+		
+		JButton button_8 = new JButton("Supprimer");
+		button_8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		button_8.setForeground(Color.WHITE);
+		button_8.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		button_8.setBackground(new Color(51, 153, 204));
+		button_8.setBounds(263, 415, 152, 36);
+		panel_allBlogs.add(button_8);
+		
+		JButton btnAjouterUnBlog = new JButton("Ajouter un blog");
+		btnAjouterUnBlog.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				panel_ajouterBlog.setVisible(true);
+				panel_allBlogs.setVisible(false);
+			}
+		});
+		btnAjouterUnBlog.setForeground(Color.WHITE);
+		btnAjouterUnBlog.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnAjouterUnBlog.setBackground(new Color(51, 153, 204));
+		btnAjouterUnBlog.setBounds(161, 11, 176, 31);
+		panel_blogs.add(btnAjouterUnBlog);
+		
+		JButton btnToutLesBlogs = new JButton("Tout les blogs");
+		btnToutLesBlogs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				panel_ajouterBlog.setVisible(false);
+				panel_allBlogs.setVisible(true);
+			}
+		});
+		btnToutLesBlogs.setForeground(Color.WHITE);
+		btnToutLesBlogs.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnToutLesBlogs.setBackground(new Color(51, 153, 204));
+		btnToutLesBlogs.setBounds(467, 11, 176, 31);
+		panel_blogs.add(btnToutLesBlogs);
+		
+		JPanel panel_sondage = new JPanel();
+		layeredPane_cours.add(panel_sondage, "name_158399934138600");
 		
 		JLabel lblFormation = new JLabel("Formation");
 		lblFormation.addMouseListener(new MouseAdapter() {
@@ -1372,6 +1936,11 @@ public class AcceuilTeacher extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 				panel_formation.setVisible(true);
 				panel_forum.setVisible(false);
+				panel_sondage.setVisible(false);
+				panel_wiki.setVisible(false);
+				panel_blogs.setVisible(false);
+				
+				
 				
 			}
 		});
@@ -1379,7 +1948,7 @@ public class AcceuilTeacher extends JFrame {
 		lblFormation.setBounds(10, 6, 117, 49);
 		panel_cours.add(lblFormation);
 		
-		JLabel lblForum = new JLabel("");
+		JLabel lblForum = new JLabel("forum");
 		lblForum.setIcon(new ImageIcon("C:\\Users\\YACINE\\Desktop\\Icons\\help_60px.png"));
 		lblForum.addMouseListener(new MouseAdapter() {
 			@Override
@@ -1393,8 +1962,9 @@ public class AcceuilTeacher extends JFrame {
 					model.addRow(new Object [] { f.getNumForum(), f.getNomForum(), f.isResolu() });
 				}
 			
-				panel_forum.setVisible(true);
 				panel_formation.setVisible(false);
+				panel_forum.setVisible(true);
+				panel_sondage.setVisible(false);
 				panel_wiki.setVisible(false);
 				panel_blogs.setVisible(false);
 			}
@@ -1408,9 +1978,10 @@ public class AcceuilTeacher extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-				panel_wiki.setVisible(true);
-				panel_forum.setVisible(false);
 				panel_formation.setVisible(false);
+				panel_forum.setVisible(false);
+				panel_sondage.setVisible(false);
+				panel_wiki.setVisible(true);
 				panel_blogs.setVisible(false);
 			}
 		});
@@ -1419,6 +1990,16 @@ public class AcceuilTeacher extends JFrame {
 		panel_cours.add(lblWiki);
 		
 		JLabel lblBlogs = new JLabel("blogs");
+		lblBlogs.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				panel_formation.setVisible(false);
+				panel_forum.setVisible(false);
+				panel_sondage.setVisible(false);
+				panel_wiki.setVisible(false);
+				panel_blogs.setVisible(true);
+			}
+		});
 		lblBlogs.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBlogs.setBounds(721, 6, 117, 49);
 		panel_cours.add(lblBlogs);
@@ -1772,12 +2353,65 @@ public class AcceuilTeacher extends JFrame {
 		btnSupprimer.setBounds(347, 402, 89, 23);
 		panel_forum.add(btnSupprimer);
 		
+		JPanel panel_library = new JPanel();
+		panel_library.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
+		panel_library.setBackground(Color.WHITE);
+		panel_library.setLayout(null);
+		layeredPane_cours.add(panel_library, "name_155047291174800");
+		
 		JLabel lblSondage = new JLabel("Sondage");
+		lblSondage.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				panel_formation.setVisible(false);
+				panel_forum.setVisible(false);
+				panel_sondage.setVisible(true);
+				panel_wiki.setVisible(false);
+				panel_blogs.setVisible(false);
+			}
+		});
 		lblSondage.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSondage.setBounds(164, 6, 117, 49);
 		panel_cours.add(lblSondage);
 		
+		panel_library.setVisible(true);
+		 panel_formation.setVisible(false);
+		panel_forum.setVisible(false);
+		panel_blogs.setVisible(false);
 		
+		
+		JLabel lblNewLabel_2 = new JLabel("");
+		lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\YACINE\\eclipse-workspace\\U-Learn\\Icons\\library_120px.png"));
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_2.setBounds(531, 63, 209, 186);
+		panel_library.add(lblNewLabel_2);
+		
+		JLabel label_11 = new JLabel("U");
+		label_11.setHorizontalAlignment(SwingConstants.CENTER);
+		label_11.setForeground(new Color(0, 51, 102));
+		label_11.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 200));
+		label_11.setBackground(new Color(0, 153, 0));
+		label_11.setBounds(0, 73, 253, 176);
+		panel_library.add(label_11);
+		
+		JLabel label_13 = new JLabel("Learn");
+		label_13.setForeground(new Color(0, 51, 102));
+		label_13.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 70));
+		label_13.setBackground(new Color(0, 153, 0));
+		label_13.setBounds(197, 89, 253, 108);
+		panel_library.add(label_13);
+		
+		JLabel lblLibrary = new JLabel("Library");
+		lblLibrary.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLibrary.setForeground(new Color(0, 51, 102));
+		lblLibrary.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 170));
+		lblLibrary.setBackground(new Color(0, 153, 0));
+		lblLibrary.setBounds(0, 260, 828, 217);
+		panel_library.add(lblLibrary);
+		
+		
+		
+	
 		
 		
 		
@@ -1809,7 +2443,7 @@ public class AcceuilTeacher extends JFrame {
 		});
 		contentPane.add(lblSs);
 		lblSs.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSs.setIcon(new ImageIcon("C:\\Users\\YACINE\\Desktop\\Icons\\sorting_options_80px.png"));
+		lblSs.setIcon(new ImageIcon("C:\\Users\\YACINE\\eclipse-workspace\\U-Learn\\Icons\\sorting_options_80px.png"));
 		
 	
 		

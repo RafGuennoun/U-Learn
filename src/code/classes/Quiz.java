@@ -6,14 +6,12 @@ public class Quiz {
 	private final int numQuiz;
 	private String nomQuiz;
 	private ArrayList<Question> questions;
-	private ArrayList<String> reponsesDonnees;
 	
 	public Quiz(int num, String nom)
 	{
 		this.numQuiz = num;
 		this.nomQuiz = nom;
 		this.questions = new ArrayList<Question>();
-		this.reponsesDonnees = new ArrayList<String>();
 	}
 
 	public String getNomQuiz() {
@@ -32,30 +30,25 @@ public class Quiz {
 		return questions;
 	}
 
-	public ArrayList<String> getReponsesDonnees() {
-		return reponsesDonnees;
-	}
 	
 	public void ajouterQuestion(Question q)
 	{
 		this.questions.add(q);
 	}
 	
-	public void donnerReponse(String r)
-	{
-		this.reponsesDonnees.add(r);
-	}
-	
-	public float corriger()
+	public double corriger()
 	{
 		int s=0;
-		for(int i=0; i<this.questions.size(); i++)
+		
+		for(Question q : this.questions)
 		{
-			if(questions.get(i).getBonneRep() == reponsesDonnees.get(i))
-				s += 1;
+			if(q.getBonneRep().equals(q.getRepDonnee()))
+			{
+				s++;
+			}
 		}
 		
-		return (float)(s*100)/(this.questions.size());
+		return (double)((s*100)/this.questions.size());
 	}
 
 }

@@ -112,6 +112,10 @@ public class WikiDao extends DAO2<Wiki,Integer,String>{
 	{
 		try
 		{
+			//supprimer les redistribution du wiki
+			Factory.getRedistributionDao().delete(w.getNumWiki());
+			
+			//supprimer les images du wiki
 			PreparedStatement deleteImages = this.conn.prepareStatement("DELETE FROM `u-learn`.`image_wiki` WHERE `numW`=?");
 			deleteImages.setInt(1, w.getNumWiki());
 			deleteImages.execute();

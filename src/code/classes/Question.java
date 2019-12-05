@@ -6,6 +6,7 @@ public class Question {
 	private String reponse1;
 	private String reponse2;
 	private String bonneRep;
+	private String repDonnee;
 	private int numQz;
 	
 	
@@ -22,6 +23,16 @@ public class Question {
 		this.reponse2=reponse2;
 		this.bonneRep=bonneRep;
 		this.numQz = numQz;
+		this.repDonnee = "";
+	}
+	
+
+	public String getRepDonnee() {
+		return repDonnee;
+	}
+
+	public void setRepDonnee(String repDonnee) {
+		this.repDonnee = repDonnee;
 	}
 
 	public int getNumQz() {

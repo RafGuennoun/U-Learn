@@ -49,5 +49,21 @@ public class Factory {
 	{
 		return new FormationDao(conn);
 	}
+	
+	public static DemandeDao getDemandeDao()
+	{
+		return new DemandeDao(conn);
+	}
+	
+	public static SuivreDao getSuivreDao()
+	{
+		return new SuivreDao(conn);
+	}
+	
+	public static RedistributionDao getRedistributionDao()
+	{
+		return new RedistributionDao(conn);
+	}
+	
 
 }

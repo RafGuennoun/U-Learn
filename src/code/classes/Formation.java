@@ -140,6 +140,11 @@ public class Formation {
 			return "M2";
 		}
 	}
+	
+	public double getPourcentageCour()
+	{
+		return (double)(1/(this.listeCours.size()+1));
+	}
 
 
 
