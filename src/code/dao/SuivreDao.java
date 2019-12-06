@@ -126,6 +126,28 @@ public class SuivreDao {
 		
 		return liste;
 	}
+	public int getNbrApp(int numFrm)
+	{
+		int nbr = 0;
+		
+		try
+		{
+			PreparedStatement getNbr = this.conn.prepareStatement("SELECT count(*) as X FROM `u-learn`.`suivre` WHERE `numFrm`=?");
+			getNbr.setInt(1, numFrm);
+			
+			ResultSet res = getNbr.executeQuery();
+			if(res.first())
+			{
+				nbr = res.getInt(1);
+			}
+		}
+		catch(SQLException x)
+		{
+			x.printStackTrace();
+		}
+		
+		return nbr;
+	}
 	
 
 }

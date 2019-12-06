@@ -1,8 +1,10 @@
 package code.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import code.classes.Cour;
 
@@ -98,5 +100,51 @@ public class CourDao extends DAO2<Cour,Integer,Integer>{
 		
 		return false;
 	}
+	
+	public int getMaxNum()
+	{
+		try
+		{
+			PreparedStatement stat = this.conn.prepareStatement("SELECT max(`numC`) FROM `u-learn`.`cours`");
+			ResultSet res = stat.executeQuery();
+			
+			if(res.first())
+			{
+				return res.getInt(1);
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		catch(SQLException x)
+		{
+			x.printStackTrace();
+		}
+		
+		return 0;
+	}
+	
+	public ArrayList<Cour> getAll()
+	{
+		ArrayList<Cour> liste = new ArrayList<Cour>();
+		try
+		{
+			PreparedStatement getAllStat = this.conn.prepareStatement("SELECT `numC` FROM `u-learn`.`cours`",ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet res = getAllStat.executeQuery();
+			
+			while(res.next())
+			{
+				liste.add(Factory.getCourDao().find(res.getInt(1)));
+			}
+		}
+		catch(SQLException x)
+		{
+			x.printStackTrace();
+		}
+		
+		return liste;
+	}
+	
 
 }

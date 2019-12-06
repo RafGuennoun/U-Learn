@@ -139,6 +139,30 @@ public class FormationDao extends DAO2<Formation, Integer, String>{
 		return false;
 	}
 	
+	public int getMaxNum()
+	{
+		try
+		{
+			PreparedStatement stat = this.conn.prepareStatement("SELECT max(`numFrm`) FROM `u-learn`.`formation`");
+			ResultSet res = stat.executeQuery();
+			
+			if(res.first())
+			{
+				return res.getInt(1);
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		catch(SQLException x)
+		{
+			x.printStackTrace();
+		}
+		
+		return 0;
+	}
+	
 	public ArrayList<Formation> getAll()
 	{
 		ArrayList<Formation> liste = new ArrayList<Formation>();

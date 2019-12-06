@@ -33,7 +33,10 @@ import javax.swing.table.TableModel;
 
 import code.classes.Blog;
 import code.classes.Commentaire;
+import code.classes.Cour;
 import code.classes.Date;
+import code.classes.EnumDifficulte;
+import code.classes.Formation;
 import code.classes.Forum;
 import code.classes.Wiki;
 import code.dao.Factory;
@@ -63,7 +66,7 @@ public class AcceuilTeacher extends JFrame {
 	private JTextField textField_titrWiki2;
 	private JTable table_allWikis;
 
-	private JTable table;
+	private JTable table_coursAjouter;
 	private JTable table_demandes;
 	private JTable table_app;
 	private JTable table_frm;
@@ -77,9 +80,11 @@ public class AcceuilTeacher extends JFrame {
 	private JTextField textField_rep2;
 	private JTextField textField_bnRep;
 	
-	
+	//variable utilisées dans les traitements
 	private String cheminImageWiki="";
 	private String cheminImageBlog="";
+	private String cheminCour="";
+	private int offset=1;
 	private int parcoureur = 0;
 	private int parcoureurB = 0;
 	private int wikiSelec;
@@ -623,8 +628,8 @@ public class AcceuilTeacher extends JFrame {
 		scrollPane.setBounds(357, 144, 461, 228);
 		panel_ajoutFormation.add(scrollPane);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
+		table_coursAjouter = new JTable();
+		table_coursAjouter.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -644,8 +649,8 @@ public class AcceuilTeacher extends JFrame {
 				return columnEditables[column];
 			}
 		});
-		table.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
-		scrollPane.setViewportView(table);
+		table_coursAjouter.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		scrollPane.setViewportView(table_coursAjouter);
 		
 		JLabel lblTitreDuCours = new JLabel("Titre du cours : ");
 		lblTitreDuCours.setHorizontalAlignment(SwingConstants.LEFT);
@@ -680,6 +685,35 @@ public class AcceuilTeacher extends JFrame {
 		panel_ajoutFormation.add(desc_cours);
 		
 		JButton btnAjouterLeCours = new JButton("Ajouter le cours");
+		btnAjouterLeCours.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(titre_cours.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Titre Cour manquant");
+				}
+				else if(cheminCour.equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Pas de cour selectionné");
+				}
+				else
+				{
+					int numC = Factory.getCourDao().getMaxNum()+offset;
+					int numF = Factory.getFormationDao().getMaxNum()+1;
+					offset++;
+					Cour c = new Cour(numC,titre_cours.getText(),desc_cours.getText(),cheminCour,numF);
+					Controleur.listeCours.add(c);
+					
+					cheminCour = "";
+					titre_cours.setText("");
+					desc_cours.setText("");
+					JOptionPane.showMessageDialog(null, "Cour ajouté");
+					DefaultTableModel model = (DefaultTableModel)table_coursAjouter.getModel();
+					model.addRow(new Object[] {c.getNomCour(), c.getDescription()});
+					
+				}
+			}
+		});
 		btnAjouterLeCours.setForeground(Color.WHITE);
 		btnAjouterLeCours.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		btnAjouterLeCours.setBackground(new Color(51, 153, 204));
@@ -708,10 +742,10 @@ public class AcceuilTeacher extends JFrame {
 					if(result == JFileChooser.APPROVE_OPTION)
 					{
 						File selectedfile = fileChooser.getSelectedFile();
-						String path = selectedfile.getAbsolutePath();
+						cheminCour = selectedfile.getAbsolutePath();
 						//System.out.println(path);
 						//System.out.println(selectedfile.getName());
-						Desktop.getDesktop().open(new java.io.File(path));
+						Desktop.getDesktop().open(new java.io.File(cheminCour));
 						
 					//System.out.println(path);
 					}
@@ -736,14 +770,78 @@ public class AcceuilTeacher extends JFrame {
 		buttonPDF.setBounds(174, 301, 135, 31);
 		panel_ajoutFormation.add(buttonPDF);
 		
+		JComboBox comboBox_niv = new JComboBox();
+		comboBox_niv.setForeground(new Color(0, 51, 102));
+		comboBox_niv.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		comboBox_niv.setBorder(null);
+		comboBox_niv.setBackground(Color.WHITE);
+		comboBox_niv.setBounds(653, 58, 65, 27);
+		panel_ajoutFormation.add(comboBox_niv);
+		
+		comboBox_niv.addItem("L1");
+		comboBox_niv.addItem("L2");
+		comboBox_niv.addItem("L3");
+		comboBox_niv.addItem("M1");
+		comboBox_niv.addItem("M2");
+		comboBox_niv.setSelectedItem(null);
+		
+		JComboBox comboBox_diff = new JComboBox();
+		comboBox_diff.setForeground(new Color(0, 51, 102));
+		comboBox_diff.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		comboBox_diff.setBorder(null);
+		comboBox_diff.setBackground(Color.WHITE);
+		comboBox_diff.setBounds(702, 93, 116, 27);
+		panel_ajoutFormation.add(comboBox_diff);
+		
+		comboBox_diff.addItem("Facile");
+		comboBox_diff.addItem("Moyen");
+		comboBox_diff.addItem("Difficile");
+		comboBox_diff.setSelectedItem(null);
+		
 		JButton btnAjouterLaFormation = new JButton("Ajouter nouvelle formation");
 		btnAjouterLaFormation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				/*  */
-				JOptionPane.showMessageDialog(null, "Votre nouvelle formation a été créée avec succès , n'oubliez pas de lui ajouter un quiz !");			
-			
+			if(titre_formation.getText().equals(""))
+			{
+				JOptionPane.showMessageDialog(null, "Titre formation manquant");
+			}
+			else if(((String)comboBox_diff.getSelectedItem()).equals(""))
+			{
+				JOptionPane.showMessageDialog(null, "Difficulté manquante");
+			}
+			else if(((String)comboBox_niv.getSelectedItem()).equals(""))
+			{
+				JOptionPane.showMessageDialog(null, "Niveau manquant");
+			}
+			else if(Controleur.listeCours.size()==0)
+			{
+				JOptionPane.showMessageDialog(null, "Vous devez ajouter au moins un cours");
+			}
+			else
+			{
+				int numF = Factory.getFormationDao().getMaxNum()+1;
+				EnumDifficulte diff = EnumDifficulte.transform((String)comboBox_diff.getSelectedItem());
+				int duree = Integer.valueOf(duree_formation.getText());
 				
+				
+				Formation f = new Formation(numF, titre_formation.getText(), desc_formation.getText(),
+						(int)comboBox_niv.getSelectedItem(), diff, duree, Controleur.instructerCo.getId());
+				Controleur.formationSelec = f;
+				
+				JOptionPane.showMessageDialog(null, "Parfait, ajoutez un quiz pour finaliser");
+				offset = 1;
+				titre_cours.setText("");
+				titre_formation.setText("");
+				desc_formation.setText("");
+				duree_formation.setText("");
+				
+				//envoyer l'instructeur a la page des quiz pour ajouter un quiz
+				
+			}
+			
+			
+			
 			}
 		});
 		btnAjouterLaFormation.setForeground(Color.WHITE);
@@ -760,22 +858,13 @@ public class AcceuilTeacher extends JFrame {
 		lblNiv.setBounds(617, 60, 39, 22);
 		panel_ajoutFormation.add(lblNiv);
 		
-		JComboBox comboBox_niv = new JComboBox();
-		comboBox_niv.setForeground(new Color(0, 51, 102));
-		comboBox_niv.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
-		comboBox_niv.setBorder(null);
-		comboBox_niv.setBackground(Color.WHITE);
-		comboBox_niv.setBounds(653, 58, 65, 27);
-		panel_ajoutFormation.add(comboBox_niv);
 		
-		comboBox_niv.addItem("L1");
-		comboBox_niv.addItem("L2");
-		comboBox_niv.addItem("L3");
-		comboBox_niv.addItem("M1");
-		comboBox_niv.addItem("M2");
-		comboBox_niv.setSelectedItem(null);
 		
 		JButton btnAjouterAUne = new JButton("Ajouter a une formation");
+		btnAjouterAUne.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		btnAjouterAUne.setForeground(Color.WHITE);
 		btnAjouterAUne.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 15));
 		btnAjouterAUne.setBackground(new Color(51, 153, 204));
@@ -795,20 +884,7 @@ public class AcceuilTeacher extends JFrame {
 		txtrRemarqueDfqfdfsd.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
 		scrollPane_7.setViewportView(txtrRemarqueDfqfdfsd);
 		
-		JComboBox comboBox_diff = new JComboBox();
-		comboBox_diff.setForeground(new Color(0, 51, 102));
-		comboBox_diff.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
-		comboBox_diff.setBorder(null);
-		comboBox_diff.setBackground(Color.WHITE);
-		comboBox_diff.setBounds(702, 93, 116, 27);
-		panel_ajoutFormation.add(comboBox_diff);
 		
-		comboBox_diff.addItem("1");
-		comboBox_diff.addItem("2");
-		comboBox_diff.addItem("3");
-		comboBox_diff.addItem("4");
-		comboBox_diff.addItem("5");
-		comboBox_diff.setSelectedItem(null);
 		
 		
 		
@@ -856,7 +932,7 @@ public class AcceuilTeacher extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"N\u00B0 cours", "Cours de la formation"
+				"N\u00B0 cours", "Titre"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
@@ -866,7 +942,7 @@ public class AcceuilTeacher extends JFrame {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, true
+				true, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -876,6 +952,35 @@ public class AcceuilTeacher extends JFrame {
 		scrollPane_9.setViewportView(table_coursForm);
 		
 		JButton btnSupprimerFormation = new JButton("Supprimer formation");
+		btnSupprimerFormation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_mesFormations.getSelectedRow();
+				TableModel model = table_mesFormations.getModel();
+				DefaultTableModel modelCours = (DefaultTableModel)table_coursForm.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner une Formation");
+				}
+				else
+				{
+					int numFrm = (Integer)model.getValueAt(index , 0);
+					Formation f = Factory.getFormationDao().find(numFrm);
+					
+					if(Factory.getFormationDao().delete(f))
+					{
+						modelCours.setRowCount(0);
+						((DefaultTableModel)model).removeRow(index);
+						JOptionPane.showMessageDialog(null, "Suppresion réussite");
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Problème lors de la suppression");
+					}
+				}
+			}
+		});
 		btnSupprimerFormation.setForeground(Color.WHITE);
 		btnSupprimerFormation.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 15));
 		btnSupprimerFormation.setBackground(new Color(51, 153, 204));
@@ -883,10 +988,38 @@ public class AcceuilTeacher extends JFrame {
 		panel_mesFormations.add(btnSupprimerFormation);
 		
 		JButton btnSupprimerCours = new JButton("Supprimer cours");
+		btnSupprimerCours.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_coursForm.getSelectedRow();
+				TableModel model = table_coursForm.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez séléctionner un cours");
+				}
+				else
+				{
+					int numC = (Integer)model.getValueAt(index, 0);
+					Cour c = Factory.getCourDao().find(numC);
+					
+					if(Factory.getCourDao().delete(c))
+					{
+						((DefaultTableModel)model).removeRow(index);
+						JOptionPane.showMessageDialog(null, "Suppression réussite");
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Problème lors de la suppression");
+					}
+				
+				}
+			}
+		});
 		btnSupprimerCours.setForeground(Color.WHITE);
 		btnSupprimerCours.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 15));
 		btnSupprimerCours.setBackground(new Color(51, 153, 204));
-		btnSupprimerCours.setBounds(555, 363, 220, 41);
+		btnSupprimerCours.setBounds(663, 363, 140, 41);
 		panel_mesFormations.add(btnSupprimerCours);
 		
 		JScrollPane scrollPane_10 = new JScrollPane();
@@ -899,6 +1032,37 @@ public class AcceuilTeacher extends JFrame {
 		txtrRemarquePour.setBackground(new Color(0, 135, 204));
 		txtrRemarquePour.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		scrollPane_10.setViewportView(txtrRemarquePour);
+		
+		JButton btnAfficherCours = new JButton("Afficher Cours");
+		btnAfficherCours.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_mesFormations.getSelectedRow();
+				TableModel model = table_mesFormations.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner une Formation");
+				}
+				else
+				{
+					int numFrm = (Integer)model.getValueAt(index, 0);
+					Formation f = Factory.getFormationDao().find(numFrm);
+					
+					DefaultTableModel modelCours = (DefaultTableModel)table_coursForm.getModel();
+					
+					for(Cour c : f.getListeCours())
+					{
+						modelCours.addRow(new Object[] {c.getNumCour(), c.getNomCour()});
+					}
+				}
+			}
+		});
+		btnAfficherCours.setForeground(Color.WHITE);
+		btnAfficherCours.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 15));
+		btnAfficherCours.setBackground(new Color(51, 153, 204));
+		btnAfficherCours.setBounds(507, 363, 126, 41);
+		panel_mesFormations.add(btnAfficherCours);
 		
 		JPanel panel_quiz_tests = new JPanel();
 		panel_quiz_tests.setBackground(Color.WHITE);
@@ -1202,6 +1366,16 @@ public class AcceuilTeacher extends JFrame {
 		JButton btnMesFormation = new JButton("Mes formations ");
 		btnMesFormation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				DefaultTableModel model = (DefaultTableModel)table_mesFormations.getModel();
+				int nbApp = 0;
+				
+				for(Formation f : Factory.getFormationDao().getAll())
+				{
+					nbApp = Factory.getSuivreDao().getNbrApp(f.getNumFormation());
+					model.addRow(new Object[] {f.getNumFormation(), f.getNomFormation(), f.getListeCours().size(), nbApp});
+				}
+				
 				panel_ajoutFormation.setVisible(false);
 				panel_mesFormations.setVisible(true);
 				panel_quiz_tests.setVisible(false);

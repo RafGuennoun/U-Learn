@@ -17,6 +17,7 @@ public class Controleur {
 	public static ArrayList<String> listeImageBlog = new ArrayList<String>();
 	public static ArrayList<byte[]> listeImageAfficherBlog = new ArrayList<byte[]>();
 	public static Formation formationSelec = null;
+	public static ArrayList<Cour> listeCours = new ArrayList<Cour>();
 	
 	
 	
