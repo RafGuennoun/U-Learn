@@ -24,7 +24,7 @@ public class WikiDao extends DAO2<Wiki,Integer,String>{
 			this.findStat = this.conn.prepareStatement("SELECT * FROM `u-learn`.`wiki` WHERE `numW`=?",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
 			this.insertStat = this.conn.prepareStatement("INSERT INTO `u-learn`.`wiki`(`numW`, `nomW`, `domaineW`, `idIns`, `textW`)"
 					+ " VALUES(?,?,?,?,?)");
-			this.updateStat = this.conn.prepareStatement("UPDATE `u-learn`.`wiki` SET `nomW`=?, `domaineW`=?, `textW`=? WHERE `numW`=?");
+			this.updateStat = this.conn.prepareStatement("UPDATE `u-learn`.`wiki` SET `textW`=? WHERE `numW`=?");
 			this.deleteStat = this.conn.prepareStatement("DELETE FROM `u-learn`.`wiki` WHERE `numW`=?");
 		}
 		catch(SQLException x)
@@ -81,6 +81,7 @@ public class WikiDao extends DAO2<Wiki,Integer,String>{
 			insertStat.setString(4, idInst);
 			insertStat.setString(5, w.getTextWiki());
 		
+			insertStat.execute();
 			//inserer les images du wiki si il y en a
 			InputStream i;
 			for(String img : w.getImages())
@@ -93,7 +94,7 @@ public class WikiDao extends DAO2<Wiki,Integer,String>{
 				insertImgStat.execute();
 			}
 			
-			return insertStat.execute();
+			return true;
 		}
 		catch(SQLException | IOException x)
 		{
@@ -105,6 +106,18 @@ public class WikiDao extends DAO2<Wiki,Integer,String>{
 	
 	public boolean update(Wiki w)
 	{
+		try
+		{
+			updateStat.setString(1, w.getTextWiki());
+			updateStat.setInt(2, w.getNumWiki());
+			
+			return updateStat.execute();
+		}
+		catch(SQLException x)
+		{
+			x.printStackTrace();
+		}
+		
 		return false;
 	}
 	
@@ -161,7 +174,6 @@ public class WikiDao extends DAO2<Wiki,Integer,String>{
 				list.add(find(res.getInt(1)));
 			}
 			
-			return list;
 		}
 		catch(SQLException x)
 		{

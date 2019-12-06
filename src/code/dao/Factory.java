@@ -65,5 +65,10 @@ public class Factory {
 		return new RedistributionDao(conn);
 	}
 	
+	public static BlogDao getBlogDao()
+	{
+		return new BlogDao(conn);
+	}
+	
 
 }

@@ -31,7 +31,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import code.classes.Blog;
 import code.classes.Commentaire;
+import code.classes.Date;
 import code.classes.Forum;
 import code.classes.Wiki;
 import code.dao.Factory;
@@ -76,8 +78,10 @@ public class AcceuilTeacher extends JFrame {
 	private JTextField textField_bnRep;
 	
 	
-	private String cheminImageWiki;
+	private String cheminImageWiki="";
+	private String cheminImageBlog="";
 	private int parcoureur = 0;
+	private int parcoureurB = 0;
 	private int wikiSelec;
 	/**
 	 * Launch the application.
@@ -1340,6 +1344,10 @@ public class AcceuilTeacher extends JFrame {
 				{
 					JOptionPane.showMessageDialog(null, "Veuillez entrer un titre");
 				}
+				else if(txtDomaineWiki.getText().contentEquals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez entrer le domaine du wiki");
+				}
 				else if(textArea_textWiki.getText().equals(""))
 				{
 					JOptionPane.showMessageDialog(null, "Veuillez entrer un texte");
@@ -1351,7 +1359,7 @@ public class AcceuilTeacher extends JFrame {
 					//construire le pojo
 					Wiki w = new Wiki(numW,
 									  txtTitreWiki.getText(),
-									  "domaine",
+									  txtDomaineWiki.getText(),
 									  textArea_textWiki.getText(),
 									  Controleur.instructerCo.getId());
 					
@@ -1748,20 +1756,62 @@ public class AcceuilTeacher extends JFrame {
 		lblTexteBlog.setBounds(10, 58, 327, 29);
 		panel_ajouterBlog.add(lblTexteBlog);
 		
+		JLabel lbl_ImageBlog = new JLabel("Ajoutez des images !");
+		lbl_ImageBlog.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_ImageBlog.setForeground(new Color(0, 51, 102));
+		lbl_ImageBlog.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		lbl_ImageBlog.setBackground(Color.LIGHT_GRAY);
+		lbl_ImageBlog.setBounds(379, 11, 409, 313);
+		panel_ajouterBlog.add(lbl_ImageBlog);
+		
 		JScrollPane scrollPane_15 = new JScrollPane();
-		scrollPane_15.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane_15.setBounds(10, 98, 327, 353);
 		panel_ajouterBlog.add(scrollPane_15);
 		
-		JLabel label_7 = new JLabel("Ajoutez des images !");
-		label_7.setHorizontalAlignment(SwingConstants.CENTER);
-		label_7.setForeground(new Color(0, 51, 102));
-		label_7.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
-		label_7.setBackground(Color.LIGHT_GRAY);
-		label_7.setBounds(379, 11, 409, 313);
-		panel_ajouterBlog.add(label_7);
+		JTextArea textArea_textBlog = new JTextArea();
+		scrollPane_15.setViewportView(textArea_textBlog);
 		
 		JButton btnAjouterLeBlog = new JButton("Ajouter le Blog");
+		btnAjouterLeBlog.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(txtTitreBlog.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez entrer le titre du Blog");
+				}
+				else if(textArea_textBlog.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez entrer le text du Blog");
+				}
+				else if(false) //verifier la date
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez completer la date");
+				}
+				else
+				{
+					
+					Date d0 = new Date(2018,05,12); //à enlever, ici en attendant l'interface
+					
+					int numB = Factory.getBlogDao().getMaxNum()+1;
+					Blog b = new Blog(numB,txtTitreBlog.getText(), textArea_textBlog.getText(), d0, Controleur.instructerCo.getId());
+					
+					b.setPhotos(Controleur.listeImageBlog);
+					
+					
+					txtTitreBlog.setText("");
+					textArea_textBlog.setText("");
+					//penser a effacer les texte des date une fois ajouté
+					if(Factory.getBlogDao().insert(b, Controleur.instructerCo.getId()))
+					{
+						JOptionPane.showMessageDialog(null, "Blog ajoutée avec succès");
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Problème lors de l'ajout du Blog");
+					}
+				}
+			}
+		});
 		btnAjouterLeBlog.setForeground(Color.WHITE);
 		btnAjouterLeBlog.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		btnAjouterLeBlog.setBackground(new Color(51, 153, 204));
@@ -1769,6 +1819,35 @@ public class AcceuilTeacher extends JFrame {
 		panel_ajouterBlog.add(btnAjouterLeBlog);
 		
 		JButton button_1 = new JButton("Select Image");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File("C:\\Users\\YACINE\\Desktop"));
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("IMAGE","png","jpg","gif");
+				fileChooser.addChoosableFileFilter(filter);
+				int result = fileChooser.showSaveDialog(null);
+				if(result == JFileChooser.APPROVE_OPTION)
+				{
+					File selectedfile = fileChooser.getSelectedFile();
+					cheminImageBlog = selectedfile.getAbsolutePath();
+					ImageIcon myImage = new ImageIcon(cheminImageBlog);
+					java.awt.Image img = myImage.getImage();
+					java.awt.Image NewImage = img.getScaledInstance(photoWiki.getWidth(), photoWiki.getHeight(), java.awt.Image.SCALE_SMOOTH); /* if error check this */
+					ImageIcon finalImage = new ImageIcon(NewImage);
+					lbl_ImageBlog.setIcon(finalImage);
+
+				//System.out.println(path);
+				}
+				else
+				{
+					if( result == JFileChooser.CANCEL_OPTION)
+					{
+						JOptionPane.showMessageDialog(null, "Vous avez rien choisi");
+					}
+				}
+			}
+		});
 		button_1.setForeground(Color.WHITE);
 		button_1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		button_1.setBackground(new Color(51, 153, 204));
@@ -1776,11 +1855,26 @@ public class AcceuilTeacher extends JFrame {
 		panel_ajouterBlog.add(button_1);
 		
 		JButton button_4 = new JButton("Ajouter");
+		button_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(cheminImageBlog.equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez choisir d'abord une image");
+				}
+				else
+				{
+					Controleur.listeImageBlog.add(cheminImageBlog);
+					JOptionPane.showMessageDialog(null, "Image ajoutée");
+				}
+			}
+		});
 		button_4.setForeground(Color.WHITE);
 		button_4.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		button_4.setBackground(new Color(51, 153, 204));
 		button_4.setBounds(530, 370, 128, 29);
 		panel_ajouterBlog.add(button_4);
+		
 		
 		JPanel panel_allBlogs = new JPanel();
 		panel_allBlogs.setBackground(Color.WHITE);
@@ -1807,22 +1901,11 @@ public class AcceuilTeacher extends JFrame {
 		
 		JScrollPane scrollPane_16 = new JScrollPane();
 		scrollPane_16.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane_16.setBounds(487, 58, 327, 142);
+		scrollPane_16.setBounds(487, 58, 327, 194);
 		panel_allBlogs.add(scrollPane_16);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setForeground(new Color(0, 51, 102));
-		textArea.setEditable(false);
-		textArea.setLineWrap(true);
-		textArea.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
-		scrollPane_16.setViewportView(textArea);
-		
-		JButton button = new JButton("Redistribuer");
-		button.setForeground(Color.WHITE);
-		button.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
-		button.setBackground(new Color(51, 153, 204));
-		button.setBounds(497, 405, 306, 46);
-		panel_allBlogs.add(button);
+		JTextArea textArea_texteBlog2 = new JTextArea();
+		scrollPane_16.setViewportView(textArea_texteBlog2);
 		
 		JScrollPane scrollPane_17 = new JScrollPane();
 		scrollPane_17.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -1834,17 +1917,17 @@ public class AcceuilTeacher extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"N\u00B0", "Titre"
+				"N\u00B0", "Titre", "Date"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Integer.class, String.class
+				Integer.class, String.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, false
+				true, true, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -1854,34 +1937,100 @@ public class AcceuilTeacher extends JFrame {
 		table_blogs.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		scrollPane_17.setViewportView(table_blogs);
 		
-		JLabel label_12 = new JLabel("Pas de photo !");
-		label_12.setHorizontalAlignment(SwingConstants.CENTER);
-		label_12.setForeground(new Color(0, 51, 102));
-		label_12.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
-		label_12.setBounds(507, 211, 283, 141);
-		panel_allBlogs.add(label_12);
+		JLabel label_imageBlog2 = new JLabel("Pas de photo !");
+		label_imageBlog2.setHorizontalAlignment(SwingConstants.CENTER);
+		label_imageBlog2.setForeground(new Color(0, 51, 102));
+		label_imageBlog2.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		label_imageBlog2.setBounds(507, 263, 283, 141);
+		panel_allBlogs.add(label_imageBlog2);
 		
 		JButton button_5 = new JButton("<");
 		button_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				if(Controleur.listeImageAfficherBlog.size()==0)
+				{
+					JOptionPane.showMessageDialog(null, "Pas de photos à affiher");
+				}
+				else if(parcoureurB==0)
+				{
+					JOptionPane.showMessageDialog(null, "Il n'y a plus de photos à afficher");
+				}
+				else
+				{
+					parcoureurB--;
+					
+					ImageIcon image = new ImageIcon(Controleur.listeImageAfficherBlog.get(parcoureurB));
+					java.awt.Image im = image.getImage();
+					java.awt.Image myImg = im.getScaledInstance(photoW.getWidth(), photoW.getHeight(), java.awt.Image.SCALE_SMOOTH);
+					ImageIcon img = new ImageIcon(myImg);
+					label_imageBlog2.setIcon(img);
+				}
 			}
 		});
 		button_5.setForeground(Color.WHITE);
 		button_5.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 25));
 		button_5.setBackground(new Color(51, 153, 204));
-		button_5.setBounds(517, 363, 125, 31);
+		button_5.setBounds(507, 415, 125, 31);
 		panel_allBlogs.add(button_5);
 		
 		JButton button_6 = new JButton(">");
+		button_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(Controleur.listeImageAfficherBlog.size()==0)
+				{
+					JOptionPane.showMessageDialog(null, "Pas de photos à affiher");
+				}
+				else if(parcoureurB>=Controleur.listeImageAfficherBlog.size()-1)
+				{
+					JOptionPane.showMessageDialog(null, "Il n'y a plus de photos à afficher");
+				}
+				else
+				{
+					parcoureurB++;
+					
+					ImageIcon image = new ImageIcon(Controleur.listeImageAfficherBlog.get(parcoureurB));
+					java.awt.Image im = image.getImage();
+					java.awt.Image myImg = im.getScaledInstance(photoW.getWidth(), photoW.getHeight(), java.awt.Image.SCALE_SMOOTH);
+					ImageIcon img = new ImageIcon(myImg);
+					label_imageBlog2.setIcon(img);
+				}
+			}
+		});
 		button_6.setForeground(Color.WHITE);
 		button_6.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 25));
 		button_6.setBackground(new Color(51, 153, 204));
-		button_6.setBounds(662, 363, 129, 31);
+		button_6.setBounds(661, 415, 129, 31);
 		panel_allBlogs.add(button_6);
 		
 		JButton button_7 = new JButton("Afficher");
 		button_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_blogs.getSelectedRow();
+				TableModel model = table_blogs.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner un wiki");
+				}
+				else
+				{
+					int numB = (Integer)model.getValueAt(index, 0);
+					Blog b = Factory.getBlogDao().find(numB);
+					txtTitreBlog_1.setText(b.getNomBlog());
+					textArea_texteBlog2.setText(b.getTextBlog());
+					
+					Controleur.listeImageAfficherBlog = b.getPhotosAfficher();
+					parcoureurB = 0;
+					
+					ImageIcon image = new ImageIcon(Controleur.listeImageAfficherBlog.get(parcoureurB));
+					java.awt.Image im = image.getImage();
+					java.awt.Image myImg = im.getScaledInstance(photoW.getWidth(), photoW.getHeight(), java.awt.Image.SCALE_SMOOTH);
+					ImageIcon img = new ImageIcon(myImg);
+					label_imageBlog2.setIcon(img);
+				}
 			}
 		});
 		button_7.setForeground(Color.WHITE);
@@ -1893,6 +2042,34 @@ public class AcceuilTeacher extends JFrame {
 		JButton button_8 = new JButton("Supprimer");
 		button_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_blogs.getSelectedRow();
+				TableModel model = table_blogs.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner un blog");
+				}
+				else
+				{
+					int numB = (Integer)model.getValueAt(index, 0);
+					Blog b = Factory.getBlogDao().find(numB);
+					
+					if(!Controleur.instructerCo.getId().equals(b.getCreateur()))
+					{
+						JOptionPane.showMessageDialog(null, "Vous n'avez pas ce droit sur ce blog");
+					}
+					else
+					{
+						Factory.getBlogDao().delete(b);
+						((DefaultTableModel)model).removeRow(index);
+						
+						textArea_texteBlog2.setText("");
+						txtTitreBlog_1.setText("");
+						JOptionPane.showMessageDialog(null, "Blog supprimé");
+					}
+				}
+				
 			}
 		});
 		button_8.setForeground(Color.WHITE);
@@ -1900,6 +2077,14 @@ public class AcceuilTeacher extends JFrame {
 		button_8.setBackground(new Color(51, 153, 204));
 		button_8.setBounds(263, 415, 152, 36);
 		panel_allBlogs.add(button_8);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setBounds(487, 59, 325, 140);
+		panel_allBlogs.add(textArea);
+		textArea.setForeground(new Color(0, 51, 102));
+		textArea.setEditable(false);
+		textArea.setLineWrap(true);
+		textArea.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		
 		JButton btnAjouterUnBlog = new JButton("Ajouter un blog");
 		btnAjouterUnBlog.addActionListener(new ActionListener() {
@@ -1917,6 +2102,15 @@ public class AcceuilTeacher extends JFrame {
 		JButton btnToutLesBlogs = new JButton("Tout les blogs");
 		btnToutLesBlogs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				DefaultTableModel model = (DefaultTableModel)table_blogs.getModel();
+				model.setRowCount(0);
+				
+				for(Blog b : Factory.getBlogDao().getAll())
+				{
+					model.addRow(new Object[] {b.getNumBlog(), b.getNomBlog(), b.getDateBlog().toString()});
+				}
+				
 				panel_ajouterBlog.setVisible(false);
 				panel_allBlogs.setVisible(true);
 			}

@@ -1551,7 +1551,7 @@ public class AcceuilStudent extends JFrame {
 		
 		JScrollPane scrollPane_9 = new JScrollPane();
 		scrollPane_9.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane_9.setBounds(487, 58, 327, 172);
+		scrollPane_9.setBounds(487, 58, 327, 224);
 		panel_wiki.add(scrollPane_9);
 		
 		JTextArea textAreaWiki = new JTextArea();
@@ -1584,7 +1584,7 @@ public class AcceuilStudent extends JFrame {
 		btnRedestribuer.setForeground(Color.WHITE);
 		btnRedestribuer.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		btnRedestribuer.setBackground(new Color(51, 153, 204));
-		btnRedestribuer.setBounds(497, 476, 306, 36);
+		btnRedestribuer.setBounds(280, 476, 154, 36);
 		panel_wiki.add(btnRedestribuer);
 		
 		JScrollPane scrollPane_10 = new JScrollPane();
@@ -1620,7 +1620,7 @@ public class AcceuilStudent extends JFrame {
 		photoW.setHorizontalAlignment(SwingConstants.CENTER);
 		photoW.setForeground(new Color(0, 51, 102));
 		photoW.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
-		photoW.setBounds(487, 241, 327, 172);
+		photoW.setBounds(487, 293, 327, 172);
 		panel_wiki.add(photoW);
 		
 		JButton button_1 = new JButton("<");
@@ -1650,7 +1650,7 @@ public class AcceuilStudent extends JFrame {
 		button_1.setForeground(Color.WHITE);
 		button_1.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 25));
 		button_1.setBackground(new Color(51, 153, 204));
-		button_1.setBounds(571, 424, 71, 31);
+		button_1.setBounds(574, 476, 71, 31);
 		panel_wiki.add(button_1);
 		
 		JButton button_2 = new JButton(">");
@@ -1680,7 +1680,7 @@ public class AcceuilStudent extends JFrame {
 		button_2.setForeground(Color.WHITE);
 		button_2.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 25));
 		button_2.setBackground(new Color(51, 153, 204));
-		button_2.setBounds(661, 424, 71, 31);
+		button_2.setBounds(655, 476, 71, 31);
 		panel_wiki.add(button_2);
 		
 		JButton button_3 = new JButton("Afficher");
@@ -1716,7 +1716,7 @@ public class AcceuilStudent extends JFrame {
 		button_3.setForeground(Color.WHITE);
 		button_3.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		button_3.setBackground(new Color(51, 153, 204));
-		button_3.setBounds(97, 476, 306, 36);
+		button_3.setBounds(50, 476, 154, 36);
 		panel_wiki.add(button_3);
 		
 		
