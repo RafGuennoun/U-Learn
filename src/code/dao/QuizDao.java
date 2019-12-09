@@ -42,6 +42,7 @@ public class QuizDao extends DAO2<Quiz, Integer, Integer>{
 			{
 				q = new Quiz(res.getInt("numQz"), res.getString("nomQz"));
 				
+				findQuestions.setInt(1, id);
 				ResultSet resQ = findQuestions.executeQuery();
 				while(resQ.next())
 				{

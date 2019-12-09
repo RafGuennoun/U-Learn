@@ -1,5 +1,6 @@
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -731,9 +732,6 @@ public class AcceuilStudent extends JFrame {
 		comboBox_qst1.setBackground(Color.WHITE);
 		comboBox_qst1.setBounds(138, 150, 449, 41);
 		panel_1.add(comboBox_qst1);
-		comboBox_qst1.addItem("Reponse 1 : ");
-		comboBox_qst1.addItem("Reponse 2 : ");
-		comboBox_qst1.addItem("Reponse 3 : ");
 		comboBox_qst1.setSelectedItem(null);
 		
 		JScrollPane scrollPane_11 = new JScrollPane();
@@ -803,7 +801,7 @@ public class AcceuilStudent extends JFrame {
 					
 					lblQuestion.setText("Question N° "+(compteurQ+1));
 					textArea_question.setText(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getQuestion());
-					comboBox_qst1.removeAll();
+					comboBox_qst1.removeAllItems();
 					
 					if(compteurQ%3==0)
 					{
@@ -846,7 +844,7 @@ public class AcceuilStudent extends JFrame {
 					
 					lblQuestion.setText("Question N° "+(compteurQ+1));
 					textArea_question.setText(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getQuestion());
-					comboBox_qst1.removeAll();
+					comboBox_qst1.removeAllItems();
 					
 					if(compteurQ%3==0)
 					{
@@ -1040,14 +1038,8 @@ public class AcceuilStudent extends JFrame {
 											(String)model.getValueAt(index, 1),
 											false);
 					
-					if(Factory.getDemandeDao().insert(d))
-					{
-						JOptionPane.showMessageDialog(null, "Une demande a été envoyée");
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, "Un problème lors de la demande");
-					}
+					Factory.getDemandeDao().insert(d);
+					JOptionPane.showMessageDialog(null, "Une demande a été envoyée");
 				}
 				
 				panel_toutesFormations.setVisible(true);
@@ -1167,7 +1159,7 @@ public class AcceuilStudent extends JFrame {
 					int numFrm = (Integer)model.getValueAt(index, 0);
 					Controleur.formationSelec = Factory.getFormationDao().find(numFrm);
 					
-					textField_titreF.setText(Controleur.forumSelec.getNomForum());
+					textField_titreF.setText(Controleur.formationSelec.getNomFormation());
 					
 					DefaultTableModel modelCours = (DefaultTableModel)table_crs.getModel();
 					modelCours.setRowCount(0);
@@ -1255,7 +1247,8 @@ public class AcceuilStudent extends JFrame {
 				{
 					Suivre s = Factory.getSuivreDao().find(Controleur.apprenantCo.getId(), Controleur.formationSelec.getNumFormation());
 					//incrémenter le progres de l'apprenant sur la formation selectionnée
-					s.setProgres(s.getProgres()+(Controleur.formationSelec.getPourcentageCour()*100));
+					double prgrs = s.getProgres();
+					s.setProgres(prgrs+(Controleur.formationSelec.getPourcentageCour()*100));
 					Factory.getSuivreDao().update(s);
 					
 					JOptionPane.showMessageDialog(null, "Bien joué");
@@ -1284,7 +1277,7 @@ public class AcceuilStudent extends JFrame {
 				
 				lblQuestion.setText("Question N° 1");
 				textArea_question.setText(Controleur.formationSelec.getQuiz().getQuestions().get(0).getQuestion());
-				comboBox_qst1.removeAll();
+				comboBox_qst1.removeAllItems();
 				
 				comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(0).getReponse1());
 				comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(0).getBonneRep());
@@ -1333,6 +1326,33 @@ public class AcceuilStudent extends JFrame {
 		panel_form.add(btnSeDesinscrire);
 		
 		JButton btnOuvrirCour = new JButton("Ouvrir Cour");
+		btnOuvrirCour.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_crs.getSelectedRow();
+				TableModel model = table_crs.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner un cour");
+				}
+				else
+				{
+					int numC = (Integer)model.getValueAt(index, 0);
+					Cour c = Factory.getCourDao().find(numC);
+					
+					try
+					{
+						Desktop.getDesktop().open(new java.io.File(c.getChemin()));
+					}
+					catch ( Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+				
+			}
+		});
 		btnOuvrirCour.setForeground(Color.WHITE);
 		btnOuvrirCour.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		btnOuvrirCour.setBackground(new Color(51, 153, 204));
@@ -1432,14 +1452,8 @@ public class AcceuilStudent extends JFrame {
 											(String)model.getValueAt(index, 1),
 											false);
 					
-					if(Factory.getDemandeDao().insert(d))
-					{
-						JOptionPane.showMessageDialog(null, "Une demande a été envoyée");
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, "Un problème lors de la demande");
-					}
+					Factory.getDemandeDao().insert(d);
+					JOptionPane.showMessageDialog(null, "Une demande a été envoyée");
 				}
 				
 				
@@ -1468,6 +1482,7 @@ public class AcceuilStudent extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				DefaultTableModel model = (DefaultTableModel)table_toutesForm.getModel();
+				model.setRowCount(0);
 				ArrayList<Formation> listeFormations = Factory.getFormationDao().getAll();
 				
 				for(Formation f : listeFormations)
@@ -1502,7 +1517,7 @@ public class AcceuilStudent extends JFrame {
 				{
 					Formation f = Factory.getFormationDao().find(numFrm);
 					double progres =Factory.getSuivreDao().find(Controleur.apprenantCo.getId(), numFrm).getProgres();
-					model.addRow(new Object[] {f.getNumFormation(), f.getNomFormation(), f.getDureeHeure(), f.getDifficulte().getDesc(), ((int)progres+1)+"%"});
+					model.addRow(new Object[] {f.getNumFormation(), f.getNomFormation(), f.getDureeHeure(), f.getDifficulte().getDesc(), ((int)progres)+"%"});
 				}
 				
 				panel_formationsSuivis.setVisible(true);
@@ -1733,13 +1748,33 @@ public class AcceuilStudent extends JFrame {
 		lblFormation.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				
+				DefaultTableModel model = (DefaultTableModel)table_mesForms.getModel();
+				
+				//vide d'abord la table
+				model.setRowCount(0);
+				
+				for(int numFrm : Factory.getSuivreDao().getAll(Controleur.apprenantCo.getId()))
+				{
+					Formation f = Factory.getFormationDao().find(numFrm);
+					double progres =Factory.getSuivreDao().find(Controleur.apprenantCo.getId(), numFrm).getProgres();
+					model.addRow(new Object[] {f.getNumFormation(), f.getNomFormation(), f.getDureeHeure(), f.getDifficulte().getDesc(), ((int)progres)+"%"});
+				}
+				
+				/*panel_formationsSuivis.setVisible(true);
+				panel_toutesFormations.setVisible(false);
+				panel_form.setVisible(false);
+			
+				panel_AffFormation.setVisible(false);
+				panel_quiz.setVisible(false);*/
+				
 				panel_formation.setVisible(true);
 				
-				panel_toutesFormations.setVisible(true);
+				panel_toutesFormations.setVisible(false);
 				panel_quiz.setVisible(false);
 				panel_AffFormation.setVisible(false);
 				panel_form.setVisible(false);
-				panel_formationsSuivis.setVisible(false);
+				panel_formationsSuivis.setVisible(true);
 				
 				panel_forum.setVisible(false);
 				panel_blogs.setVisible(false);

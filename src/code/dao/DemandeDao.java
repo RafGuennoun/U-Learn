@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import code.classes.Demande;
 import code.classes.ExisteException;
@@ -36,10 +37,13 @@ public class DemandeDao {
 				
 				ResultSet resTitre = findTitreStat.executeQuery();
 				
-				d = new Demande(Factory.getApprenantDao().find(idApp,"-1"),
-						        numFrm,
-						        resTitre.getString(1),
-						        res.getBoolean("accepte"));
+				if(resTitre.first())
+				{
+					d = new Demande(Factory.getApprenantDao().find(idApp,"-1"),
+							numFrm,
+							resTitre.getString(1),
+							res.getBoolean("accepte"));
+				}
 				
 				
 				
@@ -64,6 +68,54 @@ public class DemandeDao {
 			insertStat.setBoolean(3, d.isAccepte());
 			
 			return insertStat.execute();
+		}
+		catch(SQLException x)
+		{
+			x.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	public ArrayList<Demande> getAll(String idIns)
+	{
+		ArrayList<Demande> liste = new ArrayList<Demande>();
+		
+		try
+		{
+			PreparedStatement findAllform = this.conn.prepareStatement("SELECT `numFrm` FROM `u-learn`.`formation` WHERE `idIns`=?");
+			PreparedStatement findAlldem = this.conn.prepareStatement("SELECT * FROM `u-learn`.`demande` WHERE `numFrm`=?");
+			
+			findAllform.setString(1, idIns);
+			ResultSet resF = findAllform.executeQuery();
+			while(resF.next())
+			{
+				findAlldem.setInt(1, resF.getInt("numFrm"));
+				ResultSet res = findAlldem.executeQuery();
+				
+				while(res.next())
+				{
+					liste.add(find(res.getString("idApp"), res.getInt("numFrm")));
+				}
+			}
+		}
+		catch(SQLException x)
+		{
+			x.printStackTrace();
+		}
+		
+		return liste;
+	}
+	
+	public boolean delete(String idApp, int numFrm)
+	{
+		try
+		{
+			PreparedStatement deleteStat = this.conn.prepareStatement("DELETE FROM `u-learn`.`demande` WHERE `idApp`=? AND `numFrm`=?");
+			deleteStat.setString(1, idApp);
+			deleteStat.setInt(2, numFrm);
+			
+			return deleteStat.execute();
 		}
 		catch(SQLException x)
 		{

@@ -2,6 +2,7 @@ package code.dao;
 
 import java.awt.Insets;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -16,9 +17,10 @@ public class QuestionDao extends DAO2<Question, Integer, Integer>{
 		try
 		{
 			this.findStat = this.conn.prepareStatement("SELECT * FROM `u-learn`.`question` WHERE `numQ`=?",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			this.insertStat = this.conn.prepareStatement("INSERT INTO `u-learn`.`question`(`numQ`, `question`, `reponse1`, `reponse2`, `bonneRep`, `numQz`"
-					+ "VALUES(?,?,?,?,?,?);");
+			this.insertStat = this.conn.prepareStatement("INSERT INTO `u-learn`.`question`(`numQ`, `question`, `reponse1`, `reponse2`, `bonneRep`, `numQz`)"
+					+ "VALUES(?,?,?,?,?,?)");
 			this.deleteStat = this.conn.prepareStatement("DELETE FROM `u-learn`.`question` WHERE `numQ`=? AND `numQz`=?");
+			this.updateStat = this.conn.prepareStatement("UPDATE `u-learn`.`question` SET `question`=?, `reponse1`=?, `reponse2`=?, `bonneRep`=? WHERE `numQ`=?");
 		}
 		catch(SQLException x)
 		{
@@ -82,6 +84,21 @@ public class QuestionDao extends DAO2<Question, Integer, Integer>{
 	@Override
 	public boolean update(Question q)
 	{
+		try
+		{
+			updateStat.setString(1, q.getQuestion());
+			updateStat.setString(2, q.getReponse1());
+			updateStat.setString(3, q.getReponse2());
+			updateStat.setString(4, q.getBonneRep());
+			updateStat.setInt(5, q.getNumQuestion());
+			
+			return updateStat.execute();
+		}
+		catch(SQLException x)
+		{
+			x.printStackTrace();
+		}
+		
 		return false;
 	}
 	
@@ -101,6 +118,30 @@ public class QuestionDao extends DAO2<Question, Integer, Integer>{
 		}
 		
 		return false;
+	}
+	
+	public int getMaxNum()
+	{
+		try
+		{
+			PreparedStatement stat = this.conn.prepareStatement("SELECT max(`numQ`) FROM `u-learn`.`question`");
+			ResultSet res = stat.executeQuery();
+			
+			if(res.first())
+			{
+				return res.getInt(1);
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		catch(SQLException x)
+		{
+			x.printStackTrace();
+		}
+		
+		return 0;
 	}
 
 }

@@ -1,6 +1,5 @@
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -35,9 +34,13 @@ import code.classes.Blog;
 import code.classes.Commentaire;
 import code.classes.Cour;
 import code.classes.Date;
+import code.classes.Demande;
 import code.classes.EnumDifficulte;
 import code.classes.Formation;
 import code.classes.Forum;
+import code.classes.Question;
+import code.classes.Quiz;
+import code.classes.Suivre;
 import code.classes.Wiki;
 import code.dao.Factory;
 
@@ -85,9 +88,11 @@ public class AcceuilTeacher extends JFrame {
 	private String cheminImageBlog="";
 	private String cheminCour="";
 	private int offset=1;
+	private int offsetQuest = 1;
 	private int parcoureur = 0;
 	private int parcoureurB = 0;
 	private int wikiSelec;
+	private int selectQuiz=0;
 	/**
 	 * Launch the application.
 	 */
@@ -625,7 +630,7 @@ public class AcceuilTeacher extends JFrame {
 		panel_ajoutFormation.add(lblDifficult);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(357, 144, 461, 228);
+		scrollPane.setBounds(357, 144, 461, 294);
 		panel_ajoutFormation.add(scrollPane);
 		
 		table_coursAjouter = new JTable();
@@ -745,7 +750,7 @@ public class AcceuilTeacher extends JFrame {
 						cheminCour = selectedfile.getAbsolutePath();
 						//System.out.println(path);
 						//System.out.println(selectedfile.getName());
-						Desktop.getDesktop().open(new java.io.File(cheminCour));
+						//Desktop.getDesktop().open(new java.io.File(cheminCour));
 						
 					//System.out.println(path);
 					}
@@ -798,57 +803,13 @@ public class AcceuilTeacher extends JFrame {
 		comboBox_diff.addItem("Difficile");
 		comboBox_diff.setSelectedItem(null);
 		
-		JButton btnAjouterLaFormation = new JButton("Ajouter nouvelle formation");
-		btnAjouterLaFormation.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-			if(titre_formation.getText().equals(""))
-			{
-				JOptionPane.showMessageDialog(null, "Titre formation manquant");
-			}
-			else if(((String)comboBox_diff.getSelectedItem()).equals(""))
-			{
-				JOptionPane.showMessageDialog(null, "Difficulté manquante");
-			}
-			else if(((String)comboBox_niv.getSelectedItem()).equals(""))
-			{
-				JOptionPane.showMessageDialog(null, "Niveau manquant");
-			}
-			else if(Controleur.listeCours.size()==0)
-			{
-				JOptionPane.showMessageDialog(null, "Vous devez ajouter au moins un cours");
-			}
-			else
-			{
-				int numF = Factory.getFormationDao().getMaxNum()+1;
-				EnumDifficulte diff = EnumDifficulte.transform((String)comboBox_diff.getSelectedItem());
-				int duree = Integer.valueOf(duree_formation.getText());
-				
-				
-				Formation f = new Formation(numF, titre_formation.getText(), desc_formation.getText(),
-						(int)comboBox_niv.getSelectedItem(), diff, duree, Controleur.instructerCo.getId());
-				Controleur.formationSelec = f;
-				
-				JOptionPane.showMessageDialog(null, "Parfait, ajoutez un quiz pour finaliser");
-				offset = 1;
-				titre_cours.setText("");
-				titre_formation.setText("");
-				desc_formation.setText("");
-				duree_formation.setText("");
-				
-				//envoyer l'instructeur a la page des quiz pour ajouter un quiz
-				
-			}
-			
-			
-			
-			}
-		});
-		btnAjouterLaFormation.setForeground(Color.WHITE);
-		btnAjouterLaFormation.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 15));
-		btnAjouterLaFormation.setBackground(new Color(51, 153, 204));
-		btnAjouterLaFormation.setBounds(587, 400, 231, 41);
-		panel_ajoutFormation.add(btnAjouterLaFormation);
+		JPanel panel_quiz_tests = new JPanel();
+		panel_quiz_tests.setBackground(Color.WHITE);
+		panel_quiz_tests.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
+		layeredPane_2.add(panel_quiz_tests, "name_223824716719900");
+		panel_quiz_tests.setLayout(null);
+		
+		
 		
 		JLabel lblNiv = new JLabel("Niv :");
 		lblNiv.setHorizontalAlignment(SwingConstants.LEFT);
@@ -857,35 +818,6 @@ public class AcceuilTeacher extends JFrame {
 		lblNiv.setBackground(new Color(0, 51, 102));
 		lblNiv.setBounds(617, 60, 39, 22);
 		panel_ajoutFormation.add(lblNiv);
-		
-		
-		
-		JButton btnAjouterAUne = new JButton("Ajouter a une formation");
-		btnAjouterAUne.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnAjouterAUne.setForeground(Color.WHITE);
-		btnAjouterAUne.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 15));
-		btnAjouterAUne.setBackground(new Color(51, 153, 204));
-		btnAjouterAUne.setBounds(357, 400, 220, 41);
-		panel_ajoutFormation.add(btnAjouterAUne);
-		
-		JScrollPane scrollPane_7 = new JScrollPane();
-		scrollPane_7.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane_7.setBounds(10, 383, 337, 70);
-		panel_ajoutFormation.add(scrollPane_7);
-		
-		JTextArea txtrRemarqueDfqfdfsd = new JTextArea();
-		txtrRemarqueDfqfdfsd.setText("Remarque : \r\nPour ajouter un cours a une formation deja existante il\r\nfaut juste ecrire le nom de la formation et remplir les\r\ncrit\u00E9res du cours et importer le cours puis cliquer\r\nsur \"Ajouter a une formation \" .\r\nSi c'est pour cr\u00E9er une nouvelle formation , il faut\r\nremplir tout les champs puis cliquer sur \r\n\"Ajouter nouvelle formation\" .");
-		txtrRemarqueDfqfdfsd.setLineWrap(true);
-		txtrRemarqueDfqfdfsd.setBackground(new  Color(51,135,204));
-		txtrRemarqueDfqfdfsd.setForeground(Color.WHITE);
-		txtrRemarqueDfqfdfsd.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		scrollPane_7.setViewportView(txtrRemarqueDfqfdfsd);
-		
-		
-		
 		
 		
 		JPanel panel_mesFormations = new JPanel();
@@ -968,16 +900,10 @@ public class AcceuilTeacher extends JFrame {
 					int numFrm = (Integer)model.getValueAt(index , 0);
 					Formation f = Factory.getFormationDao().find(numFrm);
 					
-					if(Factory.getFormationDao().delete(f))
-					{
-						modelCours.setRowCount(0);
-						((DefaultTableModel)model).removeRow(index);
-						JOptionPane.showMessageDialog(null, "Suppresion réussite");
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, "Problème lors de la suppression");
-					}
+					Factory.getFormationDao().delete(f);
+					modelCours.setRowCount(0);
+					((DefaultTableModel)model).removeRow(index);
+					JOptionPane.showMessageDialog(null, "Suppresion réussite");
 				}
 			}
 		});
@@ -1000,18 +926,19 @@ public class AcceuilTeacher extends JFrame {
 				}
 				else
 				{
+					int indexF = table_mesFormations.getSelectedRow();
+					DefaultTableModel modelF = (DefaultTableModel)table_mesFormations.getModel();
+					
+					int nbCrs = (Integer)modelF.getValueAt(index, 2);
+					
+					
 					int numC = (Integer)model.getValueAt(index, 0);
 					Cour c = Factory.getCourDao().find(numC);
 					
-					if(Factory.getCourDao().delete(c))
-					{
-						((DefaultTableModel)model).removeRow(index);
-						JOptionPane.showMessageDialog(null, "Suppression réussite");
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, "Problème lors de la suppression");
-					}
+					Factory.getCourDao().delete(c);
+					((DefaultTableModel)model).removeRow(index);
+					modelF.setValueAt(nbCrs-1, index, 2);
+					JOptionPane.showMessageDialog(null, "Suppression réussite");
 				
 				}
 			}
@@ -1050,6 +977,7 @@ public class AcceuilTeacher extends JFrame {
 					Formation f = Factory.getFormationDao().find(numFrm);
 					
 					DefaultTableModel modelCours = (DefaultTableModel)table_coursForm.getModel();
+					modelCours.setRowCount(0);
 					
 					for(Cour c : f.getListeCours())
 					{
@@ -1064,15 +992,10 @@ public class AcceuilTeacher extends JFrame {
 		btnAfficherCours.setBounds(507, 363, 126, 41);
 		panel_mesFormations.add(btnAfficherCours);
 		
-		JPanel panel_quiz_tests = new JPanel();
-		panel_quiz_tests.setBackground(Color.WHITE);
-		panel_quiz_tests.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
-		layeredPane_2.add(panel_quiz_tests, "name_223824716719900");
-		panel_quiz_tests.setLayout(null);
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
 		scrollPane_2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane_2.setBounds(10, 11, 375, 192);
+		scrollPane_2.setBounds(10, 11, 375, 152);
 		panel_quiz_tests.add(scrollPane_2);
 		
 		table_formations = new JTable();
@@ -1130,11 +1053,112 @@ public class AcceuilTeacher extends JFrame {
 		scrollPane_6.setViewportView(table_qst);
 		
 		JButton btnValiderLeTest = new JButton("Valider le test");
+		btnValiderLeTest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(selectQuiz == 1)
+				{
+					Factory.getFormationDao().insert(Controleur.formationSelec, Controleur.instructerCo.getId());
+					JOptionPane.showMessageDialog(null, "Formation ajoutée");
+					
+					btnValiderLeTest.setText("Valider le test");
+					
+					panel_ajoutFormation.setVisible(true);
+					panel_quiz_tests.setVisible(false);
+					
+					offsetQuest = 1;
+					selectQuiz = 0;
+					
+					textField_qst.setText("");
+					textField_rep1.setText("");
+					textField_rep2.setText("");
+					textField_bnRep.setText("");
+				}
+				else
+				{
+					
+				}
+			}
+		});
 		btnValiderLeTest.setForeground(Color.WHITE);
 		btnValiderLeTest.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
 		btnValiderLeTest.setBackground(new Color(51, 153, 204));
 		btnValiderLeTest.setBounds(286, 410, 289, 43);
 		panel_quiz_tests.add(btnValiderLeTest);
+		
+		JButton btnAjouterLaFormation = new JButton("Ajouter la formation");
+		btnAjouterLaFormation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			if(titre_formation.getText().equals(""))
+			{
+				JOptionPane.showMessageDialog(null, "Titre formation manquant");
+			}
+			else if(((String)(comboBox_diff.getSelectedItem())).equals(""))
+			{
+				JOptionPane.showMessageDialog(null, "Difficulté manquante");
+			}
+			else if(((String)(comboBox_niv.getSelectedItem())).equals(""))
+			{
+				JOptionPane.showMessageDialog(null, "Niveau manquant");
+			}
+			else if(Controleur.listeCours.size()==0)
+			{
+				JOptionPane.showMessageDialog(null, "Vous devez ajouter au moins un cours");
+			}
+			else
+			{
+				int numF = Factory.getFormationDao().getMaxNum()+1;
+				EnumDifficulte diff = EnumDifficulte.transform((String)(comboBox_diff.getSelectedItem()));
+				int duree = Integer.valueOf(duree_formation.getText());
+				
+				
+				Formation f = new Formation(numF, titre_formation.getText(), desc_formation.getText(),
+						      comboBox_niv.getSelectedIndex()+1, diff, duree, Controleur.instructerCo.getId());
+				Controleur.formationSelec = f;
+				
+				JOptionPane.showMessageDialog(null, "Parfait, ajoutez un quiz pour finaliser");
+				offset = 1;
+				
+				//ajout de la liste des cours
+				Controleur.formationSelec.setListeCours(Controleur.listeCours);
+				
+				//initialization du quiz
+				Quiz q = new Quiz(numF, "Quiz "+Controleur.formationSelec.getNomFormation());
+				Controleur.formationSelec.setQuiz(q);
+				
+				titre_cours.setText("");
+				titre_formation.setText("");
+				desc_formation.setText("");
+				duree_formation.setText("");
+				
+				
+				//mettre la foramtion dans la table de formation dans la table test
+				DefaultTableModel model = (DefaultTableModel)table_formations.getModel();
+				model.setRowCount(0);
+				model.addRow(new Object[] {Controleur.formationSelec.getNumFormation(), Controleur.formationSelec.getNomFormation()});
+				
+				
+				//modification d label du bouton de quiz
+				btnValiderLeTest.setText("Finaliser formation");
+				
+				selectQuiz = 1;
+				
+				//envoyer l'instructeur a la page des quiz pour ajouter un quiz
+				panel_ajoutFormation.setVisible(false);
+				panel_quiz_tests.setVisible(true);
+				
+			}
+			
+			
+			
+			}
+		});
+		btnAjouterLaFormation.setForeground(Color.WHITE);
+		btnAjouterLaFormation.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 15));
+		btnAjouterLaFormation.setBackground(new Color(51, 153, 204));
+		btnAjouterLaFormation.setBounds(68, 397, 226, 41);
+		panel_ajoutFormation.add(btnAjouterLaFormation);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
@@ -1208,25 +1232,166 @@ public class AcceuilTeacher extends JFrame {
 		panel_1.add(textField_bnRep);
 		
 		JButton button_9 = new JButton("Ajouter ");
+		button_9.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				DefaultTableModel model = (DefaultTableModel)table_qst.getModel();
+				
+				if(textField_qst.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Question requise");
+				}
+				else if(textField_bnRep.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Bonne réponse requise");
+				}
+				else
+				{
+					int numQ  = Factory.getQuestionDao().getMaxNum()+offsetQuest;
+					offsetQuest++;
+					
+					Question q = new Question(numQ,
+							textField_qst.getText(),
+							textField_rep1.getText(),
+							textField_rep2.getText(),
+							textField_bnRep.getText(),
+							Controleur.formationSelec.getQuiz().getNumQuiz());
+					
+					Controleur.formationSelec.getQuiz().ajouterQuestion(q);
+					
+					model.addRow(new Object[] {q.getNumQuestion(), q.getQuestion()});
+					
+					
+					if(selectQuiz == 0)
+					{
+						Factory.getQuestionDao().insert(q, Controleur.formationSelec.getQuiz().getNumQuiz());
+					}
+					
+					textField_qst.setText("");
+					textField_rep1.setText("");
+					textField_rep2.setText("");
+					textField_bnRep.setText("");
+				}
+				
+				
+			}
+		});
 		button_9.setForeground(Color.WHITE);
 		button_9.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
 		button_9.setBackground(new Color(51, 153, 204));
-		button_9.setBounds(626, 31, 161, 32);
+		button_9.setBounds(626, 33, 161, 32);
 		panel_1.add(button_9);
 		
 		JButton button_10 = new JButton("Modifier");
+		button_10.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				TableModel model = table_qst.getModel();
+				int index = table_qst.getSelectedRow();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner une question à modifier");
+				}
+				else if(textField_qst.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Question requise");
+				}
+				else if(textField_bnRep.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Bonne réponse requise");
+				}
+				else
+				{
+					int numQ = (Integer)model.getValueAt(index, 0);
+					Question q = Factory.getQuestionDao().find(numQ);
+					//mise a jor du pojo
+					q.setQuestion(textField_qst.getText());
+					q.setReponse1(textField_rep1.getText());
+					q.setReponse2(textField_rep2.getText());
+					q.setBonneRep(textField_bnRep.getText());
+					
+					Factory.getQuestionDao().update(q);
+					
+					JOptionPane.showMessageDialog(null, "Mise a jour réussie");
+					model.setValueAt(q.getQuestion(), index, 1);
+					
+					
+					textField_qst.setText("");
+					textField_rep1.setText("");
+					textField_rep2.setText("");
+					textField_bnRep.setText("");
+				}
+			}
+		});
 		button_10.setForeground(Color.WHITE);
 		button_10.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
 		button_10.setBackground(new Color(51, 153, 204));
-		button_10.setBounds(626, 75, 161, 32);
+		button_10.setBounds(626, 76, 161, 32);
 		panel_1.add(button_10);
 		
 		JButton button_11 = new JButton("Supprimer");
+		button_11.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_qst.getSelectedRow();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selection une question à supprimer");
+				}
+				else
+				{
+					TableModel model = table_qst.getModel();
+					int numQ = (Integer)model.getValueAt(index, 0);
+					
+					Question q = Factory.getQuestionDao().find(numQ);
+					
+					//suppression
+					Factory.getQuestionDao().delete(q);
+					JOptionPane.showMessageDialog(null, "Sippression effectuée");
+					((DefaultTableModel)model).removeRow(index);
+					
+				}
+			}
+		});
 		button_11.setForeground(Color.WHITE);
 		button_11.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
 		button_11.setBackground(new Color(51, 153, 204));
-		button_11.setBounds(626, 118, 161, 32);
+		button_11.setBounds(626, 119, 161, 32);
 		panel_1.add(button_11);
+		
+		JButton AfficherQuestions = new JButton("Afficher");
+		AfficherQuestions.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_formations.getSelectedRow();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionnez une formation");
+				}
+				else
+				{
+					TableModel modelFrm = table_formations.getModel();
+					DefaultTableModel modelQuest = (DefaultTableModel)table_qst.getModel();
+					modelQuest.setRowCount(0);
+					
+					int numFrm = (Integer)modelFrm.getValueAt(index, 0);
+					Controleur.formationSelec = Factory.getFormationDao().find(numFrm);
+					
+					for(Question q : Controleur.formationSelec.getQuiz().getQuestions())
+					{
+						modelQuest.addRow(new Object[] {q.getNumQuestion(), q.getQuestion()});
+					}
+				}
+			}
+		});
+		AfficherQuestions.setBounds(118, 171, 161, 32);
+		panel_quiz_tests.add(AfficherQuestions);
+		AfficherQuestions.setForeground(Color.WHITE);
+		AfficherQuestions.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		AfficherQuestions.setBackground(new Color(51, 153, 204));
 		
 		JPanel panel_demandes = new JPanel();
 		panel_demandes.setBackground(Color.WHITE);
@@ -1243,17 +1408,17 @@ public class AcceuilTeacher extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"N\u00B0 Demande", "Formation", "ID Apprenant", "Niveau", "Check"
+				"N\u00B0 Formation", "Formation", "ID Apprenant", "Niveau"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Integer.class, String.class, String.class, Integer.class, Boolean.class
+				Integer.class, String.class, String.class, Integer.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false
+				false, true, true, true
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -1263,6 +1428,29 @@ public class AcceuilTeacher extends JFrame {
 		scrollPane_12.setViewportView(table_demandes);
 		
 		JButton btnRefuser = new JButton("Refuser\r\n");
+		btnRefuser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_demandes.getSelectedRow();
+				TableModel model = table_demandes.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner une demande");
+				}
+				else
+				{
+					String idApp = (String)model.getValueAt(index, 2);
+					int numFrm = (Integer)model.getValueAt(index, 0);
+					
+					//supprimer la demande
+					Factory.getDemandeDao().delete(idApp, numFrm);
+					
+					((DefaultTableModel)model).removeRow(index);
+					JOptionPane.showMessageDialog(null, "La demande a été supprimé");
+				}
+			}
+		});
 		btnRefuser.setForeground(Color.WHITE);
 		btnRefuser.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
 		btnRefuser.setBackground(new Color(51, 153, 204));
@@ -1270,6 +1458,33 @@ public class AcceuilTeacher extends JFrame {
 		panel_demandes.add(btnRefuser);
 		
 		JButton btnAccepter = new JButton("Accepter");
+		btnAccepter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_demandes.getSelectedRow();
+				TableModel model = table_demandes.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner une demande");
+				}
+				else
+				{
+					String idApp = (String)model.getValueAt(index, 2);
+					int numFrm = (Integer)model.getValueAt(index, 0);
+					
+					//inserer dans la table suivre
+					Factory.getSuivreDao().insert(idApp, numFrm);
+					
+					//supprimer la demande
+					Factory.getDemandeDao().delete(idApp, numFrm);
+					
+					((DefaultTableModel)model).removeRow(index);
+					JOptionPane.showMessageDialog(null, "L'apprenant suit maintenant la formation");
+				}
+
+			}
+		});
 		btnAccepter.setForeground(Color.WHITE);
 		btnAccepter.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
 		btnAccepter.setBackground(new Color(51, 153, 204));
@@ -1368,9 +1583,10 @@ public class AcceuilTeacher extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				DefaultTableModel model = (DefaultTableModel)table_mesFormations.getModel();
+				model.setRowCount(0);
 				int nbApp = 0;
 				
-				for(Formation f : Factory.getFormationDao().getAll())
+				for(Formation f : Factory.getFormationDao().getMyAll(Controleur.instructerCo.getId()))
 				{
 					nbApp = Factory.getSuivreDao().getNbrApp(f.getNumFormation());
 					model.addRow(new Object[] {f.getNumFormation(), f.getNomFormation(), f.getListeCours().size(), nbApp});
@@ -1393,6 +1609,17 @@ public class AcceuilTeacher extends JFrame {
 		JButton btnTestsQuiz = new JButton("Tests / Quiz ");
 		btnTestsQuiz.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				
+				DefaultTableModel model = (DefaultTableModel)table_formations.getModel();
+				model.setRowCount(0);
+				
+				for(Formation f : Factory.getFormationDao().getMyAll(Controleur.instructerCo.getId()))
+				{
+					model.addRow(new Object[] {f.getNumFormation(), f.getNomFormation()});
+				}
+				
+				
 				panel_ajoutFormation.setVisible(false);
 				panel_mesFormations.setVisible(false);
 				panel_quiz_tests.setVisible(true);
@@ -1409,6 +1636,14 @@ public class AcceuilTeacher extends JFrame {
 		JButton Demandes = new JButton("Demandes");
 		Demandes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				DefaultTableModel model = (DefaultTableModel)table_demandes.getModel();
+				model.setRowCount(0);
+				
+				for(Demande d : Factory.getDemandeDao().getAll(Controleur.instructerCo.getId()))
+				{
+					model.addRow(new Object[] {d.getNumFrm(), d.getTitreFrm(), d.getApprenant().getId(), d.getApprenant().getNiveau()});
+				}
 			
 				panel_ajoutFormation.setVisible(false);
 				panel_mesFormations.setVisible(false);

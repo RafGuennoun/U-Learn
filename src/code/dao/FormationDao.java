@@ -21,6 +21,7 @@ public class FormationDao extends DAO2<Formation, Integer, String>{
 			this.findStat = this.conn.prepareStatement("SELECT * FROM `u-learn`.`formation` WHERE `numFrm`=?",ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			this.insertStat = this.conn.prepareStatement("INSERT INTO `u-learn`.`formation`(`numFrm`, `nomFrm`, `nivMin`, `difficulte`, `dure`, `descFrm`, `idIns`)"
 					+ "VALUES(?,?,?,?,?,?,?)");
+			this.deleteStat = this.conn.prepareStatement("DELETE FROM `u-learn`.`formation` WHERE `numFrm`=?");
 		}
 		catch(SQLException x)
 		{
@@ -53,12 +54,14 @@ public class FormationDao extends DAO2<Formation, Integer, String>{
 								  res.getInt("dure"),
 								  res.getString("idIns"));
 				
+				findCoursStat.setInt(1, id);
 				ResultSet resC = findCoursStat.executeQuery();
 				while(resC.next())
 				{
 					f.ajouterCour(Factory.getCourDao().find(resC.getInt(1)));
 				}
 				
+				findQuizStat.setInt(1, id);
 				ResultSet resQ = findQuizStat.executeQuery();
 				if(resQ.first())
 				{
@@ -171,6 +174,30 @@ public class FormationDao extends DAO2<Formation, Integer, String>{
 		{
 			PreparedStatement findAllStat = this.conn.prepareStatement("SELECT `numFrm` FROM `u-learn`.`formation`",ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			ResultSet res = findAllStat.executeQuery();
+			
+			while(res.next())
+			{
+				liste.add(this.find(res.getInt(1)));
+			}
+			
+		}
+		catch(SQLException x)
+		{
+			x.printStackTrace();
+		}
+		
+		return liste;
+	}
+	
+	public ArrayList<Formation> getMyAll(String idIns)
+	{
+		ArrayList<Formation> liste = new ArrayList<Formation>();
+		
+		try
+		{
+			PreparedStatement findMyAllStat = this.conn.prepareStatement("SELECT `numFrm` FROM `u-learn`.`formation` WHERE `idIns`=?",ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			findMyAllStat.setString(1, idIns);
+			ResultSet res = findMyAllStat.executeQuery();
 			
 			while(res.next())
 			{
