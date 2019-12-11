@@ -29,5 +29,46 @@ public class Factory {
 	{
 		return new WikiDao(conn);
 	}
+	
+	public static CourDao getCourDao()
+	{
+		return new CourDao(conn);
+	}
+	
+	public static QuizDao getQuizDao()
+	{
+		return new QuizDao(conn);
+	}
+	
+	public static QuestionDao getQuestionDao()
+	{
+		return new QuestionDao(conn);
+	}
+	
+	public static FormationDao getFormationDao()
+	{
+		return new FormationDao(conn);
+	}
+	
+	public static DemandeDao getDemandeDao()
+	{
+		return new DemandeDao(conn);
+	}
+	
+	public static SuivreDao getSuivreDao()
+	{
+		return new SuivreDao(conn);
+	}
+	
+	public static RedistributionDao getRedistributionDao()
+	{
+		return new RedistributionDao(conn);
+	}
+	
+	public static BlogDao getBlogDao()
+	{
+		return new BlogDao(conn);
+	}
+	
 
 }

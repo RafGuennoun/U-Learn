@@ -1,61 +1,45 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import AppPackage.AnimationClass;
-import code.classes.Apprenant;
-import code.classes.Commentaire;
-import code.classes.Forum;
-import code.classes.Utilisateur;
-import code.classes.Wiki;
-import code.dao.Factory;
-
-import javax.swing.border.BevelBorder;
-import java.awt.Window.Type;
-import javax.swing.JInternalFrame;
-import javax.swing.JDesktopPane;
-import javax.swing.JFileChooser;
-import javax.swing.JSplitPane;
-import javax.swing.JLayeredPane;
-import javax.swing.BoxLayout;
 import java.awt.CardLayout;
-import java.awt.FlowLayout;
-import javax.swing.JMenu;
-import javax.swing.JOptionPane;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.ResourceBundle.Control;
 
-import javax.swing.JTextField;
-import javax.swing.DropMode;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
-import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.UIManager;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import java.awt.Dimension;
-import javax.swing.JComboBox;
+import AppPackage.AnimationClass;
+import code.classes.Commentaire;
+import code.classes.Cour;
+import code.classes.Demande;
+import code.classes.Formation;
+import code.classes.Forum;
+import code.classes.Suivre;
+import code.classes.Wiki;
+import code.dao.Factory;
 
 public class AcceuilStudent extends JFrame {
 
@@ -91,7 +75,12 @@ public class AcceuilStudent extends JFrame {
 	private JTable table_mesForms;
 	private JTable table_1;
 	private JTable table_2;
+	private JTextField txtTitreWiki;
+	private JTable table_AllWiki;
 	
+	private int compteurQ = 0;
+	private int parcoureur = 0;
+	private int wikiSelec;
 	private String cheminImageWiki = "";
 	private JTextField txtTitreWiki;
 	private JTable table_3;
@@ -745,9 +734,6 @@ public class AcceuilStudent extends JFrame {
 		comboBox_qst1.setBackground(Color.WHITE);
 		comboBox_qst1.setBounds(138, 150, 449, 41);
 		panel_1.add(comboBox_qst1);
-		comboBox_qst1.addItem("Reponse 1 : ");
-		comboBox_qst1.addItem("Reponse 2 : ");
-		comboBox_qst1.addItem("Reponse 3 : ");
 		comboBox_qst1.setSelectedItem(null);
 		
 		JScrollPane scrollPane_11 = new JScrollPane();
@@ -755,12 +741,21 @@ public class AcceuilStudent extends JFrame {
 		scrollPane_11.setBounds(138, 11, 449, 128);
 		panel_1.add(scrollPane_11);
 		
+<<<<<<< HEAD
 		JTextArea textArea_1 = new JTextArea();
 		textArea_1.setLineWrap(true);
 		textArea_1.setForeground(new Color(0, 0, 0));
 		textArea_1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
 		textArea_1.setEditable(false);
 		scrollPane_11.setViewportView(textArea_1);
+=======
+		JTextArea textArea_question = new JTextArea();
+		textArea_question.setLineWrap(true);
+		textArea_question.setForeground(new Color(0, 0, 0));
+		textArea_question.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		textArea_question.setEditable(false);
+		scrollPane_11.setViewportView(textArea_question);
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		
 		JLabel lblRponse = new JLabel("R\u00E9ponse :");
 		lblRponse.setForeground(new Color(0, 51, 102));
@@ -769,6 +764,7 @@ public class AcceuilStudent extends JFrame {
 		lblRponse.setBounds(10, 150, 118, 41);
 		panel_1.add(lblRponse);
 		
+<<<<<<< HEAD
 		JButton btnValider = new JButton("Finir test");
 		btnValider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -779,6 +775,148 @@ public class AcceuilStudent extends JFrame {
 		btnValider.setBackground(new Color(51, 153, 204));
 		btnValider.setBounds(307, 409, 226, 40);
 		panel_quiz.add(btnValider);
+=======
+		
+		
+		JLabel lblUneFoisQue_1 = new JLabel("R\u00E9fl\u00E9chissez bien !! Prenez votre temps et r\u00E9pondez a toutes les questions ");
+		lblUneFoisQue_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblUneFoisQue_1.setForeground(new Color(0, 51, 102));
+		lblUneFoisQue_1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 20));
+		lblUneFoisQue_1.setBackground(new Color(0, 51, 102));
+		lblUneFoisQue_1.setBounds(10, 322, 804, 40);
+		panel_quiz.add(lblUneFoisQue_1);
+		
+		JLabel lblCliquezSur = new JLabel("Une fois que tout est fait ,cliquez sur \" Finir le test \"");
+		lblCliquezSur.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCliquezSur.setForeground(new Color(0, 51, 102));
+		lblCliquezSur.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 20));
+		lblCliquezSur.setBackground(new Color(0, 51, 102));
+		lblCliquezSur.setBounds(10, 358, 804, 40);
+		panel_quiz.add(lblCliquezSur);
+		
+		JButton btnR = new JButton("R\u00E9pondre");
+		btnR.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				String rep = (String)comboBox_qst1.getSelectedItem();
+				
+				Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).setRepDonnee(rep);
+			}
+		});
+		btnR.setForeground(Color.WHITE);
+		btnR.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnR.setBackground(new Color(51, 153, 204));
+		btnR.setBounds(203, 271, 226, 40);
+		panel_quiz.add(btnR);
+		
+		JButton button = new JButton("<");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(compteurQ == 0)
+				{
+					JOptionPane.showMessageDialog(null, "c'est la première question");
+				}
+				else
+				{
+					compteurQ--;
+					
+					
+					lblQuestion.setText("Question N° "+(compteurQ+1));
+					textArea_question.setText(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getQuestion());
+					comboBox_qst1.removeAllItems();
+					
+					if(compteurQ%3==0)
+					{
+						comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getReponse1());
+						comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getReponse2());
+						comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getBonneRep());
+					}
+					else if(compteurQ%2==0)
+					{
+						comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getBonneRep());
+						comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getReponse1());
+						comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getReponse2());
+					}
+					else
+					{
+						comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getReponse1());
+						comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getReponse2());
+						comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getBonneRep());
+					}
+				}
+			}
+		});
+		button.setForeground(Color.WHITE);
+		button.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		button.setBackground(new Color(51, 153, 204));
+		button.setBounds(203, 223, 107, 40);
+		panel_quiz.add(button);
+		
+		JButton button_4 = new JButton(">");
+		button_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(compteurQ == Controleur.formationSelec.getQuiz().getQuestions().size()-1)
+				{
+					JOptionPane.showMessageDialog(null, "c'est la dernière question");
+				}
+				else
+				{
+					compteurQ++;
+					
+					lblQuestion.setText("Question N° "+(compteurQ+1));
+					textArea_question.setText(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getQuestion());
+					comboBox_qst1.removeAllItems();
+					
+					if(compteurQ%3==0)
+					{
+						comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getReponse1());
+						comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getBonneRep());
+						comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getReponse2());
+					}
+					else if(compteurQ%2==0)
+					{
+						comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getBonneRep());
+						comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getReponse1());
+						comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getReponse2());
+					}
+					else
+					{
+						comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getReponse2());
+						comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getReponse1());
+						comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(compteurQ).getBonneRep());
+					}
+				}
+			}
+		});
+		button_4.setForeground(Color.WHITE);
+		button_4.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		button_4.setBackground(new Color(51, 153, 204));
+		button_4.setBounds(322, 223, 107, 40);
+		panel_quiz.add(button_4);
+		
+		JLabel lblNewLabel_3 = new JLabel("icone de quiz");
+		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_3.setBounds(616, 11, 198, 201);
+		panel_quiz.add(lblNewLabel_3);
+		
+		JLabel lblCestLheureDu = new JLabel("C'est l'heure du serieux");
+		lblCestLheureDu.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCestLheureDu.setForeground(new Color(0, 51, 102));
+		lblCestLheureDu.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 20));
+		lblCestLheureDu.setBackground(new Color(0, 51, 102));
+		lblCestLheureDu.setBounds(460, 234, 354, 40);
+		panel_quiz.add(lblCestLheureDu);
+		
+		JLabel lblAllezBon = new JLabel("Allez !! Bon courage");
+		lblAllezBon.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAllezBon.setForeground(new Color(0, 51, 102));
+		lblAllezBon.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 20));
+		lblAllezBon.setBackground(new Color(0, 51, 102));
+		lblAllezBon.setBounds(460, 259, 354, 40);
+		panel_quiz.add(lblAllezBon);
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		
 		JLabel lblUneFoisQue_1 = new JLabel("R\u00E9fl\u00E9chissez bien !! Prenez votre temps et r\u00E9pondez a toutes les questions ");
 		lblUneFoisQue_1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -963,10 +1101,33 @@ public class AcceuilStudent extends JFrame {
 		JButton btnCommencer_1 = new JButton("Demander");
 		btnCommencer_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				panel_toutesFormations.setVisible(false);
+				
+				int index = table_toutesForm.getSelectedRow();
+				TableModel model = table_toutesForm.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner une formation");
+				}
+				else if(Factory.getFormationDao().find((Integer)model.getValueAt(index, 0)).getNiveauMin()>Controleur.apprenantCo.getNiveau())
+				{
+					JOptionPane.showMessageDialog(null, "Vous n'avez pas le niveau requis pour suivre cette formation");
+				}
+				else
+				{
+					Demande d = new Demande(Controleur.apprenantCo,
+											(Integer)model.getValueAt(index, 0),
+											(String)model.getValueAt(index, 1),
+											false);
+					
+					Factory.getDemandeDao().insert(d);
+					JOptionPane.showMessageDialog(null, "Une demande a été envoyée");
+				}
+				
+				panel_toutesFormations.setVisible(true);
 				panel_AffFormation.setVisible(false);
 				panel_quiz.setVisible(false);
-				panel_form.setVisible(true);
+				panel_form.setVisible(false);
 				panel_formationsSuivis.setVisible(false);
 				
 			}
@@ -1005,17 +1166,29 @@ public class AcceuilStudent extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
+<<<<<<< HEAD
 				"N\u00B0", "Titre", "Dur\u00E9e", "Difficult\u00E9", "Avancement"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
 				Integer.class, String.class, Integer.class, String.class, String.class
+=======
+				"N\u00B0", "Titre", "Dur\u00E9e", "Difficult\u00E9", "Progr\u00E8s"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Integer.class, String.class, String.class, String.class, String.class
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
+<<<<<<< HEAD
 				true, true, true, true, false
+=======
+				true, true, false, false, false
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -1027,6 +1200,31 @@ public class AcceuilStudent extends JFrame {
 		JButton btnAjouterFormation = new JButton("Se desinscrire");
 		btnAjouterFormation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+<<<<<<< HEAD
+=======
+				
+				int index = table_mesForms.getSelectedRow();
+				TableModel model = table_mesForms.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner une formation");
+				}
+				else
+				{
+					int numFrm = (Integer)model.getValueAt(index, 0);
+					if(Factory.getSuivreDao().delete(Controleur.apprenantCo.getId(), numFrm))
+					{
+						((DefaultTableModel)model).removeRow(index);
+						JOptionPane.showConfirmDialog(null, "Désinscris avec succès");
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null,"Preblème lors de la désinscription");
+					}
+					
+				}
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 			/*
 				panel_toutesFormations.setVisible(true);
 				panel_form.setVisible(false);
@@ -1045,11 +1243,44 @@ public class AcceuilStudent extends JFrame {
 		JButton btnReprendre = new JButton("Reprendre");
 		btnReprendre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+<<<<<<< HEAD
 				panel_toutesFormations.setVisible(false);
 				panel_form.setVisible(true);
 				panel_formationsSuivis.setVisible(false);
 				panel_AffFormation.setVisible(false);
 				panel_quiz.setVisible(false);
+=======
+				
+				int index = table_mesForms.getSelectedRow();
+				TableModel model = table_mesForms.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner une formation");
+				}
+				else
+				{
+					int numFrm = (Integer)model.getValueAt(index, 0);
+					Controleur.formationSelec = Factory.getFormationDao().find(numFrm);
+					
+					textField_titreF.setText(Controleur.formationSelec.getNomFormation());
+					
+					DefaultTableModel modelCours = (DefaultTableModel)table_crs.getModel();
+					modelCours.setRowCount(0);
+					
+					for(Cour c : Controleur.formationSelec.getListeCours())
+					{
+						modelCours.addRow(new Object[] {c.getNumCour(), c.getNomCour()});
+					}
+					
+					panel_toutesFormations.setVisible(false);
+					panel_form.setVisible(true);
+					panel_formationsSuivis.setVisible(false);
+					panel_AffFormation.setVisible(false);
+					panel_quiz.setVisible(false);
+				}
+				
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 			}
 		});
 		btnReprendre.setForeground(Color.WHITE);
@@ -1094,30 +1325,47 @@ public class AcceuilStudent extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"N\u00B0", "Titre", "Description", "Fini"
+				"N\u00B0", "Titre"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Integer.class, String.class, String.class, Boolean.class
+				Integer.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, true
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
 			}
 		});
 		table_crs.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		scrollPane_7.setViewportView(table_crs);
 		
 		JButton btnCourFini = new JButton("Cour Finis");
+		btnCourFini.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_crs.getSelectedRow();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez séléctionner un cour");
+				}
+				else
+				{
+					Suivre s = Factory.getSuivreDao().find(Controleur.apprenantCo.getId(), Controleur.formationSelec.getNumFormation());
+					//incrémenter le progres de l'apprenant sur la formation selectionnée
+					double prgrs = s.getProgres();
+					s.setProgres(prgrs+(Controleur.formationSelec.getPourcentageCour()*100));
+					Factory.getSuivreDao().update(s);
+					
+					JOptionPane.showMessageDialog(null, "Bien joué");
+				}
+				
+				
+			}
+		});
 		btnCourFini.setForeground(Color.WHITE);
 		btnCourFini.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		btnCourFini.setBackground(new Color(51, 153, 204));
-		btnCourFini.setBounds(300, 277, 226, 32);
+		btnCourFini.setBounds(424, 277, 226, 32);
 		panel_form.add(btnCourFini);
 		
 		JLabel lblUneFoisQue = new JLabel("Une fois que vous avez finis tout les cours cliquez sur \" Finir Formation \"");
@@ -1131,6 +1379,16 @@ public class AcceuilStudent extends JFrame {
 		JButton btnFinirFormation = new JButton("Finir Formation");
 		btnFinirFormation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				lblQuestion.setText("Question N° 1");
+				textArea_question.setText(Controleur.formationSelec.getQuiz().getQuestions().get(0).getQuestion());
+				comboBox_qst1.removeAllItems();
+				
+				comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(0).getReponse1());
+				comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(0).getBonneRep());
+				comboBox_qst1.addItem(Controleur.formationSelec.getQuiz().getQuestions().get(0).getReponse2());
+				
+				
 				// tester si tout les cours sont check 
 				panel_form.setVisible(false);
 				panel_quiz.setVisible(true);
@@ -1161,6 +1419,12 @@ public class AcceuilStudent extends JFrame {
 		JButton btnSeDesinscrire = new JButton("Se desinscrire");
 		btnSeDesinscrire.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+<<<<<<< HEAD
+=======
+				
+					Factory.getSuivreDao().delete(Controleur.apprenantCo.getId(), Controleur.formationSelec.getNumFormation());
+					JOptionPane.showMessageDialog(null, "Désinscris avec succès");
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 			}
 		});
 		btnSeDesinscrire.setForeground(Color.WHITE);
@@ -1169,6 +1433,43 @@ public class AcceuilStudent extends JFrame {
 		btnSeDesinscrire.setBounds(424, 362, 226, 32);
 		panel_form.add(btnSeDesinscrire);
 		
+<<<<<<< HEAD
+=======
+		JButton btnOuvrirCour = new JButton("Ouvrir Cour");
+		btnOuvrirCour.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_crs.getSelectedRow();
+				TableModel model = table_crs.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner un cour");
+				}
+				else
+				{
+					int numC = (Integer)model.getValueAt(index, 0);
+					Cour c = Factory.getCourDao().find(numC);
+					
+					try
+					{
+						Desktop.getDesktop().open(new java.io.File(c.getChemin()));
+					}
+					catch ( Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+				
+			}
+		});
+		btnOuvrirCour.setForeground(Color.WHITE);
+		btnOuvrirCour.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnOuvrirCour.setBackground(new Color(51, 153, 204));
+		btnOuvrirCour.setBounds(166, 277, 226, 32);
+		panel_form.add(btnOuvrirCour);
+		
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		
 		
 		JScrollPane scrollPane_6 = new JScrollPane();
@@ -1176,21 +1477,22 @@ public class AcceuilStudent extends JFrame {
 		panel_toutesFormations.add(scrollPane_6);
 		
 		table_toutesForm = new JTable();
+		table_toutesForm.setBackground(Color.WHITE);
 		table_toutesForm.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
-				"Titre", "Niveau", "Dur\u00E9e", "Difficult\u00E9"
+				"N\u00B0", "Titre", "Niveau", "Dur\u00E9e", "Difficult\u00E9"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, Integer.class, Integer.class, String.class
+				Integer.class, String.class, Integer.class, String.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, false
+				false, true, true, true, true
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -1202,11 +1504,33 @@ public class AcceuilStudent extends JFrame {
 		JButton btnAfficher_1 = new JButton("Plus d'informations");
 		btnAfficher_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				panel_toutesFormations.setVisible(false);
-				panel_AffFormation.setVisible(true);
-				panel_quiz.setVisible(false);
-				panel_form.setVisible(false);
-				panel_formationsSuivis.setVisible(false);
+				
+				int index = table_toutesForm.getSelectedRow();
+				TableModel model = table_toutesForm.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner une formation");
+				}
+				else
+				{
+					Formation f = Factory.getFormationDao().find((Integer)model.getValueAt(index, 0));
+					Controleur.formationSelec = f;
+					
+					textField_titreForm.setText(f.getNomFormation());
+					textField_duree.setText(f.getDureeHeure());
+					textField_desc.setText(f.getDescription());
+					textField_cours.setText(f.getListeCours().size()+"");
+					textField_diff.setText(f.getDifficulte().getDesc());
+					textField_niv.setText(f.getNivString());
+					
+					
+					panel_toutesFormations.setVisible(false);
+					panel_AffFormation.setVisible(true);
+					panel_quiz.setVisible(false);
+					panel_form.setVisible(false);
+					panel_formationsSuivis.setVisible(false);
+				}
 				
 				
 			}
@@ -1220,11 +1544,35 @@ public class AcceuilStudent extends JFrame {
 		JButton btnCommencer = new JButton("Demander");
 		btnCommencer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				panel_toutesFormations.setVisible(false);
+				
+				int index = table_toutesForm.getSelectedRow();
+				TableModel model = table_toutesForm.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner une formation");
+				}
+				else if(Factory.getFormationDao().find((Integer)model.getValueAt(index, 0)).getNiveauMin()>Controleur.apprenantCo.getNiveau())
+				{
+					JOptionPane.showMessageDialog(null, "Vous n'avez pas le niveau requis pour suivre cette formation");
+				}
+				else
+				{
+					Demande d = new Demande(Controleur.apprenantCo,
+											(Integer)model.getValueAt(index, 0),
+											(String)model.getValueAt(index, 1),
+											false);
+					
+					Factory.getDemandeDao().insert(d);
+					JOptionPane.showMessageDialog(null, "Une demande a été envoyée");
+				}
+				
+				
+				/*panel_toutesFormations.setVisible(false);
 				panel_AffFormation.setVisible(false);
 				panel_quiz.setVisible(false);
 				panel_form.setVisible(true);
-				panel_formationsSuivis.setVisible(false);
+				panel_formationsSuivis.setVisible(false);*/
 				
 			}
 		});
@@ -1243,6 +1591,16 @@ public class AcceuilStudent extends JFrame {
 		JButton btnNouvelleFormation = new JButton("Nouvelle Formation");
 		btnNouvelleFormation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				DefaultTableModel model = (DefaultTableModel)table_toutesForm.getModel();
+				model.setRowCount(0);
+				ArrayList<Formation> listeFormations = Factory.getFormationDao().getAll();
+				
+				for(Formation f : listeFormations)
+				{
+					model.addRow(new Object [] { f.getNumFormation(), f.getNomFormation(), f.getNivString(), f.getDifficulte().getDesc(), f.getDureeHeure() });
+				}
+				
 				panel_toutesFormations.setVisible(true);
 				panel_form.setVisible(false);
 				panel_formationsSuivis.setVisible(false);
@@ -1260,6 +1618,19 @@ public class AcceuilStudent extends JFrame {
 		JButton btnFormationsSuivis = new JButton("Formations Suivis ");
 		btnFormationsSuivis.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				DefaultTableModel model = (DefaultTableModel)table_mesForms.getModel();
+				
+				//vide d'abord la table
+				model.setRowCount(0);
+				
+				for(int numFrm : Factory.getSuivreDao().getAll(Controleur.apprenantCo.getId()))
+				{
+					Formation f = Factory.getFormationDao().find(numFrm);
+					double progres =Factory.getSuivreDao().find(Controleur.apprenantCo.getId(), numFrm).getProgres();
+					model.addRow(new Object[] {f.getNumFormation(), f.getNomFormation(), f.getDureeHeure(), f.getDifficulte().getDesc(), ((int)progres)+"%"});
+				}
+				
 				panel_formationsSuivis.setVisible(true);
 				panel_toutesFormations.setVisible(false);
 				panel_form.setVisible(false);
@@ -1306,6 +1677,7 @@ public class AcceuilStudent extends JFrame {
 		
 		JScrollPane scrollPane_9 = new JScrollPane();
 		scrollPane_9.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+<<<<<<< HEAD
 		scrollPane_9.setBounds(487, 58, 327, 172);
 		panel_wiki.add(scrollPane_9);
 		
@@ -1321,6 +1693,42 @@ public class AcceuilStudent extends JFrame {
 		btnRedestribuer.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		btnRedestribuer.setBackground(new Color(51, 153, 204));
 		btnRedestribuer.setBounds(497, 476, 306, 36);
+=======
+		scrollPane_9.setBounds(487, 58, 327, 224);
+		panel_wiki.add(scrollPane_9);
+		
+		JTextArea textAreaWiki = new JTextArea();
+		textAreaWiki.setEditable(false);
+		textAreaWiki.setForeground(new Color(0, 51, 102));
+		textAreaWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		textAreaWiki.setLineWrap(true);
+		scrollPane_9.setViewportView(textAreaWiki);
+		
+		JButton btnRedestribuer = new JButton("Redestribuer");
+		btnRedestribuer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(wikiSelec == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez d'abord afficher le wiki que vous voulez redistribuer");
+				}
+				else
+				{
+					Wiki w = Factory.getWikiDao().find(wikiSelec);
+					w.setTextWiki(textAreaWiki.getText());
+					Factory.getWikiDao().update(w);
+					Factory.getRedistributionDao().insert(wikiSelec, Controleur.apprenantCo.getId());
+					
+					JOptionPane.showMessageDialog(null, "Wiki redistribué");
+				}
+						
+			}
+		});
+		btnRedestribuer.setForeground(Color.WHITE);
+		btnRedestribuer.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnRedestribuer.setBackground(new Color(51, 153, 204));
+		btnRedestribuer.setBounds(280, 476, 154, 36);
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		panel_wiki.add(btnRedestribuer);
 		
 		JScrollPane scrollPane_10 = new JScrollPane();
@@ -1328,8 +1736,13 @@ public class AcceuilStudent extends JFrame {
 		scrollPane_10.setBounds(10, 58, 467, 407);
 		panel_wiki.add(scrollPane_10);
 		
+<<<<<<< HEAD
 		table_3 = new JTable();
 		table_3.setModel(new DefaultTableModel(
+=======
+		table_AllWiki = new JTable();
+		table_AllWiki.setModel(new DefaultTableModel(
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 			new Object[][] {
 			},
 			new String[] {
@@ -1349,6 +1762,7 @@ public class AcceuilStudent extends JFrame {
 				return columnEditables[column];
 			}
 		});
+<<<<<<< HEAD
 		table_3.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		scrollPane_10.setViewportView(table_3);
 		
@@ -1378,6 +1792,112 @@ public class AcceuilStudent extends JFrame {
 		button_3.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		button_3.setBackground(new Color(51, 153, 204));
 		button_3.setBounds(97, 476, 306, 36);
+=======
+		table_AllWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		scrollPane_10.setViewportView(table_AllWiki);
+		
+		JLabel photoW = new JLabel("Pas de photo !");
+		photoW.setHorizontalAlignment(SwingConstants.CENTER);
+		photoW.setForeground(new Color(0, 51, 102));
+		photoW.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		photoW.setBounds(487, 293, 327, 172);
+		panel_wiki.add(photoW);
+		
+		JButton button_1 = new JButton("<");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(Controleur.listeImageAfficherWiki.size()==0)
+				{
+					JOptionPane.showMessageDialog(null, "Pas de photos à affiher");
+				}
+				else if(parcoureur==0)
+				{
+					JOptionPane.showMessageDialog(null, "Il n'y a plus de photos à afficher");
+				}
+				else
+				{
+					parcoureur--;
+					
+					ImageIcon image = new ImageIcon(Controleur.listeImageAfficherWiki.get(parcoureur));
+					java.awt.Image im = image.getImage();
+					java.awt.Image myImg = im.getScaledInstance(photoW.getWidth(), photoW.getHeight(), java.awt.Image.SCALE_SMOOTH);
+					ImageIcon img = new ImageIcon(myImg);
+					photoW.setIcon(img);
+				}
+			}
+		});
+		button_1.setForeground(Color.WHITE);
+		button_1.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 25));
+		button_1.setBackground(new Color(51, 153, 204));
+		button_1.setBounds(574, 476, 71, 31);
+		panel_wiki.add(button_1);
+		
+		JButton button_2 = new JButton(">");
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(Controleur.listeImageAfficherWiki.size()==0)
+				{
+					JOptionPane.showMessageDialog(null, "Pas de photos à affiher");
+				}
+				else if(parcoureur>=Controleur.listeImageAfficherWiki.size()-1)
+				{
+					JOptionPane.showMessageDialog(null, "Il n'y a plus de photos à afficher");
+				}
+				else
+				{
+					parcoureur++;
+					
+					ImageIcon image = new ImageIcon(Controleur.listeImageAfficherWiki.get(parcoureur));
+					java.awt.Image im = image.getImage();
+					java.awt.Image myImg = im.getScaledInstance(photoW.getWidth(), photoW.getHeight(), java.awt.Image.SCALE_SMOOTH);
+					ImageIcon img = new ImageIcon(myImg);
+					photoW.setIcon(img);
+				}
+			}
+		});
+		button_2.setForeground(Color.WHITE);
+		button_2.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 25));
+		button_2.setBackground(new Color(51, 153, 204));
+		button_2.setBounds(655, 476, 71, 31);
+		panel_wiki.add(button_2);
+		
+		JButton button_3 = new JButton("Afficher");
+		button_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_AllWiki.getSelectedRow();
+				TableModel model = table_AllWiki.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner un wiki");
+				}
+				else
+				{
+					int numW = (Integer)model.getValueAt(index, 0);
+					wikiSelec = numW;
+					Wiki w = Factory.getWikiDao().find(numW);
+					txtTitreWiki.setText(w.getNomWiki());
+					textAreaWiki.setText(w.getTextWiki());
+					
+					Controleur.listeImageAfficherWiki = w.getImageAfficher();
+					parcoureur = 0;
+					
+					ImageIcon image = new ImageIcon(Controleur.listeImageAfficherWiki.get(parcoureur));
+					java.awt.Image im = image.getImage();
+					java.awt.Image myImg = im.getScaledInstance(photoW.getWidth(), photoW.getHeight(), java.awt.Image.SCALE_SMOOTH);
+					ImageIcon img = new ImageIcon(myImg);
+					photoW.setIcon(img);
+				}
+			}
+		});
+		button_3.setForeground(Color.WHITE);
+		button_3.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		button_3.setBackground(new Color(51, 153, 204));
+		button_3.setBounds(50, 476, 154, 36);
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		panel_wiki.add(button_3);
 		
 		
@@ -1394,13 +1914,33 @@ public class AcceuilStudent extends JFrame {
 		lblFormation.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				
+				DefaultTableModel model = (DefaultTableModel)table_mesForms.getModel();
+				
+				//vide d'abord la table
+				model.setRowCount(0);
+				
+				for(int numFrm : Factory.getSuivreDao().getAll(Controleur.apprenantCo.getId()))
+				{
+					Formation f = Factory.getFormationDao().find(numFrm);
+					double progres =Factory.getSuivreDao().find(Controleur.apprenantCo.getId(), numFrm).getProgres();
+					model.addRow(new Object[] {f.getNumFormation(), f.getNomFormation(), f.getDureeHeure(), f.getDifficulte().getDesc(), ((int)progres)+"%"});
+				}
+				
+				/*panel_formationsSuivis.setVisible(true);
+				panel_toutesFormations.setVisible(false);
+				panel_form.setVisible(false);
+			
+				panel_AffFormation.setVisible(false);
+				panel_quiz.setVisible(false);*/
+				
 				panel_formation.setVisible(true);
 				
-				panel_toutesFormations.setVisible(true);
+				panel_toutesFormations.setVisible(false);
 				panel_quiz.setVisible(false);
 				panel_AffFormation.setVisible(false);
 				panel_form.setVisible(false);
-				panel_formationsSuivis.setVisible(false);
+				panel_formationsSuivis.setVisible(true);
 				
 				panel_forum.setVisible(false);
 				panel_blogs.setVisible(false);
@@ -1443,6 +1983,15 @@ public class AcceuilStudent extends JFrame {
 		lblWiki.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				
+				DefaultTableModel model = (DefaultTableModel)table_AllWiki.getModel();
+				model.setRowCount(0);
+				
+				for(Wiki w : Factory.getWikiDao().getAll())
+				{
+					model.addRow(new Object[] {w.getNumWiki(), w.getNomWiki(), w.getDomaineWiki()});
+				}
+				
 				panel_forum.setVisible(false);
 				panel_formation.setVisible(false);
 				panel_wiki.setVisible(true);
@@ -1639,6 +2188,8 @@ public class AcceuilStudent extends JFrame {
 		panel_forum.add(scrollPane_1);
 		
 		table_forum = new JTable();
+		table_forum.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 11));
+		table_forum.setBackground(Color.WHITE);
 		table_forum.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
@@ -1651,12 +2202,6 @@ public class AcceuilStudent extends JFrame {
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
 			}
 		});
 		scrollPane_1.setViewportView(table_forum);
@@ -2149,6 +2694,53 @@ public class AcceuilStudent extends JFrame {
 		btn_up.setIcon(new ImageIcon("Icons\\up_3_80px.png"));
 		btn_up.setHorizontalAlignment(SwingConstants.CENTER);
 		
+		JButton btnValider = new JButton("Finir test");
+		btnValider.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				boolean complet = true;
+				//verifier si l'apprenant a repondu à toute les question
+				for(int i=0; i<Controleur.formationSelec.getQuiz().getQuestions().size(); i++)
+				{
+					if(Controleur.formationSelec.getQuiz().getQuestions().get(i).getRepDonnee().equals(""))
+					{
+						JOptionPane.showMessageDialog(null, "Vous n'avez pas repondu à la question N°"+(i+1));
+						complet = false;
+					}
+				}
+				
+				if(complet)
+				{
+					double note = Controleur.formationSelec.getQuiz().corriger();
+					Suivre s = Factory.getSuivreDao().find(Controleur.apprenantCo.getId(), Controleur.formationSelec.getNumFormation());
+					
+					if(note>=50)
+					{
+						s.setProgres(100.0);
+						JOptionPane.showMessageDialog(null, "Vous avez obtenus "+note+"% Vous avez REUSSI!!");
+					}
+					else
+					{
+						s.setNbEch(s.getNbEch()+1);
+						JOptionPane.showMessageDialog(null, "Vous avez obtenus "+note+"% Vous avez échoué");
+					}
+					
+					Factory.getSuivreDao().update(s);
+					
+					panel_toutesFormations.setVisible(false);
+					panel_AffFormation.setVisible(false);
+					panel_quiz.setVisible(false);
+					panel_form.setVisible(true);
+					panel_formationsSuivis.setVisible(false);
+					
+				}
+			}
+		});
+		btnValider.setForeground(Color.WHITE);
+		btnValider.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		btnValider.setBackground(new Color(51, 153, 204));
+		btnValider.setBounds(307, 409, 226, 40);
+		panel_quiz.add(btnValider);
 			
 	
 	}

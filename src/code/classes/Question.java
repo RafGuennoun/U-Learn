@@ -6,19 +6,45 @@ public class Question {
 	private String reponse1;
 	private String reponse2;
 	private String bonneRep;
+	private String repDonnee;
+	private int numQz;
+	
 	
 	public Question()
 	{
 		
 	}
 	
-	public Question(int num, String question, String reponse1, String reponse2,  String bonneRep)
+	public Question(int num, String question, String reponse1, String reponse2, String bonneRep, int numQz)
 	{
 		this.numQuestion = num;
 		this.question = question;
 		this.reponse1=reponse1;
 		this.reponse2=reponse2;
 		this.bonneRep=bonneRep;
+		this.numQz = numQz;
+		this.repDonnee = "";
+	}
+	
+
+	public String getRepDonnee() {
+		return repDonnee;
+	}
+
+	public void setRepDonnee(String repDonnee) {
+		this.repDonnee = repDonnee;
+	}
+
+	public int getNumQz() {
+		return numQz;
+	}
+
+	public void setNumQz(int numQz) {
+		this.numQz = numQz;
+	}
+
+	public void setNumQuestion(int numQuestion) {
+		this.numQuestion = numQuestion;
 	}
 
 	public String getQuestion() {

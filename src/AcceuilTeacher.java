@@ -1,6 +1,5 @@
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -31,8 +30,17 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import code.classes.Blog;
 import code.classes.Commentaire;
+import code.classes.Cour;
+import code.classes.Date;
+import code.classes.Demande;
+import code.classes.EnumDifficulte;
+import code.classes.Formation;
 import code.classes.Forum;
+import code.classes.Question;
+import code.classes.Quiz;
+import code.classes.Suivre;
 import code.classes.Wiki;
 import code.dao.Factory;
 
@@ -61,8 +69,28 @@ public class AcceuilTeacher extends JFrame {
 	private JTextField textField_titrWiki2;
 	private JTable table_allWikis;
 
-	private String cheminImageWiki;
+	private JTable table_coursAjouter;
+	private JTable table_demandes;
+	private JTable table_app;
+	private JTable table_frm;
+	private JTextField txtDomaineWiki;
+	private JTextField txtTitreBlog;
+	private JTextField txtTitreBlog_1;
+	private JTable table_blogs;
+	private JTable table_qst;
+	private JTextField textField_qst;
+	private JTextField textField_rep1;
+	private JTextField textField_rep2;
+	private JTextField textField_bnRep;
+	
+	//variable utilisées dans les traitements
+	private String cheminImageWiki="";
+	private String cheminImageBlog="";
+	private String cheminCour="";
+	private int offset=1;
+	private int offsetQuest = 1;
 	private int parcoureur = 0;
+<<<<<<< HEAD
 	private JTable table;
 	private JTable table_demandes;
 	private JTable table_app;
@@ -76,6 +104,11 @@ public class AcceuilTeacher extends JFrame {
 	private JTextField textField_rep1;
 	private JTextField textField_rep2;
 	private JTextField textField_bnRep;
+=======
+	private int parcoureurB = 0;
+	private int wikiSelec;
+	private int selectQuiz=0;
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 	/**
 	 * Launch the application.
 	 */
@@ -613,11 +646,16 @@ public class AcceuilTeacher extends JFrame {
 		panel_ajoutFormation.add(lblDifficult);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(357, 144, 461, 228);
+		scrollPane.setBounds(357, 144, 461, 294);
 		panel_ajoutFormation.add(scrollPane);
 		
+<<<<<<< HEAD
 		table = new JTable();
 		table.setModel(new DefaultTableModel(
+=======
+		table_coursAjouter = new JTable();
+		table_coursAjouter.setModel(new DefaultTableModel(
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 			new Object[][] {
 			},
 			new String[] {
@@ -637,8 +675,13 @@ public class AcceuilTeacher extends JFrame {
 				return columnEditables[column];
 			}
 		});
+<<<<<<< HEAD
 		table.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		scrollPane.setViewportView(table);
+=======
+		table_coursAjouter.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		scrollPane.setViewportView(table_coursAjouter);
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		
 		JLabel lblTitreDuCours = new JLabel("Titre du cours : ");
 		lblTitreDuCours.setHorizontalAlignment(SwingConstants.LEFT);
@@ -673,6 +716,35 @@ public class AcceuilTeacher extends JFrame {
 		panel_ajoutFormation.add(desc_cours);
 		
 		JButton btnAjouterLeCours = new JButton("Ajouter le cours");
+		btnAjouterLeCours.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(titre_cours.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Titre Cour manquant");
+				}
+				else if(cheminCour.equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Pas de cour selectionné");
+				}
+				else
+				{
+					int numC = Factory.getCourDao().getMaxNum()+offset;
+					int numF = Factory.getFormationDao().getMaxNum()+1;
+					offset++;
+					Cour c = new Cour(numC,titre_cours.getText(),desc_cours.getText(),cheminCour,numF);
+					Controleur.listeCours.add(c);
+					
+					cheminCour = "";
+					titre_cours.setText("");
+					desc_cours.setText("");
+					JOptionPane.showMessageDialog(null, "Cour ajouté");
+					DefaultTableModel model = (DefaultTableModel)table_coursAjouter.getModel();
+					model.addRow(new Object[] {c.getNomCour(), c.getDescription()});
+					
+				}
+			}
+		});
 		btnAjouterLeCours.setForeground(Color.WHITE);
 		btnAjouterLeCours.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		btnAjouterLeCours.setBackground(new Color(51, 153, 204));
@@ -701,10 +773,10 @@ public class AcceuilTeacher extends JFrame {
 					if(result == JFileChooser.APPROVE_OPTION)
 					{
 						File selectedfile = fileChooser.getSelectedFile();
-						String path = selectedfile.getAbsolutePath();
+						cheminCour = selectedfile.getAbsolutePath();
 						//System.out.println(path);
 						//System.out.println(selectedfile.getName());
-						Desktop.getDesktop().open(new java.io.File(path));
+						//Desktop.getDesktop().open(new java.io.File(cheminCour));
 						
 					//System.out.println(path);
 					}
@@ -729,6 +801,7 @@ public class AcceuilTeacher extends JFrame {
 		buttonPDF.setBounds(174, 301, 135, 31);
 		panel_ajoutFormation.add(buttonPDF);
 		
+<<<<<<< HEAD
 		JButton btnAjouterLaFormation = new JButton("Ajouter nouvelle formation");
 		btnAjouterLaFormation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -753,6 +826,8 @@ public class AcceuilTeacher extends JFrame {
 		lblNiv.setBounds(617, 60, 39, 22);
 		panel_ajoutFormation.add(lblNiv);
 		
+=======
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		JComboBox comboBox_niv = new JComboBox();
 		comboBox_niv.setForeground(new Color(0, 51, 102));
 		comboBox_niv.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
@@ -768,25 +843,24 @@ public class AcceuilTeacher extends JFrame {
 		comboBox_niv.addItem("M2");
 		comboBox_niv.setSelectedItem(null);
 		
-		JButton btnAjouterAUne = new JButton("Ajouter a une formation");
-		btnAjouterAUne.setForeground(Color.WHITE);
-		btnAjouterAUne.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 15));
-		btnAjouterAUne.setBackground(new Color(51, 153, 204));
-		btnAjouterAUne.setBounds(357, 400, 220, 41);
-		panel_ajoutFormation.add(btnAjouterAUne);
+		JComboBox comboBox_diff = new JComboBox();
+		comboBox_diff.setForeground(new Color(0, 51, 102));
+		comboBox_diff.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		comboBox_diff.setBorder(null);
+		comboBox_diff.setBackground(Color.WHITE);
+		comboBox_diff.setBounds(702, 93, 116, 27);
+		panel_ajoutFormation.add(comboBox_diff);
 		
-		JScrollPane scrollPane_7 = new JScrollPane();
-		scrollPane_7.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane_7.setBounds(10, 383, 337, 70);
-		panel_ajoutFormation.add(scrollPane_7);
+		comboBox_diff.addItem("Facile");
+		comboBox_diff.addItem("Moyen");
+		comboBox_diff.addItem("Difficile");
+		comboBox_diff.setSelectedItem(null);
 		
-		JTextArea txtrRemarqueDfqfdfsd = new JTextArea();
-		txtrRemarqueDfqfdfsd.setText("Remarque : \r\nPour ajouter un cours a une formation deja existante il\r\nfaut juste ecrire le nom de la formation et remplir les\r\ncrit\u00E9res du cours et importer le cours puis cliquer\r\nsur \"Ajouter a une formation \" .\r\nSi c'est pour cr\u00E9er une nouvelle formation , il faut\r\nremplir tout les champs puis cliquer sur \r\n\"Ajouter nouvelle formation\" .");
-		txtrRemarqueDfqfdfsd.setLineWrap(true);
-		txtrRemarqueDfqfdfsd.setBackground(new  Color(51,135,204));
-		txtrRemarqueDfqfdfsd.setForeground(Color.WHITE);
-		txtrRemarqueDfqfdfsd.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
-		scrollPane_7.setViewportView(txtrRemarqueDfqfdfsd);
+		JPanel panel_quiz_tests = new JPanel();
+		panel_quiz_tests.setBackground(Color.WHITE);
+		panel_quiz_tests.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
+		layeredPane_2.add(panel_quiz_tests, "name_223824716719900");
+		panel_quiz_tests.setLayout(null);
 		
 		JComboBox comboBox_diff = new JComboBox();
 		comboBox_diff.setForeground(new Color(0, 51, 102));
@@ -803,6 +877,15 @@ public class AcceuilTeacher extends JFrame {
 		comboBox_diff.addItem("5");
 		comboBox_diff.setSelectedItem(null);
 		
+		
+		
+		JLabel lblNiv = new JLabel("Niv :");
+		lblNiv.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNiv.setForeground(new Color(0, 51, 102));
+		lblNiv.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
+		lblNiv.setBackground(new Color(0, 51, 102));
+		lblNiv.setBounds(617, 60, 39, 22);
+		panel_ajoutFormation.add(lblNiv);
 		
 		
 		JPanel panel_mesFormations = new JPanel();
@@ -849,7 +932,7 @@ public class AcceuilTeacher extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"N\u00B0 cours", "Cours de la formation"
+				"N\u00B0 cours", "Titre"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
@@ -859,7 +942,7 @@ public class AcceuilTeacher extends JFrame {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, true
+				true, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -869,6 +952,29 @@ public class AcceuilTeacher extends JFrame {
 		scrollPane_9.setViewportView(table_coursForm);
 		
 		JButton btnSupprimerFormation = new JButton("Supprimer formation");
+		btnSupprimerFormation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_mesFormations.getSelectedRow();
+				TableModel model = table_mesFormations.getModel();
+				DefaultTableModel modelCours = (DefaultTableModel)table_coursForm.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner une Formation");
+				}
+				else
+				{
+					int numFrm = (Integer)model.getValueAt(index , 0);
+					Formation f = Factory.getFormationDao().find(numFrm);
+					
+					Factory.getFormationDao().delete(f);
+					modelCours.setRowCount(0);
+					((DefaultTableModel)model).removeRow(index);
+					JOptionPane.showMessageDialog(null, "Suppresion réussite");
+				}
+			}
+		});
 		btnSupprimerFormation.setForeground(Color.WHITE);
 		btnSupprimerFormation.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 15));
 		btnSupprimerFormation.setBackground(new Color(51, 153, 204));
@@ -876,10 +982,39 @@ public class AcceuilTeacher extends JFrame {
 		panel_mesFormations.add(btnSupprimerFormation);
 		
 		JButton btnSupprimerCours = new JButton("Supprimer cours");
+		btnSupprimerCours.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_coursForm.getSelectedRow();
+				TableModel model = table_coursForm.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez séléctionner un cours");
+				}
+				else
+				{
+					int indexF = table_mesFormations.getSelectedRow();
+					DefaultTableModel modelF = (DefaultTableModel)table_mesFormations.getModel();
+					
+					int nbCrs = (Integer)modelF.getValueAt(index, 2);
+					
+					
+					int numC = (Integer)model.getValueAt(index, 0);
+					Cour c = Factory.getCourDao().find(numC);
+					
+					Factory.getCourDao().delete(c);
+					((DefaultTableModel)model).removeRow(index);
+					modelF.setValueAt(nbCrs-1, index, 2);
+					JOptionPane.showMessageDialog(null, "Suppression réussite");
+				
+				}
+			}
+		});
 		btnSupprimerCours.setForeground(Color.WHITE);
 		btnSupprimerCours.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 15));
 		btnSupprimerCours.setBackground(new Color(51, 153, 204));
-		btnSupprimerCours.setBounds(555, 363, 220, 41);
+		btnSupprimerCours.setBounds(663, 363, 140, 41);
 		panel_mesFormations.add(btnSupprimerCours);
 		
 		JScrollPane scrollPane_10 = new JScrollPane();
@@ -893,6 +1028,7 @@ public class AcceuilTeacher extends JFrame {
 		txtrRemarquePour.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		scrollPane_10.setViewportView(txtrRemarquePour);
 		
+<<<<<<< HEAD
 		JPanel panel_quiz_tests = new JPanel();
 		panel_quiz_tests.setBackground(Color.WHITE);
 		panel_quiz_tests.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
@@ -902,6 +1038,44 @@ public class AcceuilTeacher extends JFrame {
 		JScrollPane scrollPane_2 = new JScrollPane();
 		scrollPane_2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane_2.setBounds(10, 11, 375, 192);
+=======
+		JButton btnAfficherCours = new JButton("Afficher Cours");
+		btnAfficherCours.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_mesFormations.getSelectedRow();
+				TableModel model = table_mesFormations.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner une Formation");
+				}
+				else
+				{
+					int numFrm = (Integer)model.getValueAt(index, 0);
+					Formation f = Factory.getFormationDao().find(numFrm);
+					
+					DefaultTableModel modelCours = (DefaultTableModel)table_coursForm.getModel();
+					modelCours.setRowCount(0);
+					
+					for(Cour c : f.getListeCours())
+					{
+						modelCours.addRow(new Object[] {c.getNumCour(), c.getNomCour()});
+					}
+				}
+			}
+		});
+		btnAfficherCours.setForeground(Color.WHITE);
+		btnAfficherCours.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 15));
+		btnAfficherCours.setBackground(new Color(51, 153, 204));
+		btnAfficherCours.setBounds(507, 363, 126, 41);
+		panel_mesFormations.add(btnAfficherCours);
+		
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_2.setBounds(10, 11, 375, 152);
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		panel_quiz_tests.add(scrollPane_2);
 		
 		table_formations = new JTable();
@@ -959,12 +1133,119 @@ public class AcceuilTeacher extends JFrame {
 		scrollPane_6.setViewportView(table_qst);
 		
 		JButton btnValiderLeTest = new JButton("Valider le test");
+<<<<<<< HEAD
+=======
+		btnValiderLeTest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(selectQuiz == 1)
+				{
+					Factory.getFormationDao().insert(Controleur.formationSelec, Controleur.instructerCo.getId());
+					JOptionPane.showMessageDialog(null, "Formation ajoutée");
+					
+					btnValiderLeTest.setText("Valider le test");
+					
+					panel_ajoutFormation.setVisible(true);
+					panel_quiz_tests.setVisible(false);
+					
+					offsetQuest = 1;
+					selectQuiz = 0;
+					
+					textField_qst.setText("");
+					textField_rep1.setText("");
+					textField_rep2.setText("");
+					textField_bnRep.setText("");
+				}
+				else
+				{
+					
+				}
+			}
+		});
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		btnValiderLeTest.setForeground(Color.WHITE);
 		btnValiderLeTest.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
 		btnValiderLeTest.setBackground(new Color(51, 153, 204));
 		btnValiderLeTest.setBounds(286, 410, 289, 43);
 		panel_quiz_tests.add(btnValiderLeTest);
 		
+<<<<<<< HEAD
+=======
+		JButton btnAjouterLaFormation = new JButton("Ajouter la formation");
+		btnAjouterLaFormation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			if(titre_formation.getText().equals(""))
+			{
+				JOptionPane.showMessageDialog(null, "Titre formation manquant");
+			}
+			else if(((String)(comboBox_diff.getSelectedItem())).equals(""))
+			{
+				JOptionPane.showMessageDialog(null, "Difficulté manquante");
+			}
+			else if(((String)(comboBox_niv.getSelectedItem())).equals(""))
+			{
+				JOptionPane.showMessageDialog(null, "Niveau manquant");
+			}
+			else if(Controleur.listeCours.size()==0)
+			{
+				JOptionPane.showMessageDialog(null, "Vous devez ajouter au moins un cours");
+			}
+			else
+			{
+				int numF = Factory.getFormationDao().getMaxNum()+1;
+				EnumDifficulte diff = EnumDifficulte.transform((String)(comboBox_diff.getSelectedItem()));
+				int duree = Integer.valueOf(duree_formation.getText());
+				
+				
+				Formation f = new Formation(numF, titre_formation.getText(), desc_formation.getText(),
+						      comboBox_niv.getSelectedIndex()+1, diff, duree, Controleur.instructerCo.getId());
+				Controleur.formationSelec = f;
+				
+				JOptionPane.showMessageDialog(null, "Parfait, ajoutez un quiz pour finaliser");
+				offset = 1;
+				
+				//ajout de la liste des cours
+				Controleur.formationSelec.setListeCours(Controleur.listeCours);
+				
+				//initialization du quiz
+				Quiz q = new Quiz(numF, "Quiz "+Controleur.formationSelec.getNomFormation());
+				Controleur.formationSelec.setQuiz(q);
+				
+				titre_cours.setText("");
+				titre_formation.setText("");
+				desc_formation.setText("");
+				duree_formation.setText("");
+				
+				
+				//mettre la foramtion dans la table de formation dans la table test
+				DefaultTableModel model = (DefaultTableModel)table_formations.getModel();
+				model.setRowCount(0);
+				model.addRow(new Object[] {Controleur.formationSelec.getNumFormation(), Controleur.formationSelec.getNomFormation()});
+				
+				
+				//modification d label du bouton de quiz
+				btnValiderLeTest.setText("Finaliser formation");
+				
+				selectQuiz = 1;
+				
+				//envoyer l'instructeur a la page des quiz pour ajouter un quiz
+				panel_ajoutFormation.setVisible(false);
+				panel_quiz_tests.setVisible(true);
+				
+			}
+			
+			
+			
+			}
+		});
+		btnAjouterLaFormation.setForeground(Color.WHITE);
+		btnAjouterLaFormation.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 15));
+		btnAjouterLaFormation.setBackground(new Color(51, 153, 204));
+		btnAjouterLaFormation.setBounds(68, 397, 226, 41);
+		panel_ajoutFormation.add(btnAjouterLaFormation);
+		
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(new Color(0, 51, 102), 2, true));
 		panel_1.setBackground(Color.WHITE);
@@ -1037,6 +1318,7 @@ public class AcceuilTeacher extends JFrame {
 		panel_1.add(textField_bnRep);
 		
 		JButton button_9 = new JButton("Ajouter ");
+<<<<<<< HEAD
 		button_9.setForeground(Color.WHITE);
 		button_9.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
 		button_9.setBackground(new Color(51, 153, 204));
@@ -1057,6 +1339,169 @@ public class AcceuilTeacher extends JFrame {
 		button_11.setBounds(626, 118, 161, 32);
 		panel_1.add(button_11);
 		
+=======
+		button_9.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				DefaultTableModel model = (DefaultTableModel)table_qst.getModel();
+				
+				if(textField_qst.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Question requise");
+				}
+				else if(textField_bnRep.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Bonne réponse requise");
+				}
+				else
+				{
+					int numQ  = Factory.getQuestionDao().getMaxNum()+offsetQuest;
+					offsetQuest++;
+					
+					Question q = new Question(numQ,
+							textField_qst.getText(),
+							textField_rep1.getText(),
+							textField_rep2.getText(),
+							textField_bnRep.getText(),
+							Controleur.formationSelec.getQuiz().getNumQuiz());
+					
+					Controleur.formationSelec.getQuiz().ajouterQuestion(q);
+					
+					model.addRow(new Object[] {q.getNumQuestion(), q.getQuestion()});
+					
+					
+					if(selectQuiz == 0)
+					{
+						Factory.getQuestionDao().insert(q, Controleur.formationSelec.getQuiz().getNumQuiz());
+					}
+					
+					textField_qst.setText("");
+					textField_rep1.setText("");
+					textField_rep2.setText("");
+					textField_bnRep.setText("");
+				}
+				
+				
+			}
+		});
+		button_9.setForeground(Color.WHITE);
+		button_9.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		button_9.setBackground(new Color(51, 153, 204));
+		button_9.setBounds(626, 33, 161, 32);
+		panel_1.add(button_9);
+		
+		JButton button_10 = new JButton("Modifier");
+		button_10.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				TableModel model = table_qst.getModel();
+				int index = table_qst.getSelectedRow();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner une question à modifier");
+				}
+				else if(textField_qst.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Question requise");
+				}
+				else if(textField_bnRep.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Bonne réponse requise");
+				}
+				else
+				{
+					int numQ = (Integer)model.getValueAt(index, 0);
+					Question q = Factory.getQuestionDao().find(numQ);
+					//mise a jor du pojo
+					q.setQuestion(textField_qst.getText());
+					q.setReponse1(textField_rep1.getText());
+					q.setReponse2(textField_rep2.getText());
+					q.setBonneRep(textField_bnRep.getText());
+					
+					Factory.getQuestionDao().update(q);
+					
+					JOptionPane.showMessageDialog(null, "Mise a jour réussie");
+					model.setValueAt(q.getQuestion(), index, 1);
+					
+					
+					textField_qst.setText("");
+					textField_rep1.setText("");
+					textField_rep2.setText("");
+					textField_bnRep.setText("");
+				}
+			}
+		});
+		button_10.setForeground(Color.WHITE);
+		button_10.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		button_10.setBackground(new Color(51, 153, 204));
+		button_10.setBounds(626, 76, 161, 32);
+		panel_1.add(button_10);
+		
+		JButton button_11 = new JButton("Supprimer");
+		button_11.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_qst.getSelectedRow();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selection une question à supprimer");
+				}
+				else
+				{
+					TableModel model = table_qst.getModel();
+					int numQ = (Integer)model.getValueAt(index, 0);
+					
+					Question q = Factory.getQuestionDao().find(numQ);
+					
+					//suppression
+					Factory.getQuestionDao().delete(q);
+					JOptionPane.showMessageDialog(null, "Sippression effectuée");
+					((DefaultTableModel)model).removeRow(index);
+					
+				}
+			}
+		});
+		button_11.setForeground(Color.WHITE);
+		button_11.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		button_11.setBackground(new Color(51, 153, 204));
+		button_11.setBounds(626, 119, 161, 32);
+		panel_1.add(button_11);
+		
+		JButton AfficherQuestions = new JButton("Afficher");
+		AfficherQuestions.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_formations.getSelectedRow();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionnez une formation");
+				}
+				else
+				{
+					TableModel modelFrm = table_formations.getModel();
+					DefaultTableModel modelQuest = (DefaultTableModel)table_qst.getModel();
+					modelQuest.setRowCount(0);
+					
+					int numFrm = (Integer)modelFrm.getValueAt(index, 0);
+					Controleur.formationSelec = Factory.getFormationDao().find(numFrm);
+					
+					for(Question q : Controleur.formationSelec.getQuiz().getQuestions())
+					{
+						modelQuest.addRow(new Object[] {q.getNumQuestion(), q.getQuestion()});
+					}
+				}
+			}
+		});
+		AfficherQuestions.setBounds(118, 171, 161, 32);
+		panel_quiz_tests.add(AfficherQuestions);
+		AfficherQuestions.setForeground(Color.WHITE);
+		AfficherQuestions.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		AfficherQuestions.setBackground(new Color(51, 153, 204));
+		
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		JPanel panel_demandes = new JPanel();
 		panel_demandes.setBackground(Color.WHITE);
 		layeredPane_2.add(panel_demandes, "name_155316224099300");
@@ -1072,17 +1517,29 @@ public class AcceuilTeacher extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
+<<<<<<< HEAD
 				"N\u00B0 Demande", "Formation", "ID Apprenant", "Niveau", "Check"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
 				Integer.class, String.class, String.class, Integer.class, Boolean.class
+=======
+				"N\u00B0 Formation", "Formation", "ID Apprenant", "Niveau"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Integer.class, String.class, String.class, Integer.class
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
+<<<<<<< HEAD
 				false, false, false, false, false
+=======
+				false, true, true, true
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -1092,6 +1549,32 @@ public class AcceuilTeacher extends JFrame {
 		scrollPane_12.setViewportView(table_demandes);
 		
 		JButton btnRefuser = new JButton("Refuser\r\n");
+<<<<<<< HEAD
+=======
+		btnRefuser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_demandes.getSelectedRow();
+				TableModel model = table_demandes.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner une demande");
+				}
+				else
+				{
+					String idApp = (String)model.getValueAt(index, 2);
+					int numFrm = (Integer)model.getValueAt(index, 0);
+					
+					//supprimer la demande
+					Factory.getDemandeDao().delete(idApp, numFrm);
+					
+					((DefaultTableModel)model).removeRow(index);
+					JOptionPane.showMessageDialog(null, "La demande a été supprimé");
+				}
+			}
+		});
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		btnRefuser.setForeground(Color.WHITE);
 		btnRefuser.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
 		btnRefuser.setBackground(new Color(51, 153, 204));
@@ -1099,6 +1582,36 @@ public class AcceuilTeacher extends JFrame {
 		panel_demandes.add(btnRefuser);
 		
 		JButton btnAccepter = new JButton("Accepter");
+<<<<<<< HEAD
+=======
+		btnAccepter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int index = table_demandes.getSelectedRow();
+				TableModel model = table_demandes.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner une demande");
+				}
+				else
+				{
+					String idApp = (String)model.getValueAt(index, 2);
+					int numFrm = (Integer)model.getValueAt(index, 0);
+					
+					//inserer dans la table suivre
+					Factory.getSuivreDao().insert(idApp, numFrm);
+					
+					//supprimer la demande
+					Factory.getDemandeDao().delete(idApp, numFrm);
+					
+					((DefaultTableModel)model).removeRow(index);
+					JOptionPane.showMessageDialog(null, "L'apprenant suit maintenant la formation");
+				}
+
+			}
+		});
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		btnAccepter.setForeground(Color.WHITE);
 		btnAccepter.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
 		btnAccepter.setBackground(new Color(51, 153, 204));
@@ -1195,6 +1708,17 @@ public class AcceuilTeacher extends JFrame {
 		JButton btnMesFormation = new JButton("Mes formations ");
 		btnMesFormation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				DefaultTableModel model = (DefaultTableModel)table_mesFormations.getModel();
+				model.setRowCount(0);
+				int nbApp = 0;
+				
+				for(Formation f : Factory.getFormationDao().getMyAll(Controleur.instructerCo.getId()))
+				{
+					nbApp = Factory.getSuivreDao().getNbrApp(f.getNumFormation());
+					model.addRow(new Object[] {f.getNumFormation(), f.getNomFormation(), f.getListeCours().size(), nbApp});
+				}
+				
 				panel_ajoutFormation.setVisible(false);
 				panel_mesFormations.setVisible(true);
 				panel_quiz_tests.setVisible(false);
@@ -1212,6 +1736,17 @@ public class AcceuilTeacher extends JFrame {
 		JButton btnTestsQuiz = new JButton("Tests / Quiz ");
 		btnTestsQuiz.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				
+				DefaultTableModel model = (DefaultTableModel)table_formations.getModel();
+				model.setRowCount(0);
+				
+				for(Formation f : Factory.getFormationDao().getMyAll(Controleur.instructerCo.getId()))
+				{
+					model.addRow(new Object[] {f.getNumFormation(), f.getNomFormation()});
+				}
+				
+				
 				panel_ajoutFormation.setVisible(false);
 				panel_mesFormations.setVisible(false);
 				panel_quiz_tests.setVisible(true);
@@ -1228,6 +1763,17 @@ public class AcceuilTeacher extends JFrame {
 		JButton Demandes = new JButton("Demandes");
 		Demandes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+<<<<<<< HEAD
+=======
+				
+				DefaultTableModel model = (DefaultTableModel)table_demandes.getModel();
+				model.setRowCount(0);
+				
+				for(Demande d : Factory.getDemandeDao().getAll(Controleur.instructerCo.getId()))
+				{
+					model.addRow(new Object[] {d.getNumFrm(), d.getTitreFrm(), d.getApprenant().getId(), d.getApprenant().getNiveau()});
+				}
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 			
 				panel_ajoutFormation.setVisible(false);
 				panel_mesFormations.setVisible(false);
@@ -1337,6 +1883,10 @@ public class AcceuilTeacher extends JFrame {
 				{
 					JOptionPane.showMessageDialog(null, "Veuillez entrer un titre");
 				}
+				else if(txtDomaineWiki.getText().contentEquals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez entrer le domaine du wiki");
+				}
 				else if(textArea_textWiki.getText().equals(""))
 				{
 					JOptionPane.showMessageDialog(null, "Veuillez entrer un texte");
@@ -1348,7 +1898,11 @@ public class AcceuilTeacher extends JFrame {
 					//construire le pojo
 					Wiki w = new Wiki(numW,
 									  txtTitreWiki.getText(),
+<<<<<<< HEAD
 									  "domaine",
+=======
+									  txtDomaineWiki.getText(),
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 									  textArea_textWiki.getText(),
 									  Controleur.instructerCo.getId());
 					
@@ -1482,6 +2036,24 @@ public class AcceuilTeacher extends JFrame {
 		scrollPane_wiki1.setViewportView(textArea_WikiModif);
 		
 		JButton btnModifierLeWiki = new JButton("Redistribuer");
+		btnModifierLeWiki.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(wikiSelec == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez d'abord afficher le wiki que vous voulez redistribuer");
+				}
+				else
+				{
+					Wiki w = Factory.getWikiDao().find(wikiSelec);
+					w.setTextWiki(textArea_textWiki.getText());
+					Factory.getWikiDao().update(w);
+					Factory.getRedistributionDao().insert(wikiSelec, Controleur.instructerCo.getId());
+					
+					JOptionPane.showMessageDialog(null, "Wiki redistribué");
+				}
+			}
+		});
 		btnModifierLeWiki.setForeground(Color.WHITE);
 		btnModifierLeWiki.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		btnModifierLeWiki.setBackground(new Color(51, 153, 204));
@@ -1600,6 +2172,7 @@ public class AcceuilTeacher extends JFrame {
 				else
 				{
 					int numW = (Integer)model.getValueAt(index, 0);
+					wikiSelec = numW;
 					Wiki w = Factory.getWikiDao().find(numW);
 					textField_titrWiki2.setText(w.getNomWiki());
 					textArea_WikiModif.setText(w.getTextWiki());
@@ -1726,6 +2299,7 @@ public class AcceuilTeacher extends JFrame {
 		lblTexteBlog.setBounds(10, 58, 327, 29);
 		panel_ajouterBlog.add(lblTexteBlog);
 		
+<<<<<<< HEAD
 		JScrollPane scrollPane_15 = new JScrollPane();
 		scrollPane_15.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane_15.setBounds(10, 98, 327, 353);
@@ -1740,6 +2314,64 @@ public class AcceuilTeacher extends JFrame {
 		panel_ajouterBlog.add(label_7);
 		
 		JButton btnAjouterLeBlog = new JButton("Ajouter le Blog");
+=======
+		JLabel lbl_ImageBlog = new JLabel("Ajoutez des images !");
+		lbl_ImageBlog.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_ImageBlog.setForeground(new Color(0, 51, 102));
+		lbl_ImageBlog.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		lbl_ImageBlog.setBackground(Color.LIGHT_GRAY);
+		lbl_ImageBlog.setBounds(379, 11, 409, 313);
+		panel_ajouterBlog.add(lbl_ImageBlog);
+		
+		JScrollPane scrollPane_15 = new JScrollPane();
+		scrollPane_15.setBounds(10, 98, 327, 353);
+		panel_ajouterBlog.add(scrollPane_15);
+		
+		JTextArea textArea_textBlog = new JTextArea();
+		scrollPane_15.setViewportView(textArea_textBlog);
+		
+		JButton btnAjouterLeBlog = new JButton("Ajouter le Blog");
+		btnAjouterLeBlog.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(txtTitreBlog.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez entrer le titre du Blog");
+				}
+				else if(textArea_textBlog.getText().equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez entrer le text du Blog");
+				}
+				else if(false) //verifier la date
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez completer la date");
+				}
+				else
+				{
+					
+					Date d0 = new Date(2018,05,12); //à enlever, ici en attendant l'interface
+					
+					int numB = Factory.getBlogDao().getMaxNum()+1;
+					Blog b = new Blog(numB,txtTitreBlog.getText(), textArea_textBlog.getText(), d0, Controleur.instructerCo.getId());
+					
+					b.setPhotos(Controleur.listeImageBlog);
+					
+					
+					txtTitreBlog.setText("");
+					textArea_textBlog.setText("");
+					//penser a effacer les texte des date une fois ajouté
+					if(Factory.getBlogDao().insert(b, Controleur.instructerCo.getId()))
+					{
+						JOptionPane.showMessageDialog(null, "Blog ajoutée avec succès");
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Problème lors de l'ajout du Blog");
+					}
+				}
+			}
+		});
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		btnAjouterLeBlog.setForeground(Color.WHITE);
 		btnAjouterLeBlog.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		btnAjouterLeBlog.setBackground(new Color(51, 153, 204));
@@ -1747,6 +2379,38 @@ public class AcceuilTeacher extends JFrame {
 		panel_ajouterBlog.add(btnAjouterLeBlog);
 		
 		JButton button_1 = new JButton("Select Image");
+<<<<<<< HEAD
+=======
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File("C:\\Users\\YACINE\\Desktop"));
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("IMAGE","png","jpg","gif");
+				fileChooser.addChoosableFileFilter(filter);
+				int result = fileChooser.showSaveDialog(null);
+				if(result == JFileChooser.APPROVE_OPTION)
+				{
+					File selectedfile = fileChooser.getSelectedFile();
+					cheminImageBlog = selectedfile.getAbsolutePath();
+					ImageIcon myImage = new ImageIcon(cheminImageBlog);
+					java.awt.Image img = myImage.getImage();
+					java.awt.Image NewImage = img.getScaledInstance(photoWiki.getWidth(), photoWiki.getHeight(), java.awt.Image.SCALE_SMOOTH); /* if error check this */
+					ImageIcon finalImage = new ImageIcon(NewImage);
+					lbl_ImageBlog.setIcon(finalImage);
+
+				//System.out.println(path);
+				}
+				else
+				{
+					if( result == JFileChooser.CANCEL_OPTION)
+					{
+						JOptionPane.showMessageDialog(null, "Vous avez rien choisi");
+					}
+				}
+			}
+		});
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		button_1.setForeground(Color.WHITE);
 		button_1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		button_1.setBackground(new Color(51, 153, 204));
@@ -1754,12 +2418,33 @@ public class AcceuilTeacher extends JFrame {
 		panel_ajouterBlog.add(button_1);
 		
 		JButton button_4 = new JButton("Ajouter");
+<<<<<<< HEAD
+=======
+		button_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(cheminImageBlog.equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez choisir d'abord une image");
+				}
+				else
+				{
+					Controleur.listeImageBlog.add(cheminImageBlog);
+					JOptionPane.showMessageDialog(null, "Image ajoutée");
+				}
+			}
+		});
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		button_4.setForeground(Color.WHITE);
 		button_4.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		button_4.setBackground(new Color(51, 153, 204));
 		button_4.setBounds(530, 370, 128, 29);
 		panel_ajouterBlog.add(button_4);
 		
+<<<<<<< HEAD
+=======
+		
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		JPanel panel_allBlogs = new JPanel();
 		panel_allBlogs.setBackground(Color.WHITE);
 		layeredPane_3.add(panel_allBlogs, "name_157643503149700");
@@ -1785,6 +2470,7 @@ public class AcceuilTeacher extends JFrame {
 		
 		JScrollPane scrollPane_16 = new JScrollPane();
 		scrollPane_16.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+<<<<<<< HEAD
 		scrollPane_16.setBounds(487, 58, 327, 142);
 		panel_allBlogs.add(scrollPane_16);
 		
@@ -1801,6 +2487,13 @@ public class AcceuilTeacher extends JFrame {
 		button.setBackground(new Color(51, 153, 204));
 		button.setBounds(497, 405, 306, 46);
 		panel_allBlogs.add(button);
+=======
+		scrollPane_16.setBounds(487, 58, 327, 194);
+		panel_allBlogs.add(scrollPane_16);
+		
+		JTextArea textArea_texteBlog2 = new JTextArea();
+		scrollPane_16.setViewportView(textArea_texteBlog2);
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		
 		JScrollPane scrollPane_17 = new JScrollPane();
 		scrollPane_17.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -1812,17 +2505,29 @@ public class AcceuilTeacher extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
+<<<<<<< HEAD
 				"N\u00B0", "Titre"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
 				Integer.class, String.class
+=======
+				"N\u00B0", "Titre", "Date"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Integer.class, String.class, String.class
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
+<<<<<<< HEAD
 				false, false
+=======
+				true, true, false
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -1832,21 +2537,53 @@ public class AcceuilTeacher extends JFrame {
 		table_blogs.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		scrollPane_17.setViewportView(table_blogs);
 		
+<<<<<<< HEAD
 		JLabel label_12 = new JLabel("Pas de photo !");
 		label_12.setHorizontalAlignment(SwingConstants.CENTER);
 		label_12.setForeground(new Color(0, 51, 102));
 		label_12.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
 		label_12.setBounds(507, 211, 283, 141);
 		panel_allBlogs.add(label_12);
+=======
+		JLabel label_imageBlog2 = new JLabel("Pas de photo !");
+		label_imageBlog2.setHorizontalAlignment(SwingConstants.CENTER);
+		label_imageBlog2.setForeground(new Color(0, 51, 102));
+		label_imageBlog2.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		label_imageBlog2.setBounds(507, 263, 283, 141);
+		panel_allBlogs.add(label_imageBlog2);
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		
 		JButton button_5 = new JButton("<");
 		button_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+<<<<<<< HEAD
+=======
+				
+				if(Controleur.listeImageAfficherBlog.size()==0)
+				{
+					JOptionPane.showMessageDialog(null, "Pas de photos à affiher");
+				}
+				else if(parcoureurB==0)
+				{
+					JOptionPane.showMessageDialog(null, "Il n'y a plus de photos à afficher");
+				}
+				else
+				{
+					parcoureurB--;
+					
+					ImageIcon image = new ImageIcon(Controleur.listeImageAfficherBlog.get(parcoureurB));
+					java.awt.Image im = image.getImage();
+					java.awt.Image myImg = im.getScaledInstance(photoW.getWidth(), photoW.getHeight(), java.awt.Image.SCALE_SMOOTH);
+					ImageIcon img = new ImageIcon(myImg);
+					label_imageBlog2.setIcon(img);
+				}
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 			}
 		});
 		button_5.setForeground(Color.WHITE);
 		button_5.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 25));
 		button_5.setBackground(new Color(51, 153, 204));
+<<<<<<< HEAD
 		button_5.setBounds(517, 363, 125, 31);
 		panel_allBlogs.add(button_5);
 		
@@ -1855,11 +2592,71 @@ public class AcceuilTeacher extends JFrame {
 		button_6.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 25));
 		button_6.setBackground(new Color(51, 153, 204));
 		button_6.setBounds(662, 363, 129, 31);
+=======
+		button_5.setBounds(507, 415, 125, 31);
+		panel_allBlogs.add(button_5);
+		
+		JButton button_6 = new JButton(">");
+		button_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(Controleur.listeImageAfficherBlog.size()==0)
+				{
+					JOptionPane.showMessageDialog(null, "Pas de photos à affiher");
+				}
+				else if(parcoureurB>=Controleur.listeImageAfficherBlog.size()-1)
+				{
+					JOptionPane.showMessageDialog(null, "Il n'y a plus de photos à afficher");
+				}
+				else
+				{
+					parcoureurB++;
+					
+					ImageIcon image = new ImageIcon(Controleur.listeImageAfficherBlog.get(parcoureurB));
+					java.awt.Image im = image.getImage();
+					java.awt.Image myImg = im.getScaledInstance(photoW.getWidth(), photoW.getHeight(), java.awt.Image.SCALE_SMOOTH);
+					ImageIcon img = new ImageIcon(myImg);
+					label_imageBlog2.setIcon(img);
+				}
+			}
+		});
+		button_6.setForeground(Color.WHITE);
+		button_6.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 25));
+		button_6.setBackground(new Color(51, 153, 204));
+		button_6.setBounds(661, 415, 129, 31);
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		panel_allBlogs.add(button_6);
 		
 		JButton button_7 = new JButton("Afficher");
 		button_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+<<<<<<< HEAD
+=======
+				
+				int index = table_blogs.getSelectedRow();
+				TableModel model = table_blogs.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner un wiki");
+				}
+				else
+				{
+					int numB = (Integer)model.getValueAt(index, 0);
+					Blog b = Factory.getBlogDao().find(numB);
+					txtTitreBlog_1.setText(b.getNomBlog());
+					textArea_texteBlog2.setText(b.getTextBlog());
+					
+					Controleur.listeImageAfficherBlog = b.getPhotosAfficher();
+					parcoureurB = 0;
+					
+					ImageIcon image = new ImageIcon(Controleur.listeImageAfficherBlog.get(parcoureurB));
+					java.awt.Image im = image.getImage();
+					java.awt.Image myImg = im.getScaledInstance(photoW.getWidth(), photoW.getHeight(), java.awt.Image.SCALE_SMOOTH);
+					ImageIcon img = new ImageIcon(myImg);
+					label_imageBlog2.setIcon(img);
+				}
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 			}
 		});
 		button_7.setForeground(Color.WHITE);
@@ -1871,6 +2668,37 @@ public class AcceuilTeacher extends JFrame {
 		JButton button_8 = new JButton("Supprimer");
 		button_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+<<<<<<< HEAD
+=======
+				
+				int index = table_blogs.getSelectedRow();
+				TableModel model = table_blogs.getModel();
+				
+				if(index == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner un blog");
+				}
+				else
+				{
+					int numB = (Integer)model.getValueAt(index, 0);
+					Blog b = Factory.getBlogDao().find(numB);
+					
+					if(!Controleur.instructerCo.getId().equals(b.getCreateur()))
+					{
+						JOptionPane.showMessageDialog(null, "Vous n'avez pas ce droit sur ce blog");
+					}
+					else
+					{
+						Factory.getBlogDao().delete(b);
+						((DefaultTableModel)model).removeRow(index);
+						
+						textArea_texteBlog2.setText("");
+						txtTitreBlog_1.setText("");
+						JOptionPane.showMessageDialog(null, "Blog supprimé");
+					}
+				}
+				
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 			}
 		});
 		button_8.setForeground(Color.WHITE);
@@ -1879,6 +2707,17 @@ public class AcceuilTeacher extends JFrame {
 		button_8.setBounds(263, 415, 152, 36);
 		panel_allBlogs.add(button_8);
 		
+<<<<<<< HEAD
+=======
+		JTextArea textArea = new JTextArea();
+		textArea.setBounds(487, 59, 325, 140);
+		panel_allBlogs.add(textArea);
+		textArea.setForeground(new Color(0, 51, 102));
+		textArea.setEditable(false);
+		textArea.setLineWrap(true);
+		textArea.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 14));
+		
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 		JButton btnAjouterUnBlog = new JButton("Ajouter un blog");
 		btnAjouterUnBlog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -1895,6 +2734,18 @@ public class AcceuilTeacher extends JFrame {
 		JButton btnToutLesBlogs = new JButton("Tout les blogs");
 		btnToutLesBlogs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+<<<<<<< HEAD
+=======
+				
+				DefaultTableModel model = (DefaultTableModel)table_blogs.getModel();
+				model.setRowCount(0);
+				
+				for(Blog b : Factory.getBlogDao().getAll())
+				{
+					model.addRow(new Object[] {b.getNumBlog(), b.getNomBlog(), b.getDateBlog().toString()});
+				}
+				
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
 				panel_ajouterBlog.setVisible(false);
 				panel_allBlogs.setVisible(true);
 			}
@@ -2356,7 +3207,43 @@ public class AcceuilTeacher extends JFrame {
 		 panel_formation.setVisible(false);
 		panel_forum.setVisible(false);
 		panel_blogs.setVisible(false);
+<<<<<<< HEAD
 		
+		
+		JLabel lblNewLabel_2 = new JLabel("");
+		lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\YACINE\\eclipse-workspace\\U-Learn\\Icons\\library_120px.png"));
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_2.setBounds(531, 63, 209, 186);
+		panel_library.add(lblNewLabel_2);
+		
+		JLabel label_11 = new JLabel("U");
+		label_11.setHorizontalAlignment(SwingConstants.CENTER);
+		label_11.setForeground(new Color(0, 51, 102));
+		label_11.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 200));
+		label_11.setBackground(new Color(0, 153, 0));
+		label_11.setBounds(0, 73, 253, 176);
+		panel_library.add(label_11);
+=======
+>>>>>>> 62561e7f7561631fd773193f789b3861c95cd639
+		
+		JLabel label_13 = new JLabel("Learn");
+		label_13.setForeground(new Color(0, 51, 102));
+		label_13.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 70));
+		label_13.setBackground(new Color(0, 153, 0));
+		label_13.setBounds(197, 89, 253, 108);
+		panel_library.add(label_13);
+		
+		JLabel lblLibrary = new JLabel("Library");
+		lblLibrary.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLibrary.setForeground(new Color(0, 51, 102));
+		lblLibrary.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 170));
+		lblLibrary.setBackground(new Color(0, 153, 0));
+		lblLibrary.setBounds(0, 260, 828, 217);
+		panel_library.add(lblLibrary);
+		
+		
+		
+	
 		
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\YACINE\\eclipse-workspace\\U-Learn\\Icons\\library_120px.png"));

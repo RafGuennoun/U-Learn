@@ -1,8 +1,10 @@
 package code.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import code.classes.Cour;
 
@@ -17,6 +19,7 @@ public class CourDao extends DAO2<Cour,Integer,Integer>{
 			this.findStat = this.conn.prepareStatement("SELECT * FROM `u-learn`.`cours` WHERE `numC`=?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			this.insertStat = this.conn.prepareStatement("INSERT INTO `u-learn`.`cours`(`numC`, `nomC`, `descC`, `numFrm`, `chemin`)"
 					+ "VALUES(?,?,?,?,?);");
+			this.deleteStat = this.conn.prepareStatement("DELETE FROM `u-learn`.`cours` WHERE `numC`=? AND `numFrm`=?");
 		}
 		catch(Exception x)
 		{
@@ -39,7 +42,8 @@ public class CourDao extends DAO2<Cour,Integer,Integer>{
 				c = new Cour(res.getInt("numC"),
 							 res.getString("nomC"),
 							 res.getString("descC"),
-							 res.getString("chemin"));
+							 res.getString("chemin"),
+							 res.getInt("numFrm"));
 			}
 			
 			return c;
@@ -82,7 +86,65 @@ public class CourDao extends DAO2<Cour,Integer,Integer>{
 	@Override
 	public boolean delete(Cour c)
 	{
+		try
+		{
+			deleteStat.setInt(1, c.getNumCour());
+			deleteStat.setInt(2, c.getNumFrm());
+			
+			return deleteStat.execute();
+		}
+		catch(SQLException x)
+		{
+			x.printStackTrace();
+		}
+		
 		return false;
 	}
+	
+	public int getMaxNum()
+	{
+		try
+		{
+			PreparedStatement stat = this.conn.prepareStatement("SELECT max(`numC`) FROM `u-learn`.`cours`");
+			ResultSet res = stat.executeQuery();
+			
+			if(res.first())
+			{
+				return res.getInt(1);
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		catch(SQLException x)
+		{
+			x.printStackTrace();
+		}
+		
+		return 0;
+	}
+	
+	public ArrayList<Cour> getAll()
+	{
+		ArrayList<Cour> liste = new ArrayList<Cour>();
+		try
+		{
+			PreparedStatement getAllStat = this.conn.prepareStatement("SELECT `numC` FROM `u-learn`.`cours`",ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet res = getAllStat.executeQuery();
+			
+			while(res.next())
+			{
+				liste.add(Factory.getCourDao().find(res.getInt(1)));
+			}
+		}
+		catch(SQLException x)
+		{
+			x.printStackTrace();
+		}
+		
+		return liste;
+	}
+	
 
 }

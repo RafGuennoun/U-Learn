@@ -6,17 +6,34 @@ public class Cour {
 	private String nomCour;
 	private String description;
 	private String chemin;
+	private int numFrm;
 	
 	
-	public Cour(int num, String nom,String description, String chemin)
+	public Cour(int num, String nom,String description, String chemin, int numFrm)
 	{
 		this.numCour = num;
 		this.description=description;
 		this.nomCour = nom;
 		this.chemin = chemin;
+		this.numFrm = numFrm;
 	}
 	
 	
+	public int getNumFrm() {
+		return numFrm;
+	}
+
+
+	public void setNumFrm(int numFrm) {
+		this.numFrm = numFrm;
+	}
+
+
+	public void setNumCour(int numCour) {
+		this.numCour = numCour;
+	}
+
+
 	public String getNomCour() {
 		return nomCour;
 	}
