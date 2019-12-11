@@ -83,7 +83,7 @@ public class LoginAdmin extends JFrame {
 		btnRetour.setForeground(Color.WHITE);
 		btnRetour.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 18));
 		btnRetour.setBackground(new Color(0, 51, 102));
-		btnRetour.setBounds(115, 384, 160, 25);
+		btnRetour.setBounds(115, 371, 160, 38);
 		contentPane.add(btnRetour);
 		
 		JLabel lblHelloStudent = new JLabel("U-Learn");
@@ -134,29 +134,8 @@ public class LoginAdmin extends JFrame {
 			btnNewButton.setForeground(Color.white);
 			btnNewButton.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 22));
 			
-			JButton btnSignIn = new JButton("Sign in");
-			btnSignIn.setBounds(47, 313, 291, 38);
-			contentPane.add(btnSignIn);
-			btnSignIn.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-				}
-			});
-			btnSignIn.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseExited(MouseEvent arg0) {
-					btnSignIn.setBackground(new Color(0, 51, 102));
-				}
-				@Override
-				public void mouseEntered(MouseEvent arg0) {
-					btnSignIn.setBackground(new Color(51, 153, 255));
-				}
-			});
-			btnSignIn.setForeground(Color.WHITE);
-			btnSignIn.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 22));
-			btnSignIn.setBackground(new Color(0, 51, 102));
-			
 			JLabel lblForgotPasswrd = new JLabel("Forgot your password  ?");
-			lblForgotPasswrd.setBounds(57, 275, 291, 16);
+			lblForgotPasswrd.setBounds(47, 278, 291, 16);
 			contentPane.add(lblForgotPasswrd);
 			lblForgotPasswrd.addMouseListener(new MouseAdapter() {
 				@Override
@@ -176,22 +155,22 @@ public class LoginAdmin extends JFrame {
 			textField = new JTextField();
 			textField.setHorizontalAlignment(SwingConstants.CENTER);
 			textField.setForeground(new Color(0, 51, 102));
-			textField.setFont(new Font("Sitka Text", Font.BOLD, 20));
+			textField.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 20));
 			textField.setColumns(10);
-			textField.setBounds(158, 110, 216, 38);
+			textField.setBounds(158, 110, 256, 38);
 			contentPane.add(textField);
 			
 			passwordField = new JPasswordField();
 			passwordField.setHorizontalAlignment(SwingConstants.CENTER);
 			passwordField.setForeground(new Color(0, 51, 102));
-			passwordField.setFont(new Font("Sitka Text", Font.BOLD, 20));
+			passwordField.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 20));
 			passwordField.setEchoChar('*');
-			passwordField.setBounds(158, 175, 213, 38);
+			passwordField.setBounds(158, 175, 256, 38);
 			contentPane.add(passwordField);
 			
 			JLabel label = new JLabel("");
 			label.setIcon(new ImageIcon("C:\\Users\\YACINE\\Documents\\ad1.png"));
-			label.setBounds(339, 0, 475, 442);
+			label.setBounds(339, 0, 475, 431);
 			contentPane.add(label);
 	}
 }

@@ -44,6 +44,9 @@ public class InscriptionStudent extends JFrame {
 	private JTextField textField_specilite;
 	
 	private String chemin = "D:\\Mes Projets\\ULearn\\Source\\U-Learn\\Icons\\user_120px.png";
+	private JTextField textField_aaaa;
+	private JTextField textField_mm;
+	private JTextField textField_jj;
 	
 
 	/**
@@ -112,13 +115,6 @@ public class InscriptionStudent extends JFrame {
 		lblPrenom.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
 		lblPrenom.setBackground(new Color(0, 51, 102));
 		
-		JLabel lblDateDeNaissance = new JLabel("Date de naissance :");
-		lblDateDeNaissance.setBounds(10, 78, 175, 28);
-		panel_1.add(lblDateDeNaissance);
-		lblDateDeNaissance.setForeground(new Color(0, 51, 102));
-		lblDateDeNaissance.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 18));
-		lblDateDeNaissance.setBackground(new Color(0, 51, 102));
-		
 		textField_nom = new JTextField();
 		textField_nom.setHorizontalAlignment(SwingConstants.CENTER);
 		textField_nom.setForeground(new Color(0, 51, 102));
@@ -134,6 +130,58 @@ public class InscriptionStudent extends JFrame {
 		textField_prenom.setColumns(10);
 		textField_prenom.setBounds(102, 43, 243, 28);
 		panel_1.add(textField_prenom);
+		
+		JLabel label_1 = new JLabel("Date de naissance :");
+		label_1.setForeground(new Color(0, 51, 102));
+		label_1.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		label_1.setBackground(new Color(0, 51, 102));
+		label_1.setBounds(10, 78, 166, 28);
+		panel_1.add(label_1);
+		
+		textField_aaaa = new JTextField();
+		textField_aaaa.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				textField_aaaa.setText("");
+			}
+		});
+		textField_aaaa.setText("AAAA");
+		textField_aaaa.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_aaaa.setForeground(new Color(0, 51, 102));
+		textField_aaaa.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		textField_aaaa.setColumns(10);
+		textField_aaaa.setBounds(282, 78, 63, 28);
+		panel_1.add(textField_aaaa);
+		
+		textField_mm = new JTextField();
+		textField_mm.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				textField_mm.setText("");
+			}
+		});
+		textField_mm.setText("MM");
+		textField_mm.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_mm.setForeground(new Color(0, 51, 102));
+		textField_mm.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		textField_mm.setColumns(10);
+		textField_mm.setBounds(229, 78, 49, 28);
+		panel_1.add(textField_mm);
+		
+		textField_jj = new JTextField();
+		textField_jj.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				textField_jj.setText("");
+			}
+		});
+		textField_jj.setText("JJ");
+		textField_jj.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_jj.setForeground(new Color(0, 51, 102));
+		textField_jj.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 16));
+		textField_jj.setColumns(10);
+		textField_jj.setBounds(176, 78, 49, 28);
+		panel_1.add(textField_jj);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setLayout(null);
